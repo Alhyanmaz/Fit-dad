@@ -2300,8 +2300,10 @@ function programWeek(week) {
 
 // La semaine de décharge devient une semaine de "test" : pas de cible fixe, l'utilisateur note
 // ses résultats du jour pour ajuster lui-même la progression du cycle suivant.
+// La semaine 5 (après la mise en place) est aussi une semaine de test : elle règle le cycle 1.
 function isMuscuTestWeek(week) {
-  if (isIntroWeek(week) || isPostIntroDeload(week)) return false;
+  if (isIntroWeek(week)) return false;
+  if (isPostIntroDeload(week)) return true;
   return muscuWeekInfo(programWeek(week)).deload;
 }
 
@@ -2928,7 +2930,8 @@ function MuscuTab() {
   }, []);
   const info = isIntroWeek(week) ? null : isPostIntroDeload(week) ? {
     cycle: 0,
-    level: 0,
+    // niveau "avant le niveau 1" : le test de la semaine 5 règle le niveau 1 (base) et le niveau 2 (surcharge)
+    level: -1,
     deload: true,
     postIntro: true
   } : muscuWeekInfo(programWeek(week));
@@ -3073,7 +3076,7 @@ function MuscuTab() {
       testResults: nextTestResults
     });
     const entry = nextTestResults[exId];
-    if (!info || info.postIntro) return;
+    if (!info) return;
     const baseLevel = info.level + 1;
 
     const saveOverrides = updated => {
@@ -3295,7 +3298,7 @@ function MuscuTab() {
     size: 12
   }) : /*#__PURE__*/React.createElement(Flame, {
     size: 12
-  }), info === null ? "Mise en place — volume réduit" : info.postIntro ? "Décharge — avant le cycle 1" : testWeek ? `Cycle ${info.cycle} — Semaine de test` : `Cycle ${info.cycle} — Niveau ${info.level + 1}`)), /*#__PURE__*/React.createElement("button", {
+  }), info === null ? "Mise en place — volume réduit" : info.postIntro ? "Semaine de test — avant le cycle 1" : testWeek ? `Cycle ${info.cycle} — Semaine de test` : `Cycle ${info.cycle} — Niveau ${info.level + 1}`)), /*#__PURE__*/React.createElement("button", {
     onClick: () => changeWeek(1),
     disabled: week === MUSCU_TOTAL_WEEKS,
     style: {
