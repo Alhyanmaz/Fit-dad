@@ -1,6 +1,6 @@
 // Service worker : met l'appli en cache pour qu'elle s'ouvre hors ligne.
 // Changer CACHE à chaque mise à jour de index.html pour forcer le rafraîchissement.
-const CACHE = "fitdad-v2";
+const CACHE = "fitdad-v3";
 const ASSETS = ["./", "index.html", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

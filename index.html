@@ -2446,10 +2446,12 @@ function squatTarget(week) {
     weights: [16]
   };
   const info = muscuWeekInfo(programWeek(week));
+  // Poids choisi en semaine de test : l'alternance set1/set2 repart de ce poids (voir buildSquatRestartSchedule)
+  const ov = overrideFor("gobletsquat", info.level);
   return {
     sets: 2,
     reps: 20,
-    weights: SQUAT_WEIGHTS_BY_LEVEL[info.level]
+    weights: ov && ov.weights ? ov.weights : SQUAT_WEIGHTS_BY_LEVEL[info.level]
   };
 }
 
@@ -2526,7 +2528,7 @@ function singleLegDeadliftTarget(week) {
   };
 }
 
-// KT press (nouveau) : barème par défaut 20kg puis 24kg, reps 6->14 (+2/niveau).
+// KT press (nouveau) : démarrage à 16kg (mise en place et niveaux 1 à 5, reps 6->14), puis 20kg (niveaux 6 à 8).
 const KTPRESS_DEFAULT = [{
   weight: 16,
   reps: 6
@@ -2911,6 +2913,8 @@ function MuscuTab() {
   const circuitExercises = exercises.filter(ex => !ex.isEmomFinisher);
   const finisherExercises = exercises.filter(ex => ex.isEmomFinisher);
   const testWeek = isMuscuTestWeek(week);
+  // Semaine 25 : dernière semaine de test, il n'existe pas de niveau suivant (niveaux 0 à 7)
+  const lastTestWeek = testWeek && week === MUSCU_TOTAL_WEEKS;
   const key = muscuSessionKey(routineId, week, seance);
   useEffect(() => {
     let cancelled = false;
@@ -3109,24 +3113,25 @@ function MuscuTab() {
     }
     if (field === "max") return;
 
-    // Goblet squat : un seul poids renseigné relance l'alternance set1/set2 depuis ce nouveau poids
+    // Goblet squat : un seul poids renseigné relance l'alternance set1/set2 depuis ce nouveau poids,
+    // pour tous les niveaux restants. Champ vidé : retour au barème par défaut.
     if (exId === "gobletsquat") {
-      if (entry.nextWeight !== "") {
-        const weight = parseFloat(entry.nextWeight);
-        if (!isNaN(weight)) {
-          const schedule = buildSquatRestartSchedule(weight, baseLevel);
-          const updated = {
-            ...MUSCU_OVERRIDES
+      const weight = parseFloat(entry.nextWeight);
+      const remainingLevels = [];
+      for (let l = baseLevel; l <= 7; l++) remainingLevels.push(l);
+      if (entry.nextWeight !== "" && !isNaN(weight) && weight > 0) {
+        const schedule = buildSquatRestartSchedule(weight, baseLevel);
+        const updated = {
+          ...MUSCU_OVERRIDES
+        };
+        Object.keys(schedule).forEach(lvl => {
+          updated[`${exId}-${lvl}`] = {
+            weights: schedule[lvl]
           };
-          Object.keys(schedule).forEach(lvl => {
-            updated[`${exId}-${lvl}`] = {
-              weights: schedule[lvl]
-            };
-          });
-          MUSCU_OVERRIDES = updated;
-          setOverridesVersion(v => v + 1);
-          storageSetWithRetry("session:muscu-overrides", JSON.stringify(updated)).catch(() => {});
-        }
+        });
+        saveOverrides(updated);
+      } else {
+        clearOverrides(remainingLevels);
       }
       return;
     }
@@ -3355,7 +3360,7 @@ function MuscuTab() {
       fontSize: 12.5,
       color: "#B8BFB9"
     }
-  }, "Semaine de test : la cible du jour reste identique au niveau précédent. Notez votre répétition max, puis choisissez vous-même les reps et le poids (ou la bande) du niveau suivant."), /*#__PURE__*/React.createElement(CountdownTimer, {
+  }, lastTestWeek ? "Dernière semaine de test : notez votre répétition max du jour." : "Semaine de test : la cible du jour reste identique au niveau précédent. Notez votre répétition max, puis choisissez vous-même les reps et le poids (ou la bande) du niveau suivant, et si besoin le nom d'un nouvel exercice."), /*#__PURE__*/React.createElement(CountdownTimer, {
     seconds: 60
   }), !testWeek && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3666,7 +3671,7 @@ function MuscuTab() {
         padding: "9px 4px",
         fontSize: 14
       }
-    })))), testWeek && ex.id !== "gobletsquat" && ex.id !== "swing" && /*#__PURE__*/React.createElement("div", {
+    })))), testWeek && ex.id !== "swing" && /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 12,
         paddingTop: 12,
@@ -3696,7 +3701,12 @@ function MuscuTab() {
         fontSize: 13.5,
         marginBottom: 8
       }
-    }), /*#__PURE__*/React.createElement("div", {
+    }), lastTestWeek ? /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: "#8B9490"
+      }
+    }, "Dernière semaine du programme : pas de niveau suivant à régler.") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 8
@@ -3780,7 +3790,7 @@ function MuscuTab() {
         padding: "9px 10px",
         fontSize: 13.5
       }
-    }))), /*#__PURE__*/React.createElement("input", {
+    })))), /*#__PURE__*/React.createElement("input", {
       type: "text",
       value: session.exerciseNotes?.[ex.id] ?? "",
       onChange: e => setExerciseNote(ex.id, e.target.value),
@@ -5535,11 +5545,15 @@ function MobMatinTab() {
 
 /* ============================== CARDIO DU MIDI (suivi semaine, calendrier 25 semaines partagé) ============================== */
 
-// 6 séances par semaine, sans jour imposé : 4 en semaine (2 marche seule, 2 marche + corde)
-// et 2 le week-end (corde seule). L'utilisateur choisit lui-même quel jour il les fait.
+// 6 séances par semaine, sans jour imposé : 4 en semaine (marche) et 2 le week-end.
+// La corde est proposée à chaque séance : objectif 2 fois en semaine + 2 fois le week-end,
+// l'utilisateur choisit lui-même quand il la fait.
 const CARDIO_DAYS = ["Sem. 1", "Sem. 2", "Sem. 3", "Sem. 4", "WE 1", "WE 2"];
 const MARCHE_DAYS = ["Sem. 1", "Sem. 2", "Sem. 3", "Sem. 4"]; // les 4 séances de semaine incluent la marche
-const CORDE_DAYS = ["Sem. 1", "Sem. 2", "Sem. 3", "Sem. 4", "WE 1", "WE 2"]; // corde disponible chaque séance, coché librement selon ce qui est fait
+const CORDE_GOAL = {
+  semaine: 2,
+  weekend: 2
+};
 
 // Corde à sauter / Flow rope : 8 premières semaines fixes à 5 min chaque corde (10 min total),
 // puis +1 min par corde toutes les 2 semaines (un jour sur deux)
@@ -5597,6 +5611,34 @@ function CardioTab() {
   const day = CARDIO_DAYS[dayIdx];
   const key = cardioKey(week, day);
   const corde = cordeTarget(week);
+  // Nombre de séances de corde cochées cette semaine, en semaine et le week-end
+  const [cordeCount, setCordeCount] = useState({
+    semaine: 0,
+    weekend: 0
+  });
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const count = {
+        semaine: 0,
+        weekend: 0
+      };
+      for (const d of CARDIO_DAYS) {
+        let done = false;
+        if (d === day && session) done = !!session.corde?.done;else {
+          try {
+            const res = await storageGetWithRetry(cardioKey(week, d));
+            done = !!(res && JSON.parse(res.value).corde?.done);
+          } catch (e) {}
+        }
+        if (done) count[d.startsWith("WE") ? "weekend" : "semaine"]++;
+      }
+      if (!cancelled) setCordeCount(count);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [week, day, session]);
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -5912,7 +5954,7 @@ function CardioTab() {
       padding: "9px 10px",
       fontSize: 14
     }
-  }))), CORDE_DAYS.includes(day) ? /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
     style: {
       background: "#1F2623",
       borderRadius: 10,
@@ -5937,13 +5979,29 @@ function CardioTab() {
       fontSize: 12,
       color: "#8B9490"
     }
-  }, "Cochez si fait")), /*#__PURE__*/React.createElement("div", {
+  }, "2× semaine · 2× week-end")), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 12,
       color: "#8B9490",
-      marginBottom: 10
+      marginBottom: 6
     }
-  }, "Objectif : ", corde.perCorde, " min corde à sauter + ", corde.perCorde, " min flow rope = ", corde.total, " min total"), /*#__PURE__*/React.createElement("button", {
+  }, "Objectif : ", corde.perCorde, " min corde à sauter + ", corde.perCorde, " min flow rope = ", corde.total, " min total"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      marginBottom: 10,
+      color: "#B8BFB9"
+    }
+  }, "Cette semaine : ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: cordeCount.semaine >= CORDE_GOAL.semaine ? "#7FBF83" : "#E3CB94",
+      fontWeight: 600
+    }
+  }, cordeCount.semaine, "/", CORDE_GOAL.semaine, " en semaine"), " · ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: cordeCount.weekend >= CORDE_GOAL.weekend ? "#7FBF83" : "#E3CB94",
+      fontWeight: 600
+    }
+  }, cordeCount.weekend, "/", CORDE_GOAL.weekend, " le week-end")), /*#__PURE__*/React.createElement("button", {
     className: "set-check",
     onClick: toggleCorde,
     style: {
@@ -5981,16 +6039,7 @@ function CardioTab() {
       padding: "9px 10px",
       fontSize: 14
     }
-  })) : /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: "#1F2623",
-      borderRadius: 10,
-      padding: "14px 16px",
-      borderLeft: "3px solid #2A322D",
-      color: "#8B9490",
-      fontSize: 13
-    }
-  }, "Pas de corde sur cette séance — corde prévue sur Sem. 3, Sem. 4, WE 1 et WE 2."), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
     style: {
       background: "#1F2623",
       borderRadius: 10,
