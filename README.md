@@ -11,7 +11,9 @@ Application web installable sur smartphone (PWA), issue de l'artefact « Suivi e
 | **Soir** | Pied (routines A/B + étirements pied) · Mob. soir |
 | **Étirements** | Étirements complémentaires |
 
-À l'ouverture, l'appli propose la section selon l'heure (avant 11 h : Matin, 11 h–15 h : Midi, après : Soir) et se souvient du dernier onglet ouvert dans chaque section.
+À l'ouverture, l'appli propose la section selon l'heure (avant 11 h : Matin, 11 h–15 h : Midi, après : Soir) et se souvient du dernier onglet ouvert dans chaque section, ainsi que de la semaine, de la routine et de la séance affichées dans chaque onglet.
+
+Minuteur de repos (Muscu) : calé sur l'heure de fin, il reste juste même si l'écran se verrouille ; il garde l'écran allumé pendant le décompte (si le navigateur le permet) et sonne / vibre à la fin.
 
 ## Données
 

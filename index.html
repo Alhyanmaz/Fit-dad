@@ -1002,6 +1002,47 @@ async function storageGetWithRetry(key, retries = 3, delayMs = 350) {
   return null;
 }
 
+// État d'interface mémorisé entre deux ouvertures (semaine, routine, séance affichées).
+// Stocké hors du préfixe des données d'entraînement : ce n'est pas exporté, juste un confort.
+function usePersistentState(key, initial, isValid) {
+  const storageKey = "fitdad_ui_" + key;
+  const [value, setValue] = useState(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw !== null) {
+        const v = JSON.parse(raw);
+        if (!isValid || isValid(v)) return v;
+      }
+    } catch (e) {}
+    return initial;
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(value));
+    } catch (e) {}
+  }, [storageKey, value]);
+  return [value, setValue];
+}
+const validWeek = max => v => Number.isInteger(v) && v >= 1 && v <= max;
+const validIndex = len => v => Number.isInteger(v) && v >= 0 && v < len;
+const validRoutine = routines => v => Object.prototype.hasOwnProperty.call(routines, v);
+
+// Lecture défensive : une séance enregistrée par une ancienne version peut ne pas avoir tous les champs
+function parseSession(res, empty) {
+  const base = empty();
+  if (!res) return base;
+  const data = JSON.parse(res.value);
+  if (!data || typeof data !== "object") return base;
+  return {
+    ...base,
+    ...data,
+    sets: {
+      ...base.sets,
+      ...(data.sets || {})
+    }
+  };
+}
+
 /* ============================== CALENDRIER RÉCAPITULATIF (affichage seulement, la saisie reste inchangée) ============================== */
 
 function isoDateStr(d) {
@@ -1042,8 +1083,8 @@ async function markDateLog(tabId, routineTag, currentLog) {
 // Historique détaillé : une entrée par jour et par onglet, contenant le contenu réel de la séance
 // (exercices, cibles du jour, sets/reps/poids saisis). Sert de base à une future sauvegarde/export.
 // Clé : session:history-<tabId>-<date>
-async function saveHistoryEntry(tabId, payload) {
-  const iso = todayISOShared();
+async function saveHistoryEntry(tabId, payload, date) {
+  const iso = date || todayISOShared();
   try {
     await storageSetWithRetry(`session:history-${tabId}-${iso}`, JSON.stringify({
       date: iso,
@@ -1353,7 +1394,7 @@ function PiedEtirementsTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyPiedEtirementsSession());
+          setSession(parseSession(res, emptyPiedEtirementsSession));
           setLoaded(true);
         }
       } catch (e) {
@@ -1372,6 +1413,15 @@ function PiedEtirementsTab() {
     try {
       const result = await storageSetWithRetry(key, JSON.stringify(next));
       setSaveError(!result);
+      if (result && !hasAnyInput(next) && dateLog[date]) {
+        // tout a été décoché : la date ne doit plus apparaître dans le récapitulatif
+        const nextLog = {
+          ...dateLog
+        };
+        delete nextLog[date];
+        setDateLog(nextLog);
+        storageSetWithRetry("session:datelog-piedetirements", JSON.stringify(nextLog));
+      }
       if (result && hasAnyInput(next)) {
         const complete = isPiedEtirementsSessionComplete(next);
         const nextLog = {
@@ -1393,7 +1443,7 @@ function PiedEtirementsTab() {
             saisi: next.sets?.[ex.id] ?? null
           })),
           notes: next.notes || ""
-        });
+        }, date);
       }
     } catch (e) {
       setSaveError(true);
@@ -1456,7 +1506,9 @@ function PiedEtirementsTab() {
   }, "Date"), /*#__PURE__*/React.createElement("input", {
     type: "date",
     value: date,
-    onChange: e => setDate(e.target.value),
+    onChange: e => {
+      if (e.target.value) setDate(e.target.value);
+    },
     style: {
       background: "#161B19",
       border: "1px solid #2A322D",
@@ -1597,10 +1649,10 @@ function PiedEtirementsTab() {
   }));
 }
 function PiedTab() {
-  const [section, setSection] = useState("renforcement");
-  const [routineId, setRoutineId] = useState("A");
-  const [week, setWeek] = useState(1);
-  const [dayIdx, setDayIdx] = useState(0);
+  const [section, setSection] = usePersistentState("pied-section", "renforcement", v => v === "renforcement" || v === "etirements");
+  const [routineId, setRoutineId] = usePersistentState("pied-routine", "A", validRoutine(ROUTINES));
+  const [week, setWeek] = usePersistentState("pied-week", 1, validWeek(PIED_TOTAL_WEEKS));
+  const [dayIdx, setDayIdx] = usePersistentState("pied-day", 0, validIndex(3));
   const [session, setSession] = useState(null);
   const [overview, setOverview] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -1627,7 +1679,7 @@ function PiedTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyPiedSession(routine, week));
+          setSession(parseSession(res, () => emptyPiedSession(routine, week)));
           setLoaded(true);
         }
       } catch (e) {
@@ -2826,6 +2878,8 @@ function isMuscuSessionComplete(sessionData, week, routineId) {
     if (isMuscuTestWeek(week) && ex.id !== "gobletsquat" && ex.id !== "swing") {
       const t = sessionData.testResults?.[ex.id];
       if (ex.kind === "duration-single") return t && t.max !== "" && t.nextWeight !== "";
+      // poids du corps : pas de charge à choisir pour le niveau suivant
+      if (ex.kind === "repsonly") return t && t.max !== "" && t.nextReps !== "";
       return t && t.max !== "" && t.nextReps !== "" && t.nextWeight !== "";
     }
     const t = ex.getTarget(week);
@@ -2841,16 +2895,16 @@ function targetLabelMuscu(ex, t) {
   return `${t.reps} reps`;
 }
 function MuscuTab() {
-  const [routineId, setRoutineId] = useState("A");
-  const [week, setWeek] = useState(1);
-  const [seanceIdx, setSeanceIdx] = useState(0);
+  const [routineId, setRoutineId] = usePersistentState("muscu-routine", "A", validRoutine(MUSCU_ROUTINES));
+  const [week, setWeek] = usePersistentState("muscu-week", 1, validWeek(MUSCU_TOTAL_WEEKS));
+  const [seanceIdx, setSeanceIdx] = usePersistentState("muscu-seance", 0, validIndex(MUSCU_SEANCES.length));
   const [session, setSession] = useState(null);
   const [overview, setOverview] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [overridesVersion, setOverridesVersion] = useState(0);
   const [dateLog, setDateLog] = useState({});
-  const [circuitView, setCircuitView] = useState(true);
+  const [circuitView, setCircuitView] = usePersistentState("muscu-circuit", true, v => typeof v === "boolean");
   const routine = MUSCU_ROUTINES[routineId];
   const seance = MUSCU_SEANCES[seanceIdx];
   const exercises = exercisesForRoutine(routineId);
@@ -2907,7 +2961,7 @@ function MuscuTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyMuscuSession(week, routineId));
+          setSession(parseSession(res, () => emptyMuscuSession(week, routineId)));
           setLoaded(true);
         }
       } catch (e) {
@@ -3018,16 +3072,42 @@ function MuscuTab() {
     if (!info || info.postIntro) return;
     const baseLevel = info.level + 1;
 
-    // Nom personnalisé : s'applique à partir du niveau suivant, persiste jusqu'au prochain changement
-    if (entry.nextName && entry.nextName.trim() !== "") {
-      const updatedNames = {
-        ...MUSCU_NAME_OVERRIDES,
-        [`${exId}-${baseLevel}`]: entry.nextName.trim()
-      };
-      MUSCU_NAME_OVERRIDES = updatedNames;
+    const saveOverrides = updated => {
+      MUSCU_OVERRIDES = updated;
       setOverridesVersion(v => v + 1);
-      storageSetWithRetry("session:muscu-name-overrides", JSON.stringify(updatedNames)).catch(() => {});
+      storageSetWithRetry("session:muscu-overrides", JSON.stringify(updated)).catch(() => {});
+    };
+    // Champ vidé : on retire l'ajustement correspondant pour revenir au barème par défaut
+    const clearOverrides = levels => {
+      const updated = {
+        ...MUSCU_OVERRIDES
+      };
+      let changed = false;
+      levels.forEach(l => {
+        if (updated[`${exId}-${l}`]) {
+          delete updated[`${exId}-${l}`];
+          changed = true;
+        }
+      });
+      if (changed) saveOverrides(updated);
+    };
+
+    // Nom personnalisé : s'applique à partir du niveau suivant, persiste jusqu'au prochain changement
+    if (field === "nextName") {
+      const nameKey = `${exId}-${baseLevel}`;
+      const trimmed = (entry.nextName || "").trim();
+      if (trimmed !== "" || MUSCU_NAME_OVERRIDES[nameKey]) {
+        const updatedNames = {
+          ...MUSCU_NAME_OVERRIDES
+        };
+        if (trimmed !== "") updatedNames[nameKey] = trimmed;else delete updatedNames[nameKey];
+        MUSCU_NAME_OVERRIDES = updatedNames;
+        setOverridesVersion(v => v + 1);
+        storageSetWithRetry("session:muscu-name-overrides", JSON.stringify(updatedNames)).catch(() => {});
+      }
+      return;
     }
+    if (field === "max") return;
 
     // Goblet squat : un seul poids renseigné relance l'alternance set1/set2 depuis ce nouveau poids
     if (exId === "gobletsquat") {
@@ -3053,49 +3133,49 @@ function MuscuTab() {
 
     // Horse stance / Tuck hang L-sit : un seul champ durée, surcharge = +5s (horse stance) ou +2s (tuck hang)
     if (exId === "horsestancemuscu" || exId === "tuckhang") {
-      if (entry.nextWeight !== "") {
-        const seconds = parseFloat(entry.nextWeight);
-        if (!isNaN(seconds)) {
-          const increment = exId === "horsestancemuscu" ? 5 : 2;
-          const surchargeLevel = info.level + 2;
-          const updated = {
-            ...MUSCU_OVERRIDES
-          };
-          if (baseLevel <= 7) updated[`${exId}-${baseLevel}`] = {
-            seconds
-          };
-          if (surchargeLevel <= 7) updated[`${exId}-${surchargeLevel}`] = {
-            seconds: seconds + increment
-          };
-          MUSCU_OVERRIDES = updated;
-          setOverridesVersion(v => v + 1);
-          storageSetWithRetry("session:muscu-overrides", JSON.stringify(updated)).catch(() => {});
-        }
-      }
-      return;
-    }
-
-    // Autres exercices : reps + poids/bande du niveau suivant, surcharge = +2 reps automatiquement
-    const surchargeLevel = info.level + 2;
-    if (entry.nextReps !== "" && entry.nextWeight !== "") {
-      const reps = parseInt(entry.nextReps, 10);
-      const weight = parseFloat(entry.nextWeight);
-      if (!isNaN(reps) && !isNaN(weight)) {
+      const surchargeLevel = info.level + 2;
+      const seconds = parseFloat(entry.nextWeight);
+      if (entry.nextWeight !== "" && !isNaN(seconds)) {
+        const increment = exId === "horsestancemuscu" ? 5 : 2;
         const updated = {
           ...MUSCU_OVERRIDES
         };
         if (baseLevel <= 7) updated[`${exId}-${baseLevel}`] = {
-          reps,
-          weight
+          seconds
         };
         if (surchargeLevel <= 7) updated[`${exId}-${surchargeLevel}`] = {
-          reps: reps + 2,
-          weight
+          seconds: seconds + increment
         };
-        MUSCU_OVERRIDES = updated;
-        setOverridesVersion(v => v + 1);
-        storageSetWithRetry("session:muscu-overrides", JSON.stringify(updated)).catch(() => {});
+        saveOverrides(updated);
+      } else {
+        clearOverrides([baseLevel, surchargeLevel]);
       }
+      return;
+    }
+
+    // Autres exercices : reps + poids/bande du niveau suivant, surcharge = +2 reps automatiquement.
+    // Exercices au poids du corps (repsonly) : seules les reps comptent.
+    const surchargeLevel = info.level + 2;
+    const exKind = (exercisesForRoutine(routineId).find(x => x.id === exId) || {}).kind;
+    const needsWeight = exKind !== "repsonly";
+    const reps = parseInt(entry.nextReps, 10);
+    const weight = parseFloat(entry.nextWeight);
+    if (!isNaN(reps) && (!needsWeight || !isNaN(weight))) {
+      const updated = {
+        ...MUSCU_OVERRIDES
+      };
+      const w = needsWeight ? weight : undefined;
+      if (baseLevel <= 7) updated[`${exId}-${baseLevel}`] = {
+        reps,
+        weight: w
+      };
+      if (surchargeLevel <= 7) updated[`${exId}-${surchargeLevel}`] = {
+        reps: reps + 2,
+        weight: w
+      };
+      saveOverrides(updated);
+    } else {
+      clearOverrides([baseLevel, surchargeLevel]);
     }
   };
   const setExerciseNote = (exId, value) => {
@@ -3648,7 +3728,7 @@ function MuscuTab() {
         padding: "9px 4px",
         fontSize: 14
       }
-    })), /*#__PURE__*/React.createElement("div", {
+    })), ex.kind !== "repsonly" && /*#__PURE__*/React.createElement("div", {
       style: {
         flex: 1
       }
@@ -3907,8 +3987,9 @@ function mobSoirActiveExercises(week) {
   return MOBSOIR_EXERCISES.filter(ex => !ex.isIntroducedAt || ex.isIntroducedAt(week));
 }
 function mobSoirSetsFor(ex, week) {
-  if (ex.getTarget) return ex.getTarget(week).sets;
-  return ex.sets;
+  // passive hang et one arm hang n'ont pas de "sets" dans leur cible : on retombe sur ex.sets (comme l'affichage)
+  const fromTarget = ex.getTarget ? ex.getTarget(week).sets : undefined;
+  return fromTarget ?? ex.sets ?? 1;
 }
 function emptyMobSoirSession(week) {
   const sets = {};
@@ -3950,8 +4031,8 @@ function isMobSoirSessionComplete(sessionData, week) {
   });
 }
 function MobSoirTab() {
-  const [week, setWeek] = useState(1);
-  const [seanceIdx, setSeanceIdx] = useState(0);
+  const [week, setWeek] = usePersistentState("mobsoir-week", 1, validWeek(PIED_TOTAL_WEEKS));
+  const [seanceIdx, setSeanceIdx] = usePersistentState("mobsoir-seance", 0, validIndex(MOBSOIR_SEANCES.length));
   const [session, setSession] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [overview, setOverview] = useState({});
@@ -3978,7 +4059,7 @@ function MobSoirTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyMobSoirSession(week));
+          setSession(parseSession(res, () => emptyMobSoirSession(week)));
           setLoaded(true);
         }
       } catch (e) {
@@ -4236,7 +4317,7 @@ function MobSoirTab() {
       seconds: ex.target,
       sets: ex.sets
     };
-    const setCount = t.sets ?? ex.sets;
+    const setCount = mobSoirSetsFor(ex, week);
     return /*#__PURE__*/React.createElement("div", {
       key: ex.id,
       style: {
@@ -4808,9 +4889,21 @@ function targetLabel(ex, t) {
 
 /* ============================== MINUTEUR TRAVAIL / REPOS (réutilisable) ============================== */
 
+// Un seul contexte audio, créé/débloqué au moment d'un appui (obligatoire sur iPhone pour avoir du son)
+let AUDIO_CTX = null;
+function unlockAudio() {
+  try {
+    if (!AUDIO_CTX) AUDIO_CTX = new (window.AudioContext || window.webkitAudioContext)();
+    if (AUDIO_CTX.state === "suspended") AUDIO_CTX.resume();
+  } catch (e) {
+    // audio non disponible, pas bloquant
+  }
+}
 function beep(freq) {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    unlockAudio();
+    const ctx = AUDIO_CTX;
+    if (!ctx) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.frequency.value = freq;
@@ -4825,136 +4918,75 @@ function beep(freq) {
   } catch (e) {
     // audio non disponible, pas bloquant
   }
+  try {
+    if (navigator.vibrate) navigator.vibrate(200);
+  } catch (e) {}
 }
-function WorkRestTimer({
-  workSeconds,
-  restSeconds
-}) {
-  const [phase, setPhase] = useState("work");
-  const [remaining, setRemaining] = useState(workSeconds);
-  const [running, setRunning] = useState(false);
-  useEffect(() => {
-    setPhase("work");
-    setRemaining(workSeconds);
-    setRunning(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [workSeconds, restSeconds]);
-  useEffect(() => {
-    if (!running) return undefined;
-    const t = setInterval(() => {
-      setRemaining(r => {
-        if (r > 1) return r - 1;
-        setPhase(p => {
-          const next = p === "work" ? "rest" : "work";
-          beep(next === "work" ? 880 : 440);
-          return next;
-        });
-        return null; // placeholder, corrigé juste après
-      });
-    }, 1000);
-    return () => clearInterval(t);
-  }, [running]);
 
-  // Quand la phase change (via le tick ci-dessus), on réinitialise le compte à rebours de la nouvelle phase
+// Garde l'écran allumé pendant que le minuteur tourne (si le navigateur le permet)
+function useWakeLock(active) {
   useEffect(() => {
-    if (remaining === null) {
-      setRemaining(phase === "work" ? workSeconds : restSeconds);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
-  const toggle = () => setRunning(r => !r);
-  const reset = () => {
-    setRunning(false);
-    setPhase("work");
-    setRemaining(workSeconds);
-  };
-  const isWork = phase === "work";
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: isWork ? "rgba(76,140,74,0.14)" : "rgba(201,166,107,0.14)",
-      border: "1px solid",
-      borderColor: isWork ? "#4C8C4A" : "#C9A66B",
-      borderRadius: 10,
-      padding: "12px 16px",
-      marginBottom: 16,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 11,
-      color: "#8B9490",
-      textTransform: "uppercase",
-      letterSpacing: "0.04em"
-    }
-  }, isWork ? "Travail" : "Repos"), /*#__PURE__*/React.createElement("div", {
-    className: "zen",
-    style: {
-      fontSize: 28,
-      fontWeight: 900,
-      color: isWork ? "#7FBF83" : "#E3CB94",
-      lineHeight: 1.1
-    }
-  }, remaining ?? (isWork ? workSeconds : restSeconds), "s")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: toggle,
-    style: {
-      padding: "10px 16px",
-      borderRadius: 8,
-      border: "1px solid",
-      borderColor: running ? "#C6553B" : "#4C8C4A",
-      background: running ? "rgba(198,85,59,0.14)" : "rgba(76,140,74,0.14)",
-      color: running ? "#E8A08F" : "#7FBF83",
-      cursor: "pointer",
-      fontSize: 13,
-      fontWeight: 700
-    }
-  }, running ? "Pause" : "Démarrer"), /*#__PURE__*/React.createElement("button", {
-    onClick: reset,
-    style: {
-      padding: "10px 14px",
-      borderRadius: 8,
-      border: "1px solid #2A322D",
-      background: "#161B19",
-      color: "#B8BFB9",
-      cursor: "pointer",
-      fontSize: 13
-    }
-  }, "Reset")));
+    if (!active || !("wakeLock" in navigator)) return undefined;
+    let lock = null;
+    let released = false;
+    const request = () => {
+      navigator.wakeLock.request("screen").then(l => {
+        if (released) l.release();else lock = l;
+      }).catch(() => {});
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") request();
+    };
+    request();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      released = true;
+      document.removeEventListener("visibilitychange", onVisible);
+      if (lock) lock.release().catch(() => {});
+    };
+  }, [active]);
 }
+
+// Compte à rebours basé sur l'heure de fin (et non sur le nombre de ticks) : reste juste même si
+// le téléphone met l'appli en pause quelques secondes (écran verrouillé, changement d'appli).
 function CountdownTimer({
   seconds
 }) {
   const [remaining, setRemaining] = useState(seconds);
   const [running, setRunning] = useState(false);
+  const endRef = React.useRef(0);
+  useWakeLock(running);
   useEffect(() => {
     setRemaining(seconds);
     setRunning(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds]);
   useEffect(() => {
     if (!running) return undefined;
-    const t = setInterval(() => {
-      setRemaining(r => {
-        if (r <= 1) {
-          beep(880);
-          setRunning(false);
-          return 0;
-        }
-        return r - 1;
-      });
-    }, 1000);
-    return () => clearInterval(t);
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((endRef.current - Date.now()) / 1000));
+      setRemaining(left);
+      if (left <= 0) {
+        beep(880);
+        setRunning(false);
+      }
+    };
+    const t = setInterval(tick, 250);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      clearInterval(t);
+      document.removeEventListener("visibilitychange", tick);
+    };
   }, [running]);
   const toggle = () => {
-    if (remaining <= 0) setRemaining(seconds);
-    setRunning(r => !r);
+    unlockAudio();
+    if (running) {
+      setRunning(false);
+      return;
+    }
+    const from = remaining <= 0 ? seconds : remaining;
+    setRemaining(from);
+    endRef.current = Date.now() + from * 1000;
+    setRunning(true);
   };
   const reset = () => {
     setRunning(false);
@@ -5019,9 +5051,9 @@ function CountdownTimer({
   }, "Reset")));
 }
 function MobMatinTab() {
-  const [routineId, setRoutineId] = useState("A");
-  const [week, setWeek] = useState(1);
-  const [dayIdx, setDayIdx] = useState(0);
+  const [routineId, setRoutineId] = usePersistentState("mobmatin-routine", "A", validRoutine(MOBMATIN_ROUTINES));
+  const [week, setWeek] = usePersistentState("mobmatin-week", 1, validWeek(PIED_TOTAL_WEEKS));
+  const [dayIdx, setDayIdx] = usePersistentState("mobmatin-day", 0, validIndex(3));
   const [session, setSession] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [overview, setOverview] = useState({});
@@ -5048,7 +5080,7 @@ function MobMatinTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyMobMatinSession(routine));
+          setSession(parseSession(res, () => emptyMobMatinSession(routine)));
           setLoaded(true);
         }
       } catch (e) {
@@ -5554,8 +5586,8 @@ function isCardioSessionComplete(sessionData) {
   return marcheOk || cordeOk || mtOk;
 }
 function CardioTab() {
-  const [week, setWeek] = useState(1);
-  const [dayIdx, setDayIdx] = useState(0);
+  const [week, setWeek] = usePersistentState("cardio-week", 1, validWeek(PIED_TOTAL_WEEKS));
+  const [dayIdx, setDayIdx] = usePersistentState("cardio-day", 0, validIndex(CARDIO_DAYS.length));
   const [session, setSession] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [overview, setOverview] = useState({});
@@ -5582,7 +5614,24 @@ function CardioTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyCardioSession());
+          const data = res ? JSON.parse(res.value) : {};
+          const base = emptyCardioSession();
+          setSession({
+            ...base,
+            ...data,
+            marche: {
+              ...base.marche,
+              ...(data.marche || {})
+            },
+            corde: {
+              ...base.corde,
+              ...(data.corde || {})
+            },
+            muaythai: {
+              ...base.muaythai,
+              ...(data.muaythai || {})
+            }
+          });
           setLoaded(true);
         }
       } catch (e) {
@@ -5926,7 +5975,11 @@ function CardioTab() {
     style: {
       width: "100%",
       background: "#161B19",
-      border: "1px solid #2A322D"
+      border: "1px solid #2A322D",
+      borderRadius: 8,
+      color: "#EDE9DF",
+      padding: "9px 10px",
+      fontSize: 14
     }
   })) : /*#__PURE__*/React.createElement("div", {
     style: {
@@ -6089,7 +6142,7 @@ function RoutineMatinaleTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyMatinaleSession());
+          setSession(parseSession(res, emptyMatinaleSession));
           setLoaded(true);
         }
       } catch (e) {
@@ -6108,6 +6161,15 @@ function RoutineMatinaleTab() {
     try {
       const result = await storageSetWithRetry(key, JSON.stringify(next));
       setSaveError(!result);
+      if (result && !hasAnyInput(next) && dateLog[date]) {
+        // tout a été décoché : la date ne doit plus apparaître dans le récapitulatif
+        const nextLog = {
+          ...dateLog
+        };
+        delete nextLog[date];
+        setDateLog(nextLog);
+        storageSetWithRetry("session:datelog-matinale", JSON.stringify(nextLog));
+      }
       if (result && hasAnyInput(next)) {
         const both = MATINALE_EXERCISES.every(ex => !!next.sets?.[ex.id]);
         const nextLog = {
@@ -6129,7 +6191,7 @@ function RoutineMatinaleTab() {
             fait: !!next.sets?.[ex.id]
           })),
           notes: next.notes || ""
-        });
+        }, date);
       }
     } catch (e) {
       setSaveError(true);
@@ -6353,7 +6415,7 @@ function ComplementStretchesTab() {
       try {
         const res = await storageGetWithRetry(key);
         if (!cancelled) {
-          setSession(res ? JSON.parse(res.value) : emptyComplementSession());
+          setSession(parseSession(res, emptyComplementSession));
           setLoaded(true);
         }
       } catch (e) {
@@ -6372,6 +6434,15 @@ function ComplementStretchesTab() {
     try {
       const result = await storageSetWithRetry(key, JSON.stringify(next));
       setSaveError(!result);
+      if (result && !hasAnyInput(next) && dateLog[date]) {
+        // tout a été décoché : la date ne doit plus apparaître dans le récapitulatif
+        const nextLog = {
+          ...dateLog
+        };
+        delete nextLog[date];
+        setDateLog(nextLog);
+        storageSetWithRetry("session:datelog-complement", JSON.stringify(nextLog));
+      }
       if (result && hasAnyInput(next)) {
         const complete = isComplementSessionComplete(next);
         const nextLog = {
@@ -6393,7 +6464,7 @@ function ComplementStretchesTab() {
             saisi: next.sets?.[ex.id] ?? null
           })),
           notes: next.notes || ""
-        });
+        }, date);
       }
     } catch (e) {
       setSaveError(true);
@@ -6450,7 +6521,9 @@ function ComplementStretchesTab() {
   }, "Date"), /*#__PURE__*/React.createElement("input", {
     type: "date",
     value: date,
-    onChange: e => setDate(e.target.value),
+    onChange: e => {
+      if (e.target.value) setDate(e.target.value);
+    },
     style: {
       background: "#161B19",
       border: "1px solid #2A322D",
@@ -6793,6 +6866,57 @@ function DataPanel({
     onClick: onClose
   }, "Fermer"));
 }
+class TabErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null
+    };
+  }
+  static getDerivedStateFromError(error) {
+    return {
+      error
+    };
+  }
+  componentDidCatch(error) {
+    console.error(error);
+  }
+  render() {
+    if (!this.state.error) return this.props.children;
+    return React.createElement("div", {
+      style: {
+        background: "rgba(198,85,59,0.14)",
+        border: "1px solid #C6553B",
+        color: "#E8A08F",
+        borderRadius: 10,
+        padding: "14px 16px",
+        fontSize: 13.5,
+        lineHeight: 1.45
+      }
+    }, "Cet onglet a rencontré une erreur d'affichage. Tes données enregistrées ne sont pas effacées ; les autres onglets restent utilisables.", React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: "#8B9490",
+        marginTop: 8,
+        wordBreak: "break-word"
+      }
+    }, String(this.state.error && this.state.error.message || this.state.error)), React.createElement("button", {
+      onClick: () => this.setState({
+        error: null
+      }),
+      style: {
+        marginTop: 10,
+        background: "transparent",
+        border: "1px solid #C6553B",
+        color: "#E8A08F",
+        borderRadius: 8,
+        padding: "8px 12px",
+        cursor: "pointer",
+        fontFamily: "inherit"
+      }
+    }, "Réessayer"));
+  }
+}
 function loadNav() {
   try {
     return JSON.parse(localStorage.getItem("fitdad_nav") || "{}");
@@ -6801,10 +6925,28 @@ function loadNav() {
   }
 }
 function App() {
-  const saved = loadNav();
   const [section, setSection] = useState(() => sectionForHour(new Date().getHours()));
   // dernier sous-onglet ouvert dans chaque section
-  const [lastTab, setLastTab] = useState(() => saved.lastTab || {});
+  const [lastTab, setLastTab] = useState(() => loadNav().lastTab || {});
+  // L'appli peut rester ouverte en arrière-plan d'un jour à l'autre : au retour, si la date a changé,
+  // on recharge les onglets pour qu'ils pointent sur aujourd'hui (et non sur la veille).
+  const [today, setToday] = useState(todayISOShared);
+  useEffect(() => {
+    const check = () => {
+      if (document.visibilityState !== "visible") return;
+      const now = todayISOShared();
+      setToday(prev => {
+        if (prev !== now) setSection(sectionForHour(new Date().getHours()));
+        return now;
+      });
+    };
+    document.addEventListener("visibilitychange", check);
+    window.addEventListener("focus", check);
+    return () => {
+      document.removeEventListener("visibilitychange", check);
+      window.removeEventListener("focus", check);
+    };
+  }, []);
   const [showData, setShowData] = useState(false);
   const sec = SECTIONS.find(s => s.id === section);
   const tab = sec.tabs.includes(lastTab[section]) ? lastTab[section] : sec.tabs[0];
@@ -6924,8 +7066,8 @@ function App() {
     }, React.createElement(t.icon, {
       size: 15
     }), t.label);
-  })), React.createElement(React.Fragment, {
-    key: tab
+  })), React.createElement(TabErrorBoundary, {
+    key: tab + "|" + today
   }, tabDef.render())), React.createElement("div", {
     style: {
       position: "fixed",
