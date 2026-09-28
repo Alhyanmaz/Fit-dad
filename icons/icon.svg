@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#161B19"/>
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#3B5BDB" stroke-width="28"/>
+  <path d="M256 80 A176 176 0 0 1 432 256" fill="none" stroke="#D9A441" stroke-width="28" stroke-linecap="round"/>
+  <path d="M432 256 A176 176 0 0 1 256 432" fill="none" stroke="#4C8C4A" stroke-width="28" stroke-linecap="round"/>
+  <text x="256" y="300" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="132" fill="#EDE9DF">FD</text>
+</svg>
