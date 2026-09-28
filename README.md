@@ -30,10 +30,12 @@ Effacer les données du navigateur efface l'historique : exporter régulièremen
 
 Après une modification de `index.html`, changer `CACHE` dans `sw.js` (ex. `fitdad-v2`) pour que les téléphones récupèrent la nouvelle version.
 
-## Mise en ligne
+## Mise en ligne (GitHub Pages)
 
-Il faut un hébergement HTTPS statique. Le dépôt étant privé, GitHub Pages demande un compte payant (GitHub Pro) ou de rendre le dépôt public. Alternatives gratuites : Netlify ou Cloudflare Pages reliés au dépôt.
+Publiée depuis la branche `main`, dossier racine. Adresse attendue : https://alhyanmaz.github.io/Fit-dad/
 
-Puis, sur le téléphone : ouvrir l'adresse, puis
+Sur le téléphone : ouvrir l'adresse, puis
 - iPhone (Safari) : Partager → « Sur l'écran d'accueil » ;
 - Android (Chrome) : menu ⋮ → « Installer l'application ».
+
+Transférer des données d'un appareil ou d'une adresse à l'autre : bouton **Données** → Exporter, puis Restaurer sur le nouvel appareil.
