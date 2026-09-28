@@ -2879,16 +2879,17 @@ function emptyMuscuSession(week, routineId) {
 function isMuscuSessionComplete(sessionData, week, routineId) {
   if (!sessionData) return false;
   return exercisesForRoutine(routineId).every(ex => {
-    if (isMuscuTestWeek(week) && ex.id !== "gobletsquat" && ex.id !== "swing") {
-      const t = sessionData.testResults?.[ex.id];
-      if (ex.kind === "duration-single") return t && t.max !== "" && t.nextWeight !== "";
-      // poids du corps : pas de charge à choisir pour le niveau suivant
-      if (ex.kind === "repsonly") return t && t.max !== "" && t.nextReps !== "";
-      return t && t.max !== "" && t.nextReps !== "" && t.nextWeight !== "";
-    }
     const t = ex.getTarget(week);
     const vals = sessionData.sets?.[ex.id] || [];
-    return vals.length >= t.sets && vals.slice(0, t.sets).every(v => v !== "" && v !== undefined);
+    const setsDone = vals.length >= t.sets && vals.slice(0, t.sets).every(v => v !== "" && v !== undefined);
+    // Semaine de test : l'exercice compte comme fait si la répétition max est notée OU si tous les sets
+    // sont remplis. Les champs du niveau suivant (reps, charge, durée, nom) sont facultatifs :
+    // vides, le barème prévu s'applique sans modification.
+    if (isMuscuTestWeek(week) && ex.id !== "swing") {
+      const test = sessionData.testResults?.[ex.id];
+      return !!(test && test.max !== "" && test.max !== undefined) || setsDone;
+    }
+    return setsDone;
   });
 }
 function targetLabelMuscu(ex, t) {
@@ -3363,7 +3364,7 @@ function MuscuTab() {
       fontSize: 12.5,
       color: "#B8BFB9"
     }
-  }, lastTestWeek ? "Dernière semaine de test : notez votre répétition max du jour." : "Semaine de test : la cible du jour reste identique au niveau précédent. Notez votre répétition max, puis choisissez vous-même les reps et le poids (ou la bande) du niveau suivant, et si besoin le nom d'un nouvel exercice."), /*#__PURE__*/React.createElement(CountdownTimer, {
+  }, lastTestWeek ? "Dernière semaine de test : notez votre répétition max du jour." : "Semaine de test : la cible du jour reste identique au niveau précédent. Notez votre répétition max (ou remplissez vos sets). Les champs du niveau suivant sont facultatifs : laissés vides, la progression prévue et l'exercice actuel sont conservés."), /*#__PURE__*/React.createElement(CountdownTimer, {
     seconds: 60
   }), !testWeek && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3729,6 +3730,7 @@ function MuscuTab() {
       type: "number",
       min: "0",
       inputMode: "numeric",
+      placeholder: "Facultatif",
       value: testData.nextReps,
       onChange: e => setTestField(ex.id, "nextReps", e.target.value),
       style: {
@@ -3756,6 +3758,7 @@ function MuscuTab() {
       type: "number",
       min: "0",
       inputMode: "numeric",
+      placeholder: "Facultatif",
       value: testData.nextWeight,
       onChange: e => setTestField(ex.id, "nextWeight", e.target.value),
       style: {
