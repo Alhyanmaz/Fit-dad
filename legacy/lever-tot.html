@@ -1,0 +1,472 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Lever tôt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#1B201D; --panel:#242B27; --panel2:#2A322D; --line:#35403A;
+  --text:#E6ECE7; --muted:#9AA79F; --dim:#6E7B73;
+  --green:#4C8C4A; --green-soft:#2F4A30; --blue:#5B7BEB; --blue-soft:#27305A;
+  --amber:#D9A441; --amber-soft:#4A3B1E; --red:#C4584F;
+  --radius:12px;
+  --font:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.45;padding-inline:16px;padding-block:18px 40px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{font-size:26px;font-weight:700;margin:0;letter-spacing:-.01em}
+h2{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;background:var(--blue-soft);color:#C8D3FF}
+.banner{font-size:13px;color:var(--amber);background:var(--amber-soft);border-radius:8px;padding:8px 12px}
+.panel{background:var(--panel);border-radius:var(--radius);padding:16px}
+.targets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.target{background:var(--panel2);border-radius:10px;padding:10px 12px}
+.target .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.target .v{font-family:var(--mono);font-size:22px;font-weight:700;margin-top:2px}
+.target .v.txt{font-family:var(--font);font-size:17px;line-height:1.6}
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.daynav .d{font-weight:600;font-size:16px;text-align:center;flex:1}
+.iconbtn{background:var(--panel2);border:1px solid var(--line);color:var(--text);width:38px;height:38px;border-radius:10px;font-size:18px;cursor:pointer}
+.iconbtn:disabled{opacity:.35;cursor:default}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label,.field>.lbl{font-size:13px;color:var(--muted);font-weight:500}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form{display:flex;flex-direction:column;gap:16px}
+.timebox{display:flex;gap:6px}
+input[type=time],input[type=number],textarea{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px;font-size:17px;font-family:var(--mono);width:100%;min-width:0}
+textarea{font-family:var(--font);font-size:15px;resize:vertical;min-height:64px}
+.small{font-size:12px;color:var(--dim)}
+.now{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:0 10px;font-size:13px;cursor:pointer;white-space:nowrap;font-family:var(--font)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.opt{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:7px 12px;font-size:14px;cursor:pointer;font-family:var(--font)}
+.opt[aria-pressed=true]{background:var(--green-soft);border-color:var(--green);color:#D6EFD5}
+.opt.warn[aria-pressed=true]{background:var(--amber-soft);border-color:var(--amber);color:#F3DDAE}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;width:100%;color:var(--text);font-family:var(--font);font-size:15px;text-align:left}
+.toggle .box{width:26px;height:26px;border-radius:8px;border:2px solid var(--dim);display:grid;place-items:center;font-weight:700;flex:none}
+.toggle[aria-pressed=true]{border-color:var(--green)}
+.toggle[aria-pressed=true] .box{background:var(--green);border-color:var(--green);color:#fff}
+.verdict{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-weight:600;font-size:14px}
+.verdict.ok{background:var(--green-soft);color:#D6EFD5}
+.verdict.mid{background:var(--amber-soft);color:#F3DDAE}
+.verdict.no{background:var(--panel2);color:var(--muted)}
+.save{font-size:12px;color:var(--dim);text-align:right;min-height:16px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wd{background:var(--panel2);border-radius:8px;padding:8px 0;text-align:center;font-size:12px;color:var(--muted);border:1px solid transparent;cursor:pointer;font-family:var(--font)}
+.wd b{display:block;font-size:15px;color:var(--text);font-family:var(--mono)}
+.wd .dot{width:10px;height:10px;border-radius:50%;margin:6px auto 0;background:var(--line)}
+.wd.ok .dot{background:var(--green)}
+.wd.mid .dot{background:var(--amber)}
+.wd.miss .dot{background:var(--red)}
+.wd.sel{border-color:var(--blue)}
+.progress{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.bar{height:8px;border-radius:999px;background:var(--panel2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .3s}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:11px 14px;font-weight:600;font-size:15px;cursor:pointer;font-family:var(--font)}
+.btn:disabled{background:var(--panel2);color:var(--dim);cursor:default}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.ladder{display:flex;flex-direction:column;gap:4px}
+.step{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:9px 10px;border-radius:8px;font-size:14px}
+.step.hd{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em;padding-block:2px}
+.step.cur{background:var(--blue-soft);color:#DDE4FF;font-weight:600}
+.step.done{color:var(--dim)}
+.step span.mono{font-size:14px}
+.hist{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.hc{aspect-ratio:1;border-radius:6px;background:var(--panel2);max-width:100%}
+.hc.ok{background:var(--green)}
+.hc.mid{background:var(--amber)}
+.hc.miss{background:var(--red);opacity:.75}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+ul.rules{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:14px}
+ul.rules b{color:var(--text);font-weight:600}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.confirm{display:flex;flex-direction:column;gap:8px;background:var(--panel2);border-radius:10px;padding:12px;margin-top:4px}
+@media (max-width:420px){.targets .v{font-size:19px}.step{grid-template-columns:1.2fr 1fr 1fr .9fr;font-size:13px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>Lever tôt</h1>
+      <div class="small" id="sub">Objectif : lever 6h00 · coucher 22h00</div>
+    </div>
+    <span class="chip" id="palierChip">Palier 1</span>
+  </div>
+
+  <div class="banner" id="offline" hidden>Sauvegarde partagée indisponible dans cette vue : les données restent dans ce navigateur seulement.</div>
+
+  <section class="panel" aria-labelledby="t-cible">
+    <h2 id="t-cible">Cibles du palier</h2>
+    <div class="targets">
+      <div class="target"><div class="k">Coucher</div><div class="v" id="tBed">23:00</div></div>
+      <div class="target"><div class="k">Lever</div><div class="v" id="tWake">07:00</div></div>
+      <div class="target"><div class="k">Plancher</div><div class="v txt" id="tFloor">Facultatif</div></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="t-jour">
+    <h2 id="t-jour">Journal du matin</h2>
+    <div class="daynav">
+      <button class="iconbtn" id="prev" aria-label="Jour précédent">‹</button>
+      <div class="d" id="dayLabel">—</div>
+      <button class="iconbtn" id="next" aria-label="Jour suivant">›</button>
+    </div>
+    <div class="form">
+      <div class="row2">
+        <div class="field">
+          <label for="bed">Couché hier à</label>
+          <input type="time" id="bed">
+        </div>
+        <div class="field">
+          <label for="wake">Levé à</label>
+          <div class="timebox"><input type="time" id="wake"><button class="now" id="nowBtn" type="button">Maintenant</button></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="lbl" id="l-night">La nuit</span>
+        <div class="chips" role="group" aria-labelledby="l-night" id="night">
+          <button type="button" class="opt" data-v="calme" aria-pressed="false">Calme</button>
+          <button type="button" class="opt" data-v="un" aria-pressed="false">1 réveil</button>
+          <button type="button" class="opt warn" data-v="plusieurs" aria-pressed="false">Plusieurs réveils</button>
+          <button type="button" class="opt warn" data-v="hachee" aria-pressed="false">Très hachée</button>
+        </div>
+      </div>
+
+      <button type="button" class="toggle" id="floor" aria-pressed="false">
+        <span><span id="floorTxt">Micro-plancher fait (facultatif)</span><br><span class="small">Juste après le lever, avant la douche</span></span>
+        <span class="box" aria-hidden="true">✓</span>
+      </button>
+
+      <div class="row2">
+        <div class="field">
+          <label for="mins">Minutes réellement faites</label>
+          <input type="number" id="mins" min="0" max="120" inputmode="numeric" placeholder="0">
+        </div>
+        <div class="field">
+          <span class="lbl" id="l-light">Lumière</span>
+          <div class="chips" role="group" aria-labelledby="l-light" id="light">
+            <button type="button" class="opt" data-v="dehors" aria-pressed="false">Dehors</button>
+            <button type="button" class="opt" data-v="lampe" aria-pressed="false">Lampe</button>
+            <button type="button" class="opt" data-v="aucune" aria-pressed="false">Aucune</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="note">Note</label>
+        <textarea id="note" placeholder="Ce qui a aidé ou gêné ce matin"></textarea>
+      </div>
+
+      <div class="verdict no" id="verdict">Renseigne l'heure de lever.</div>
+      <div class="save" id="saveState" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="t-sem">
+    <h2 id="t-sem">7 derniers jours</h2>
+    <div class="week" id="week"></div>
+    <div class="progress">
+      <div class="bar"><i id="barFill" style="width:0%"></i></div>
+      <div class="small" id="progTxt">—</div>
+      <div class="btns">
+        <button class="btn" id="advance" disabled>Passer au palier suivant</button>
+        <button class="btn ghost" id="back">Revenir d'un palier</button>
+      </div>
+      <div class="confirm" id="confirmBox" hidden>
+        <div id="confirmTxt">Confirmer ?</div>
+        <div class="btns"><button class="btn" id="confirmYes">Confirmer</button><button class="btn ghost" id="confirmNo">Annuler</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="t-pal">
+    <h2 id="t-pal">Paliers</h2>
+    <div class="ladder" id="ladder"></div>
+    <p class="small" style="margin:10px 0 0">Passage au palier suivant : au moins 5 matins réussis sur les 7 derniers jours, et 14 jours minimum au palier 1, 7 jours ensuite.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="t-hist">
+    <h2 id="t-hist">4 dernières semaines</h2>
+    <div class="hist" id="hist"></div>
+    <div class="legend">
+      <span style="--c:var(--green)">Matin réussi</span>
+      <span style="--c:var(--amber)">Lever tenu, plancher manquant</span>
+      <span style="--c:var(--red)">Lever manqué</span>
+      <span style="--c:var(--panel2)">Rien saisi</span>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="t-reg">
+    <h2 id="t-reg">Règles</h2>
+    <ul class="rules">
+      <li><b>Ancrage :</b> je me lève → plancher → douche. Le reste de la matinée à partir de 7h00 ne change pas.</li>
+      <li><b>Palier 1 (lever 7h00) :</b> seul le lever compte. 2 min avant la douche en bonus (10 squats, chevilles). Le week-end, fais 5 min si tu peux.</li>
+      <li><b>Chaque palier libère 15 min avant 7h00.</b> Le plancher est le minimum. Le reste du créneau est à toi : 30 min à 6h30, 1 h à 6h00.</li>
+      <li><b>Le coucher est le levier.</b> Si tu ne peux pas avancer le coucher, n'avance pas le lever.</li>
+      <li><b>Mauvaise nuit :</b> tu gardes l'heure de lever, le plancher devient facultatif. Le matin compte comme réussi.</li>
+      <li><b>Un raté isolé ne casse rien.</b> Ce qui compte, c'est de reprendre le lendemain.</li>
+      <li><b>Lumière vive au lever</b> (dehors ou lampe), lumière faible le soir.</li>
+      <li><b>Soirs de boxe :</b> pas d'avancée du coucher, plancher seul le lendemain.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function(){
+  const PALIERS = [
+    {n:1, label:"Semaines 1–2", bed:"23:00", wake:"07:00", floor:0, minDays:14},
+    {n:2, label:"Semaine 3",    bed:"22:45", wake:"06:45", floor:5, minDays:7},
+    {n:3, label:"Semaine 4",    bed:"22:30", wake:"06:30", floor:10, minDays:7},
+    {n:4, label:"Semaine 5",    bed:"22:15", wake:"06:15", floor:10, minDays:7},
+    {n:5, label:"Semaine 6 et +",bed:"22:00", wake:"06:00", floor:10, minDays:7},
+  ];
+  const TOL = 10; // minutes de tolérance sur l'heure de lever
+  const JOURS = ["dim","lun","mar","mer","jeu","ven","sam"];
+  const MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2,"0");
+  const iso = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const parseIso = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+  const addDays = (s,n) => { const d=parseIso(s); d.setDate(d.getDate()+n); return iso(d); };
+  const today = () => iso(new Date());
+  const toMin = t => { if(!t) return null; const [h,m]=t.split(":").map(Number); return h*60+m; };
+  const daysBetween = (a,b) => Math.round((parseIso(b)-parseIso(a))/86400000);
+
+  let days = {};            // date -> entrée
+  let state = {palier:0, since:today()};
+  let current = today();
+  let db = null, useLocal = false;
+
+  // ---------- Stockage ----------
+  const LS = "levertot-v1";
+  function lsLoad(){ try{ const r=JSON.parse(localStorage.getItem(LS)||"{}"); days=r.days||{}; if(r.state) state=r.state; }catch(e){} }
+  function lsSave(){ try{ localStorage.setItem(LS, JSON.stringify({days,state})); }catch(e){} }
+
+  async function saveDay(date){
+    const e = days[date];
+    if(useLocal || !db){ lsSave(); return; }
+    await db.collection("days").doc(date).set(e);
+  }
+  async function saveState(){
+    if(useLocal || !db){ lsSave(); return; }
+    await db.doc("config/state").set(state);
+  }
+
+  // ---------- Évaluation ----------
+  function evalDay(e){
+    if(!e || !e.wake) return null;
+    const target = toMin(e.targetWake || PALIERS[state.palier].wake);
+    const onTime = toMin(e.wake) <= target + TOL;
+    const hardNight = e.night==="plusieurs" || e.night==="hachee";
+    if(!onTime) return "miss";
+    if(e.floor || hardNight || floorOf(e)===0) return "ok";
+    return "mid";
+  }
+  const isSuccess = e => evalDay(e)==="ok";
+  function floorOf(e){ const p = PALIERS.find(x=>x.n===(e&&e.palier)) || PALIERS[state.palier]; return p.floor; }
+  const floorLabel = f => f===0 ? "Facultatif" : f+" min";
+
+  // ---------- Rendu ----------
+  function fmtDay(s){
+    const d=parseIso(s); const t=today();
+    const base = JOURS[d.getDay()]+" "+d.getDate()+" "+MOIS[d.getMonth()];
+    if(s===t) return "Aujourd'hui · "+base;
+    if(s===addDays(t,-1)) return "Hier · "+base;
+    return base.charAt(0).toUpperCase()+base.slice(1);
+  }
+
+  function renderTargets(){
+    const p=PALIERS[state.palier];
+    $("palierChip").textContent="Palier "+p.n+" / 5";
+    $("tBed").textContent=p.bed.replace(":","h");
+    $("tWake").textContent=p.wake.replace(":","h");
+    $("tFloor").textContent=floorLabel(p.floor);
+    $("tFloor").classList.toggle("txt", p.floor===0);
+    $("floorTxt").textContent= p.floor===0 ? "Micro-plancher fait (facultatif)" : "Plancher fait ("+p.floor+" min)";
+  }
+
+  function setPressed(groupId, val){
+    document.querySelectorAll("#"+groupId+" .opt").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.v===val)));
+  }
+
+  function renderForm(){
+    const e = days[current] || {};
+    const p = PALIERS[state.palier];
+    $("dayLabel").textContent = fmtDay(current);
+    $("next").disabled = current>=today();
+    $("bed").value = e.bed || "";
+    $("bed").placeholder = p.bed;
+    $("wake").value = e.wake || "";
+    $("mins").value = e.mins ?? "";
+    $("note").value = e.note || "";
+    setPressed("night", e.night||"");
+    setPressed("light", e.light||"");
+    $("floor").setAttribute("aria-pressed", String(!!e.floor));
+    $("nowBtn").hidden = current!==today();
+    renderVerdict();
+  }
+
+  function renderVerdict(){
+    const e = days[current];
+    const v = evalDay(e);
+    const el=$("verdict");
+    const tw = (e && e.targetWake) || PALIERS[state.palier].wake;
+    if(!v){ el.className="verdict no"; el.textContent="Renseigne l'heure de lever (cible "+tw.replace(":","h")+")."; return; }
+    const hard = e.night==="plusieurs"||e.night==="hachee";
+    if(v==="ok"){ el.className="verdict ok"; el.textContent = e.floor ? "Matin réussi : lever tenu et plancher fait." : hard ? "Matin réussi. Nuit difficile : lever tenu, c'est suffisant." : "Matin réussi : lever tenu. À ce palier, c'est l'objectif."; }
+    else if(v==="mid"){ el.className="verdict mid"; el.textContent="Lever tenu. Il manque le plancher pour valider le matin."; }
+    else { el.className="verdict no"; el.textContent="Lever après "+tw.replace(":","h")+" (+"+TOL+" min). On reprend demain."; }
+  }
+
+  function last7(){ const t=today(); const out=[]; for(let i=6;i>=0;i--) out.push(addDays(t,-i)); return out; }
+
+  function renderWeek(){
+    const w=$("week"); w.innerHTML="";
+    last7().forEach(s=>{
+      const d=parseIso(s); const v=evalDay(days[s]);
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="wd"+(v?" "+v:"")+(s===current?" sel":"");
+      b.innerHTML=JOURS[d.getDay()]+"<b>"+d.getDate()+"</b><div class='dot'></div>";
+      b.setAttribute("aria-label", fmtDay(s));
+      b.onclick=()=>{ current=s; renderAll(); };
+      w.appendChild(b);
+    });
+    // progression
+    const p=PALIERS[state.palier];
+    const inPalier = daysBetween(state.since, today())+1;
+    const win = last7().filter(s=>s>=state.since);
+    const ok = win.filter(s=>isSuccess(days[s])).length;
+    const pct = Math.min(100, ok/5*100);
+    $("barFill").style.width=pct+"%";
+    const last = state.palier===PALIERS.length-1;
+    const canGo = !last && ok>=5 && inPalier>=p.minDays;
+    let txt = ok+" matin"+(ok>1?"s":"")+" réussi"+(ok>1?"s":"")+" sur 7 · jour "+inPalier+" du palier "+p.n+".";
+    if(last) txt += " Palier final atteint : l'objectif est de le tenir.";
+    else if(ok<5) txt += " Il en faut 5 pour avancer.";
+    else if(inPalier<p.minDays) txt += " Encore "+(p.minDays-inPalier)+" jour(s) minimum avant d'avancer.";
+    else txt += " Tu peux passer au palier suivant.";
+    $("progTxt").textContent=txt;
+    $("advance").disabled=!canGo;
+    $("advance").hidden=last;
+    $("back").hidden=state.palier===0;
+  }
+
+  function renderLadder(){
+    const L=$("ladder");
+    L.innerHTML="<div class='step hd'><span>Palier</span><span>Coucher</span><span>Lever</span><span>Plancher</span></div>";
+    PALIERS.forEach((p,i)=>{
+      const r=document.createElement("div");
+      r.className="step"+(i===state.palier?" cur":i<state.palier?" done":"");
+      r.innerHTML="<span>"+p.n+" · "+p.label+"</span><span class='mono'>"+p.bed.replace(":","h")+"</span><span class='mono'>"+p.wake.replace(":","h")+"</span><span class='mono'>"+(p.floor===0?"—":p.floor+" min")+"</span>";
+      L.appendChild(r);
+    });
+  }
+
+  function renderHist(){
+    const H=$("hist"); H.innerHTML="";
+    const t=today();
+    // aligne sur lundi, 4 semaines
+    const d=parseIso(t); const dow=(d.getDay()+6)%7;
+    const start=addDays(t,-dow-21);
+    for(let i=0;i<28;i++){
+      const s=addDays(start,i);
+      const c=document.createElement("div");
+      const v = s<=t ? evalDay(days[s]) : null;
+      c.className="hc"+(v?" "+v:"");
+      if(s>t) c.style.opacity=".3";
+      c.title=fmtDay(s);
+      H.appendChild(c);
+    }
+  }
+
+  function renderAll(){ renderTargets(); renderForm(); renderWeek(); renderLadder(); renderHist(); }
+
+  // ---------- Saisie ----------
+  let timer=null;
+  function mutate(fn){
+    const p=PALIERS[state.palier];
+    const e = days[current] ? {...days[current]} : {date:current, targetWake:p.wake, targetBed:p.bed, palier:p.n};
+    fn(e);
+    days[current]=e;
+    renderVerdict(); renderWeek(); renderHist();
+    $("saveState").textContent="Enregistrement…";
+    clearTimeout(timer);
+    const date=current;
+    timer=setTimeout(async()=>{
+      try{ await saveDay(date); timer=null; $("saveState").textContent="Enregistré"; }
+      catch(err){ $("saveState").textContent="Échec de l'enregistrement. Réessaie dans un instant."; }
+    },500);
+  }
+
+  $("bed").addEventListener("change",ev=>mutate(e=>e.bed=ev.target.value));
+  $("wake").addEventListener("change",ev=>mutate(e=>e.wake=ev.target.value));
+  $("mins").addEventListener("input",ev=>mutate(e=>e.mins=ev.target.value===""?null:Number(ev.target.value)));
+  $("note").addEventListener("input",ev=>mutate(e=>e.note=ev.target.value));
+  $("nowBtn").onclick=()=>{ const d=new Date(); const v=pad(d.getHours())+":"+pad(d.getMinutes()); $("wake").value=v; mutate(e=>e.wake=v); };
+  $("floor").onclick=()=>{ const on=$("floor").getAttribute("aria-pressed")!=="true"; $("floor").setAttribute("aria-pressed",String(on)); mutate(e=>{ e.floor=on; if(on && (e.mins==null) && PALIERS[state.palier].floor>0) { e.mins=PALIERS[state.palier].floor; $("mins").value=e.mins; } }); };
+  function bindChips(id,key){
+    document.querySelectorAll("#"+id+" .opt").forEach(b=>b.onclick=()=>{
+      const cur=(days[current]||{})[key]; const v = cur===b.dataset.v ? "" : b.dataset.v;
+      setPressed(id,v); mutate(e=>e[key]=v);
+    });
+  }
+  bindChips("night","night"); bindChips("light","light");
+  $("prev").onclick=()=>{ current=addDays(current,-1); renderAll(); };
+  $("next").onclick=()=>{ if(current<today()){ current=addDays(current,1); renderAll(); } };
+
+  // Changement de palier (confirmation dans la page)
+  let pending=0;
+  function ask(delta){
+    pending=delta;
+    const p=PALIERS[state.palier+delta];
+    $("confirmTxt").textContent = (delta>0?"Passer au palier ":"Revenir au palier ")+p.n+" : coucher "+p.bed.replace(":","h")+", lever "+p.wake.replace(":","h")+" ?";
+    $("confirmBox").hidden=false;
+  }
+  $("advance").onclick=()=>ask(1);
+  $("back").onclick=()=>ask(-1);
+  $("confirmNo").onclick=()=>{ $("confirmBox").hidden=true; };
+  $("confirmYes").onclick=async()=>{
+    $("confirmBox").hidden=true;
+    state={palier:Math.max(0,Math.min(PALIERS.length-1,state.palier+pending)), since:today()};
+    renderAll();
+    try{ await saveState(); }catch(e){ $("saveState").textContent="Palier non enregistré. Réessaie."; }
+  };
+
+  // ---------- Démarrage ----------
+  lsLoad();
+  renderAll();
+
+  const timeout = new Promise(r=>setTimeout(()=>r(null),10000));
+  Promise.race([ (window.claude && window.claude.use) ? window.claude.use("db") : Promise.resolve(null), timeout ])
+    .then(async ns=>{
+      if(!ns){ useLocal=true; $("offline").hidden=false; return; }
+      db=ns;
+      db.doc("config/state").onSnapshot(s=>{
+        if(s.exists){ const d=s.data(); state={palier:d.palier|0, since:d.since||today()}; renderAll(); }
+      },()=>{});
+      db.collection("days").onSnapshot(q=>{
+        const next={};
+        q.docs.forEach(d=>{ next[d.id]=d.data(); });
+        // ne pas écraser la saisie en cours du jour affiché
+        if(timer && days[current]) next[current]=days[current];
+        days=next;
+        const typing = document.activeElement && document.activeElement.closest && document.activeElement.closest(".form");
+        if(typing){ renderVerdict(); renderWeek(); renderHist(); } else renderAll();
+      },()=>{ useLocal=true; $("offline").hidden=false; });
+      // premier démarrage : fixer la date de début du palier 1
+      try{ const s=await db.doc("config/state").get(); if(!s.exists){ await db.doc("config/state").set(state); } }catch(e){}
+    })
+    .catch(()=>{ useLocal=true; $("offline").hidden=false; });
+})();
+</script>
+
+</body></html>
