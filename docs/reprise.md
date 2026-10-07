@@ -17,12 +17,19 @@ Travailler sur la branche `kit-v2` ; la PR du J0 part de `kit-v2` vers `main` et
 
 1. ~~Lire le kit, signaler à José ce qui paraît contradictoire ou flou, une question à la fois.~~ Fait le 07/10.
 2. Proposer le plan du J0 et attendre le feu vert de José. **En cours : plan proposé le 07/10, en attente du feu vert.**
-3. Créer `app/` : Vite, React, TypeScript strict, ESLint, Prettier, Vitest, un premier test.
-4. Configurer Vite : `base: '/Fit-dad/v2/'`, `outDir: '../v2'`, `emptyOutDir: true`.
-5. Page d'accueil minimale qui lit `data/programme.json` et affiche « Programme chargé : 41 exercices » (la validation complète vient au J1).
-6. Tests, puis build, puis commit du dossier `v2/` à part (« build v2 »). Pousser.
-7. Compléter la section « Commandes » de `CLAUDE.md`, puis mettre à jour ce fichier.
-8. Ouvrir la PR `kit-v2` → `main`, en choisissant `main` comme base : ce n'est pas encore la branche par défaut du dépôt (`CLAUDE.md`, « Branches »). Résumé pour José, avec les deux adresses à vérifier après la fusion : `https://alhyanmaz.github.io/Fit-dad/` (v1 inchangée) et `https://alhyanmaz.github.io/Fit-dad/v2/`.
+Plan du J0 proposé à José le 07/10 (à dérouler après son « ok, vas-y ») :
+
+3. Créer `app/` : Vite, React 19, TypeScript 6.0 strict, ESLint (`typescript-eslint`) et Prettier, Vitest. Versions figées dans `package-lock.json`. Si Vite 8 pose problème à l'installation, redescendre d'une version et le signaler.
+4. Configurer Vite : `base: '/Fit-dad/v2/'`, `outDir: '../v2'`, `emptyOutDir: true`, avec une sécurité : le build refuse de démarrer si le dossier de sortie n'est pas exactement `<dépôt>/v2`.
+5. `data/programme.json` importé au build (aucune requête réseau). Contrôle minimal : 41 exercices et la version (`meta.version`) ; le schéma zod complet vient au J1. Autoriser Vite à lire `../data`.
+6. Page d'accueil minimale : « Fit-dad v2 — Programme chargé : 41 exercices » et la version du programme. Thème sombre (fond `#161B19`), textes de 16 px au moins, police système. Pas de service worker ni de manifeste au J0 (J3).
+7. Tests : types, lint, mise en forme, un test de chargement du programme (41 exercices) et un test de la sécurité du dossier de sortie.
+8. Vérification dans Chromium au format téléphone : `/Fit-dad/v2/` et la v1 à la racine, servies en local comme sur Pages ; fichiers de la v1 identiques à `main` (`git diff main -- index.html sw.js manifest.webmanifest icons README.md` vide).
+9. Build dans `v2/`, commit à part « build v2 », pousser.
+10. Compléter « Commandes » dans `CLAUDE.md` ; vérifier que `scripts/install_pkgs.sh` installe bien les dépendances maintenant que `app/package.json` existe ; mettre à jour ce fichier.
+11. Ouvrir la PR `kit-v2` → `main` en choisissant `main` comme base (ce n'est pas encore la branche par défaut). Elle contient le kit, les décisions du 07/10 et le socle. Résumé pour José avec les deux adresses à vérifier après la fusion : `https://alhyanmaz.github.io/Fit-dad/` (v1 inchangée) et `https://alhyanmaz.github.io/Fit-dad/v2/`. Finir par « tests verts, build à jour ».
+
+Hors J0 : schéma zod (J1), règles (J2), écrans, stockage, hors-ligne et « Ajuster » (J3).
 
 ## Questions ouvertes
 
