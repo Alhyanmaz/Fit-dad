@@ -2,11 +2,11 @@
   "version_schema": 1,
   "meta": {
     "titre": "Programme d'entraînement — refonte 2026",
-    "version": "2026-10-06",
+    "version": "2026-10-07",
     "source": "docs/PROGRAMME.md (export du document Claude Docs, révision 44)",
-    "statut": "Brouillon v1 : à vérifier ligne à ligne contre docs/PROGRAMME.md au jalon J1. En cas d'écart, PROGRAMME.md fait foi.",
+    "statut": "Brouillon : décisions de José du 07/10/2026 intégrées (docs/decisions.md). À vérifier ligne à ligne contre docs/PROGRAMME.md au jalon J1. En cas d'écart, PROGRAMME.md fait foi.",
     "conventions": {
-      "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… » et « pas_min_par_semaine » ; « jours_minimum » est un nombre de jours, « cycle_minimum » un numéro de cycle",
+      "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… » et « pas_min » ; « jours_minimum » est un nombre de jours, « cycle_minimum » un numéro de cycle",
       "charges": "kg",
       "fourchette": "[min, max] en répétitions, ou en secondes pour les clés fourchette_s",
       "interpretation": "true = choix de conception sans source directe, à confirmer par José"
@@ -25,21 +25,14 @@
       "rotation": [
         "corde",
         "mollets",
-        "tibialis",
-        "sac"
+        "tibialis"
       ],
-      "note": "La règle générale cite aussi la marche, qui n'a pas de progression. Le sac compte dès son introduction.",
+      "note": "La marche n'a pas de progression et ne compte pas ; le sac est hors de cette règle (décision du 07/10/2026).",
       "definition_hausse": {
-        "valeur": "Un changement d'échelon (charge ou variante) pour les mollets et les tibialis ; +2 min pour la corde ; l'introduction du sac ou un round de sac en plus. Les +2 répétitions dans un échelon ne comptent pas.",
-        "interpretation": true
-      },
-      "critere_corde": {
-        "valeur": "La durée en cours a été tenue sur les séances de corde de la semaine précédente.",
-        "interpretation": true
+        "valeur": "+2 min pour la corde ; un changement d'échelon (charge ou variante) pour les mollets et les tibialis. Toutes ces hausses sont décidées par José (bouton de la corde, « Ajuster » ou semaine de test). Les +2 répétitions dans un échelon ne comptent pas."
       },
       "attribution": {
-        "valeur": "La hausse de la semaine va à l'élément éligible le plus proche dans la rotation, à partir de celui qui suit la dernière hausse.",
-        "interpretation": true
+        "valeur": "Règle stricte : au plus une hausse par semaine (lundi à dimanche), aucune en décharge. Une hausse demandée alors que celle de la semaine est déjà prise est reportée au lundi suivant. Plusieurs hausses décidées en semaine de test sont étalées, une par semaine, dans l'ordre corde → mollets → tibialis ; José peut changer l'ordre."
       }
     }
   },
@@ -47,6 +40,7 @@
     "tolerance_lever_min": 10,
     "fenetre_jours": 7,
     "matins_reussis_requis": 5,
+    "dont_matins_week_end": 2,
     "palier_depart": {
       "num": 1,
       "depuis": "2026-09-25"
@@ -145,7 +139,8 @@
         "minimum"
       ],
       "interpretation": true
-    }
+    },
+    "passage_de_palier": "Au moins 5 matins réussis sur les 7 derniers jours (jours du palier en cours), dont le samedi et le dimanche ; au moins 14 jours au palier 1, puis 7 jours ; appliqué après confirmation de José. Au palier 1, le lever seul valide le matin."
   },
   "matin": {
     "ordre": [
@@ -176,9 +171,22 @@
           "interpretation": true
         },
         "musculation": {
-          "contenu": "premier_exercice",
           "series": 1,
-          "note": "Premier exercice de la séance du jour : KT press en A, pompes en B."
+          "exercices": {
+            "A": [
+              {
+                "exercice": "kt_press",
+                "series": 1
+              }
+            ],
+            "B": [
+              {
+                "exercice": "rings_row",
+                "series": 1
+              }
+            ]
+          },
+          "note": "KT press le matin A, rings row le matin B (décision du 07/10/2026)."
         }
       },
       {
@@ -199,10 +207,36 @@
           ]
         },
         "musculation": {
-          "contenu": "binome_1",
-          "series": 1,
-          "interpretation": true,
-          "note": "Le binôme 1 de la séance du jour ; tirage et hinge arrivent au palier 3."
+          "exercices": {
+            "A": [
+              {
+                "exercice": "kt_press",
+                "series": 1
+              },
+              {
+                "exercice": "swing_emom",
+                "series": 2,
+                "reps": 10,
+                "note": "2 séries de 10, pas en EMOM"
+              }
+            ],
+            "B": [
+              {
+                "exercice": "rings_row",
+                "series": 1
+              },
+              {
+                "exercice": "goblet_squat",
+                "series": 1
+              }
+            ]
+          },
+          "duree_min": {
+            "A": 3,
+            "B": 2
+          },
+          "duree_interpretation": true,
+          "note": "Les 4 patrons sur deux matins, un exercice du haut et un du bas chaque matin (décision du 07/10/2026). Matin A ≈ 3 min, pris sur le café."
         }
       },
       {
@@ -382,8 +416,7 @@
         "duree_min": 25
       },
       "contenus": {
-        "premier_exercice": "premier exercice du binôme 1",
-        "binome_1": "les deux exercices du binôme 1"
+        "paliers_1_et_2": "exercices listés dans matin.paliers[].musculation.exercices"
       }
     },
     "pousser_plus_loin": {
@@ -431,7 +464,6 @@
         6,
         14
       ],
-      "series_mixtes": true,
       "echelons": [
         {
           "label": "16 kg",
@@ -504,7 +536,6 @@
         6,
         14
       ],
-      "series_mixtes": true,
       "echelons": [
         {
           "label": "Bidon 5 kg",
@@ -522,8 +553,7 @@
           "label": "Kettlebell 20 kg",
           "charge_kg": 20
         }
-      ],
-      "series_mixtes_interpretation": true
+      ]
     },
     "horse_stance": {
       "nom": "Horse stance",
@@ -554,7 +584,6 @@
         45
       ],
       "pas_s": 5,
-      "series_mixtes": true,
       "variantes": [
         "Suitcase : une main, en alternant les côtés",
         "Farmer : deux mains"
@@ -577,8 +606,7 @@
           "charge_kg": 32
         }
       ],
-      "note": "Pas de 5 s non précisé dans le programme (interprétation). Il faut de la place pour marcher ; sinon, tenue statique des kettlebells.",
-      "pas_s_interpretation": true
+      "note": "Il faut de la place pour marcher ; sinon, tenue statique des kettlebells."
     },
     "pompes": {
       "nom": "Pompes",
@@ -610,7 +638,6 @@
         20,
         20
       ],
-      "series_mixtes": true,
       "echelons": [
         {
           "label": "16 kg",
@@ -629,7 +656,7 @@
           "charge_kg": 32
         }
       ],
-      "note": "20 répétitions fixes : la progression passe par la charge, une série à la fois."
+      "note": "20 répétitions fixes : la charge se règle avec « Ajuster », série par série si besoin."
     },
     "traction_assistee": {
       "nom": "Traction assistée",
@@ -700,7 +727,6 @@
       "mesure": "emom",
       "minutes": 6,
       "reps_par_minute": 10,
-      "series_mixtes": true,
       "echelons": [
         {
           "label": "20 kg",
@@ -715,7 +741,7 @@
           "charge_kg": 32
         }
       ],
-      "note": "Progression une minute à la fois vers la charge suivante."
+      "note": "Charges réglées par José avec « Ajuster », minute par minute si besoin."
     },
     "short_foot": {
       "nom": "Short foot",
@@ -770,9 +796,7 @@
       "alternance": [
         "Jambe tendue",
         "Genou fléchi"
-      ],
-      "series_mixtes": true,
-      "series_mixtes_interpretation": true
+      ]
     },
     "tibialis_posterior": {
       "nom": "Tibialis posterior",
@@ -789,7 +813,7 @@
           "label": "Résistance actuelle"
         },
         {
-          "label": "Résistance plus forte (à préciser par José)"
+          "label": "Résistance plus forte (réglée par José avec « Ajuster »)"
         }
       ]
     },
@@ -896,7 +920,15 @@
           "label": "10 répétitions + 30 s de tenue"
         }
       ],
-      "note": "Étapes intermédiaires non précisées dans le programme."
+      "note": "Propositions : +2 répétitions (5 → 10) ; la tenue (10 → 30 s) se règle avec « Ajuster ».",
+      "fourchette": [
+        5,
+        10
+      ],
+      "fourchette_tenue_s": [
+        10,
+        30
+      ]
     },
     "neck_cars": {
       "nom": "Neck CARs",
@@ -963,8 +995,9 @@
             18
           ]
         },
-        "pas": "non précisé dans le programme"
-      }
+        "pas": 2
+      },
+      "note": "Le passage au hanging leg raise se fait avec « Ajuster »."
     },
     "one_arm_hang": {
       "nom": "One arm hang",
@@ -976,8 +1009,8 @@
         20
       ],
       "debloque_quand": "la suspension atteint 80 s",
-      "pas_s": null,
-      "note": "Pas non précisé dans le programme (10 → 20 s)."
+      "pas_s": 5,
+      "note": "Ajouté par José avec « Ajuster » quand la suspension atteint 80 s."
     },
     "deep_squat": {
       "nom": "Deep squat",
@@ -1003,7 +1036,7 @@
           "charge_kg": 0
         }
       ],
-      "note": "La charge sert de contrepoids et facilite la position : la progression consiste à la réduire. Le jour de récupération, garder la charge habituelle."
+      "note": "La charge sert de contrepoids et facilite la position : la progression consiste à la réduire. Le jour de récupération, garder la charge habituelle. Le retrait du contrepoids se fait avec « Ajuster »."
     },
     "single_leg_balance": {
       "nom": "Single leg balance",
@@ -1033,7 +1066,8 @@
       "format": "alternance 1 min de corde, 1 min de flow",
       "bas_de_jambe": "corde",
       "duree_min_depart": 20,
-      "pas_min_par_semaine": 2,
+      "pas_min": 2,
+      "hausse": "Décidée par José (bouton +2 min), jamais proposée ; compte comme la hausse « bas de jambe » de la semaine.",
       "duree_min_max": 30
     },
     "marche_active": {
@@ -1203,23 +1237,23 @@
       "vendredi"
     ],
     "corde_flow": {
-      "nb_par_semaine": 3,
+      "objectif_par_semaine": 3,
+      "regle": "Corde proposée tant que la semaine compte moins de 3 séances de corde faites ; sinon marche. Objectif indicatif, sans alerte.",
       "jamais": [
         "jour_boxe",
         "jour_recuperation"
       ]
     },
     "marche_active": {
-      "quand": "jour de boxe, jour de récupération et midis de semaine restants"
+      "quand": "jour de boxe, jour de récupération, midis restants ; toujours valable à la place de la corde"
     },
     "boxe_le_vendredi": {
-      "regle": "4 midis sont éligibles à la corde : l'appli en propose 3 (les premiers), José peut échanger.",
-      "interpretation": true
+      "regle": "4 midis éligibles (lundi à jeudi) : corde proposée tant que moins de 3 séances de corde sont faites."
     },
     "semaine_sans_boxe": {
-      "regle": "Corde proposée les 3 premiers midis, marche les 2 autres ; José peut échanger.",
-      "interpretation": true
-    }
+      "regle": "Corde proposée tant que moins de 3 séances de corde sont faites ; en pratique les 3 premiers midis, marche les 2 autres."
+    },
+    "echange": "Bouton « Corde ↔ Marche » sur le bloc du midi, pour le jour même."
   },
   "boxe": {
     "club": {
@@ -1261,7 +1295,7 @@
       "choix_du_theme": {
         "samedi": "la technique vue au club dans la semaine (saisie par José) ; à défaut, le thème suivant de la rotation",
         "dimanche": "le thème suivant de la rotation",
-        "boxe_le_vendredi": "samedi = récupération sans bloc boxe ; un seul bloc le dimanche, technique du club en priorité"
+        "boxe_le_vendredi": "samedi normal avec musculation complète, sans bloc boxe ; un seul bloc le dimanche, technique du club en priorité"
       },
       "rotation": [
         {
@@ -1305,13 +1339,13 @@
       "video": "une fois par semaine, 30 s du round 5, de face et de profil",
       "sac": {
         "installe": false,
-        "introduction": "d'abord un seul round, un seul jour ; compte comme la hausse « bas de jambe » de la semaine"
+        "introduction": "d'abord un seul round, un seul jour ; hors de la règle « bas de jambe » (décision du 07/10/2026)"
       },
       "round_corde_fixe": "le round de corde (3 min) ne progresse pas : c'est la corde du midi qui progresse"
     }
   },
   "semaine": {
-    "boxe_club": "Le lendemain de la boxe en club est le jour de récupération ; tous les autres jours suivent la journée type.",
+    "boxe_club": "Le lendemain de la boxe en club est le jour de récupération, sauf quand la boxe tombe le vendredi ; tous les autres jours suivent la journée type.",
     "alternance_musculation": "A/B d'un matin à l'autre, « la suivante », jour de récupération exclu",
     "alternance_pied": "A/B chaque soir sans boxe, « la suivante »",
     "week_end": [
@@ -1340,10 +1374,10 @@
       }
     ],
     "bloc_boxe_placement": "où José veut dans la journée, idéalement pas juste après la musculation",
-    "samedi_recuperation": "Si la boxe tombe le vendredi, le samedi suit le jour de récupération, sans bloc boxe."
+    "boxe_le_vendredi": "Pas de jour de récupération : samedi et dimanche restent des journées normales, avec la musculation complète ; bloc boxe le dimanche seulement, technique du club en priorité (décision du 07/10/2026)."
   },
   "jour_recuperation": {
-    "declencheur": "lendemain de la boxe en club",
+    "declencheur": "lendemain de la boxe en club, sauf boxe le vendredi (jamais un jour de week-end)",
     "matin": "Même déroulé ; musculation remplacée par l'autre routine Mob. matin au ralenti, puis neck CARs (3 par sens) ; étirements conservés",
     "midi": "marche_active",
     "soir": "bloc clé version récupération, puis routine pied complète (la suivante)",
@@ -1366,7 +1400,7 @@
       ],
       "tests": true
     },
-    "ajustement_apres_tests": "José décide lui-même du cycle suivant d'après les résultats : cibles, charges, variantes, ajout ou retrait d'un exercice. Entre deux semaines de tests, les règles de progression restent le réglage par défaut.",
+    "ajustement_apres_tests": "José décide lui-même du cycle suivant d'après les résultats : cibles, charges, variantes, ajout ou retrait d'un exercice. Entre deux semaines de tests, les propositions dans l'échelon et « Ajuster » restent disponibles. Les hausses « bas de jambe » décidées en semaine de test sont étalées, une par semaine.",
     "tests_semaine_1": true
   },
   "tests": [
@@ -1438,7 +1472,8 @@
     "decisions": [
       {
         "id": "monter",
-        "critere": "cible atteinte 2 séances de suite, technique propre, environ 2 répétitions encore possibles sur la dernière série"
+        "critere": "cible atteinte sur toutes les séries 2 séances de suite, technique propre, environ 2 répétitions encore possibles sur la dernière série",
+        "proposition": "dans le même échelon : +2 répétitions (plafonné au haut de la fourchette), ou +pas_s pour une tenue"
       },
       {
         "id": "maintenir",
@@ -1446,7 +1481,11 @@
       },
       {
         "id": "redescendre",
-        "critere": "cible manquée 2 séances de suite : un cran en dessous"
+        "critere": "cible manquée 2 séances de suite",
+        "proposition": {
+          "valeur": "dans le même échelon : −2 répétitions (ou −pas_s), jamais sous le bas de la fourchette",
+          "interpretation": true
+        }
       },
       {
         "id": "alleger",
@@ -1455,40 +1494,29 @@
           "valeur": "2 nuits difficiles de suite dans « Lever tôt » ; la version courte est proposée",
           "interpretation": true
         }
-      },
-      {
-        "id": "reprise",
-        "critere": "1 semaine manquée : niveau précédent ; 2 semaines ou plus : 2 niveaux en dessous",
-        "application": {
-          "valeur": "Absence = aucune séance de musculation enregistrée pendant 7 jours ou plus, ou absence déclarée par José. Au retour, niveau précédent pour tous les exercices ; 14 jours ou plus, 2 niveaux en dessous. Pas de minuteur par exercice : aux paliers 1 à 3, certains exercices ne reviennent qu'une fois par semaine.",
-          "interpretation": true
-        }
       }
     ],
     "par_mesure": {
-      "reps": "Quand toutes les séries atteignent le haut de la fourchette, on passe à l'échelon suivant et on repart du bas.",
-      "series_mixtes": "Saut de kettlebell de 4 à 8 kg : une seule série passe d'abord à la charge suivante, puis les autres.",
-      "tenue": "+pas_s quand la cible est tenue 2 séances de suite ; au plafond, échelon suivant (variante plus difficile).",
+      "reps": "+2 répétitions dans l'échelon ; le dernier pas s'arrête au haut de la fourchette (pistol 5 → 7 → 8). Au haut de la fourchette : « plafond atteint ». Le changement d'échelon (charge ou variante) n'est jamais proposé : José le fait avec « Ajuster » ou en semaine de test.",
+      "tenue": "+pas_s quand la cible est tenue 2 séances de suite, plafonné au haut de la fourchette ; la variante plus difficile se règle avec « Ajuster ».",
+      "reps_tenue": "Reverse table top : seules les répétitions sont proposées (+2) ; la tenue se règle avec « Ajuster ».",
       "etirement": "30 s, jamais plus ; on ajoute des séries, pas de la durée.",
-      "bas_de_jambe": "Une seule hausse par semaine, en rotation corde → mollets → tibialis → sac.",
-      "series_mixtes_application": {
-        "valeur": "Une série de plus à la nouvelle charge à chaque montée ; appliqué aussi aux passages bidon → kettlebell (KT single leg deadlift, extension de mollet).",
-        "interpretation": true
-      }
+      "bas_de_jambe": "Une seule hausse par semaine, en rotation corde → mollets → tibialis ; le sac est hors de la règle."
     },
     "pas_de_repetitions": {
       "valeur": 2,
-      "interpretation": true,
-      "note": "La v1 montait de 2 répétitions par niveau. À confirmer, notamment pour les petites fourchettes (pistol 5–8)."
+      "plafonne_au_haut_de_la_fourchette": true
     },
-    "validation": "L'appli propose ; José valide chaque montée ou descente.",
+    "validation": "L'appli propose les pas dans l'échelon ; José valide. Les changements de charge ou de variante ne sont jamais proposés.",
     "seances_courtes": {
       "valeur": "Les séances d'une seule série (paliers 1 à 3) comptent pour les décisions.",
       "interpretation": true
-    }
+    },
+    "absence": "Pas de règle automatique de reprise : José règle lui-même ses exercices avec « Ajuster » (décision du 07/10/2026).",
+    "ajuster": "Bouton sur chaque exercice : répétitions ou secondes (− / +), charge (matériel listé ou valeur libre), série par série si José le veut. Effet dès la séance suivante, sans validation supplémentaire, noté dans l'historique. C'est aussi la façon de saisir les niveaux de départ et de gérer une reprise après absence."
   },
   "intentions_si_alors": [
-    "Si ma fille est couchée, alors je fais mes 20 min du soir tout de suite, avant de m'asseoir.",
+    "Si la maison est calme le soir, alors je fais mes 20 min du soir tout de suite, avant de m'asseoir.",
     "S'il reste 30 min avant mon heure de coucher, alors je mets le téléphone à charger hors de la chambre et je pose kettlebell et tenue au salon.",
     "Si l'alarme sonne, alors je pose les pieds au sol et j'allume la lumière.",
     "Si je suis debout, alors je commence la séance du matin, avant la douche.",

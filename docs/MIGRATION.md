@@ -6,8 +6,8 @@ En bref : rien n'est repris de la v1 (décision Q10 = b) ; l'historique de « Le
 
 - Pas de migration : la v2 démarre avec des niveaux de départ saisis par José, d'après ses dernières séances.
 - La v1 stocke tout dans le `localStorage` du navigateur, clés préfixées `suivi_app_`. La v2 ne les lit pas, ne les écrit pas, ne les efface pas.
-- Avant la bascule (J6), José exporte quand même l'historique de la v1, pour l'archive : bouton **Données** en haut à droite → **Exporter une sauvegarde**. Le fichier se garde hors du dépôt (téléphone, Drive).
-- Après la bascule, la v1 reste ouvrable sous `https://alhyanmaz.github.io/Fit-dad/v1/`. Même origine, donc mêmes données : l'export reste possible.
+- Export de la v1 : facultatif, José n'en a pas besoin (décision du 07/10/2026). Si besoin : bouton **Données** en haut à droite → **Exporter une sauvegarde** ; le fichier se garde hors du dépôt (téléphone, Drive).
+- Après le J6, une copie de la v1 reste consultable sous `https://alhyanmaz.github.io/Fit-dad/legacy/v1.html`. Même origine, donc normalement mêmes données [Interprétation, à vérifier sur le téléphone au J6].
 - Si José utilise encore l'artefact claude.ai d'origine plutôt que Fit-dad, cet artefact n'a pas d'export. Sans conséquence avec Q10 = b.
 
 ## 2. « Lever tôt »
@@ -34,7 +34,7 @@ En bref : rien n'est repris de la v1 (décision Q10 = b) ; l'historique de « Le
    - convertit l'index de palier (0 à 4) en numéro (1 à 5) ;
    - garde les cibles figées de chaque jour ;
    - reprend `floor` comme plancher coché à la main ;
-   - recalcule les verdicts avec les règles de la v2, identiques à celles de l'artefact ;
+   - recalcule les verdicts avec les règles de la v2, identiques à celles de l'artefact (seul le critère de passage de palier change : il exige en plus le samedi et le dimanche, décision du 07/10/2026) ;
    - montre un aperçu avant d'enregistrer.
 4. Une date déjà présente dans la v2 garde la version de la v2 ; l'aperçu le signale.
 5. Après l'import final, l'artefact n'est plus utilisé. Il reste consultable.

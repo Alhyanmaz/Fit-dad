@@ -27,18 +27,22 @@ Selon la tâche : `docs/PROGRAMME.md` (contenu du programme, il fait foi), `data
 
 ## Règles du programme, jamais enfreintes
 
+Les mêmes sept règles figurent dans `docs/SPEC.md` §4.
+
 1. La progression dépend de la performance, jamais de la date.
 2. Étirements : 30 s, jamais plus ; on ajoute des séries.
-3. Une seule hausse par semaine sur le bas de jambe (corde, mollets, tibialis, sac).
-4. L'appli propose, José valide : aucun niveau ne change tout seul.
+3. Une seule hausse par semaine sur le bas de jambe (corde, mollets, tibialis) ; le sac est hors de la règle.
+4. L'appli propose, José valide : aucun niveau ne change tout seul. Les changements de charge ou de variante ne sont jamais proposés : José les fait (« Ajuster », semaine de test).
 5. Pas de musculation le soir.
 6. Aucun critère de douleur, aucune consigne d'arrêt dans l'appli : José s'en charge.
+7. Aucune donnée ne sort du téléphone, sauf par l'export lancé par José.
 
 ## Choix techniques
 
 Détail et raisons dans `docs/decisions.md`.
 
 - `app/` : Vite, React, TypeScript strict, `vite-plugin-pwa`, Dexie (IndexedDB, base `fit-dad-v2`), zod, Vitest, ESLint, Prettier.
+- Versions figées dans `app/package-lock.json`, montées seulement lors d'une session dédiée. TypeScript 6.0 tant que `typescript-eslint` n'accepte pas la 7. Dexie et `vite-plugin-pwa` arrivent au J3.
 - Règles métier en fonctions pures dans `app/src/domain`, couvertes par les scénarios de `docs/SPEC.md` §9. Écrire le test avant ou avec la règle.
 - Valeurs du programme lues dans `data/programme.json`, validé au chargement.
 - Aucune requête réseau à l'exécution (pas de police en ligne, pas de statistiques).
@@ -57,7 +61,7 @@ app/                  code de la v2 (créé au jalon J0)
 v2/                   build de la v2, servi sous /Fit-dad/v2/ (généré, ne pas éditer à la main)
 data/programme.json   programme structuré
 docs/                 PROGRAMME, SPEC, MIGRATION, decisions, reprise, DEMARRAGE
-legacy/               lever-tot.html (artefact « Lever tôt ») ; suivi-pied-mollet.jsx (source de l'artefact claude.ai d'origine, sans l'export ni les ajouts de la v1 en ligne)
+legacy/               lever-tot.html (artefact « Lever tôt ») ; suivi-pied-mollet.jsx (source de l'artefact claude.ai d'origine, sans l'export ni les ajouts de la v1 en ligne) ; v1.html à partir du J6 (copie consultable de la v1)
 .claude/ et scripts/  installation des dépendances au démarrage des sessions cloud
 ```
 
@@ -65,6 +69,6 @@ legacy/               lever-tot.html (artefact « Lever tôt ») ; suivi-pied-mo
 
 - **Dépôt public** : jamais de sauvegarde, d'export « Lever tôt » ni de note personnelle dans le dépôt (voir `.gitignore`).
 - **Données de la v1** : `localStorage` de `alhyanmaz.github.io`, clés préfixées `suivi_app_`. La v2 ne les lit pas, ne les écrit pas, ne les efface pas : pas de `localStorage.clear()`, pas d'en-tête `Clear-Site-Data`.
-- **Service worker de la v1** : `sw.js`, portée `/Fit-dad/`, couvre aussi `/Fit-dad/v2/`, et efface tous les autres caches à son activation. Ne pas le modifier ni le réenregistrer avant J6 ; suivre la liste de contrôle de `docs/SPEC.md` §8.1 à la bascule.
+- **Service worker de la v1** : `sw.js`, portée `/Fit-dad/`, couvre aussi `/Fit-dad/v2/`, et efface tous les autres caches à son activation. Ne pas le modifier ni le réenregistrer avant J6 ; au J6, suivre la liste de contrôle de `docs/SPEC.md` §8.1 (la v2 remplace la v1 à la racine).
 - **Branches** : GitHub Pages publie `main` (vérifié le 07/10/2026 dans l'historique des déploiements). La branche par défaut du dépôt est `ccr-5400ddd2-jcuhr3`, reste d'une session du 28/09, tant que José ne l'a pas changée. Toujours partir de `main` et ouvrir les PR vers `main`.
 - **Environnement cloud temporaire** : ce qui n'est pas poussé sur GitHub est perdu. Commiter et pousser au fil de l'eau.

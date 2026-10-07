@@ -38,10 +38,10 @@ Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le
 | --- | --- |
 | J1 Programme | La liste des écarts entre le programme structuré et ton programme ; tu tranches |
 | J2 Moteur | Rien à l'écran : les scénarios de la SPEC passent (Claude Code te le montre) |
-| J3 Aujourd'hui | Une journée complète saisie dans `/v2/`, puis un export et un import |
+| J3 Aujourd'hui | Tes charges de départ réglées avec « Ajuster », une journée complète saisie dans `/v2/`, puis un export et un import |
 | J4 Lever tôt | Ton historique « Lever tôt » importé, le bon palier affiché |
 | J5 Progression | Les propositions monter ou redescendre, la semaine de tests |
-| J6 Bascule | La v2 installée sur l'écran d'accueil ; la v1 encore ouvrable sous `/v1/` |
+| J6 Bascule | La v2 ouverte par ton icône actuelle ; la copie de la v1 consultable sous `/legacy/v1.html` |
 
 ## 4. Bon à savoir
 
@@ -51,23 +51,12 @@ Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le
 - **Reprise** : `docs/reprise.md` dit toujours où on en est ; c'est lui qui fait le lien entre deux sessions.
 - **Limites d'usage** : les sessions cloud consomment le même quota que tes conversations Claude.
 - **Dépôt public** : condition de GitHub Pages gratuit. Le code et la documentation sont lisibles par tous, y compris ton programme et tes horaires de palier. Tes données restent dans ton téléphone. Ne mets jamais un export dans le dépôt.
-- **Avant la bascule** : exporte l'historique de ta v1 (bouton « Données » en haut à droite → « Exporter une sauvegarde ») et garde le fichier hors du dépôt.
+- **Avant la bascule** : exporter l'historique de ta v1 est facultatif (décision du 07/10/2026) ; une copie de la v1 reste consultable après le J6.
 - **Essai à blanc** : il se fait en parallèle, avec la v1 ou une simple liste ; la v2 devient utilisable au jalon J3.
 
 ## 5. Questions qui viendront
 
-Tu peux y réfléchir d'ici là (détail dans `docs/SPEC.md` §11) :
-
-1. Au palier 1, la séance de 3 min compte-t-elle pour valider le matin ?
-2. Knee raises : de combien monter, et quand ?
-3. Pas entre deux niveaux : 2 répétitions, ou 1 pour le pistol ?
-4. Tibialis posterior au-delà de 24 : quelle résistance ?
-5. Reverse table top : quelles étapes intermédiaires ?
-6. Deep squat : quand retirer du contrepoids ?
-7. Carry et one arm hang : de combien allonger la tenue ?
-8. Bas de jambe : qu'est-ce qui compte comme « hausse » ?
-9. Boxe le vendredi aux paliers 1 à 3 : que fait le dimanche ?
-10. On garde le nom « Fit-dad » ?
+Toutes tranchées le 07/10/2026 : voir `docs/decisions.md` et `docs/SPEC.md` §11.
 
 ## 6. Contenu du kit
 
