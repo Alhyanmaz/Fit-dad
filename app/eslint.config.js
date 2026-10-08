@@ -18,4 +18,9 @@ export default defineConfig([
     files: ['vite.config.ts', 'config/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
+  {
+    // Les tests fabriquent volontairement des programmes fautifs : objets libres autorisés.
+    files: ['**/*.test.ts'],
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
+  },
 ]);
