@@ -51,13 +51,20 @@ Détail et raisons dans `docs/decisions.md`.
 
 ## Commandes
 
-À compléter au jalon J0 (dans `app/`) : installation, développement, tests, lint, build vers `../v2`.
+Toutes dans `app/` (`cd app`), avec Node 22.12 ou plus récent.
+
+- Installation : `npm ci`. Automatique au démarrage d'une session cloud (`scripts/install_pkgs.sh`, journal dans `/tmp/fit-dad-npm-install.log`).
+- Développement : `npm run dev`, puis http://localhost:5173/Fit-dad/v2/.
+- Vérification complète avant chaque commit : `npm run check` (types, lint, mise en forme, tests).
+- Séparément : `npm test`, `npm run typecheck`, `npm run lint`, `npm run format` (corrige) ou `npm run format:check`.
+- Build vers `../v2` : `npm run build`. Le build refuse tout autre dossier de sortie (`app/config/sortie.ts`), parce qu'il vide ce dossier avant d'écrire. Ensuite, commit du dossier `v2/` seul, message « build v2 ».
+- Contrôle de la v1 avant chaque PR : `git diff main -- index.html sw.js manifest.webmanifest icons README.md .nojekyll` doit être vide.
 
 ## Arborescence
 
 ```
 /                     v1 en ligne (ne pas modifier avant J6)
-app/                  code de la v2 (créé au jalon J0)
+app/                  code de la v2 : src/data (programme), src/ui (écrans) ; src/domain et src/storage à venir ; config/ (sécurité du build)
 v2/                   build de la v2, servi sous /Fit-dad/v2/ (généré, ne pas éditer à la main)
 data/programme.json   programme structuré
 docs/                 PROGRAMME, SPEC, MIGRATION, decisions, reprise, DEMARRAGE
@@ -70,5 +77,5 @@ legacy/               lever-tot.html (artefact « Lever tôt ») ; suivi-pied-mo
 - **Dépôt public** : jamais de sauvegarde, d'export « Lever tôt » ni de note personnelle dans le dépôt (voir `.gitignore`).
 - **Données de la v1** : `localStorage` de `alhyanmaz.github.io`, clés préfixées `suivi_app_`. La v2 ne les lit pas, ne les écrit pas, ne les efface pas : pas de `localStorage.clear()`, pas d'en-tête `Clear-Site-Data`.
 - **Service worker de la v1** : `sw.js`, portée `/Fit-dad/`, couvre aussi `/Fit-dad/v2/`, et efface tous les autres caches à son activation. Ne pas le modifier ni le réenregistrer avant J6 ; au J6, suivre la liste de contrôle de `docs/SPEC.md` §8.1 (la v2 remplace la v1 à la racine).
-- **Branches** : GitHub Pages publie `main` (vérifié le 07/10/2026 dans l'historique des déploiements). La branche par défaut du dépôt est `ccr-5400ddd2-jcuhr3`, reste d'une session du 28/09, tant que José ne l'a pas changée. Toujours partir de `main` et ouvrir les PR vers `main`.
+- **Branches** : GitHub Pages publie `main` (vérifié le 07/10/2026 dans l'historique des déploiements). La branche par défaut du dépôt est `Mainold`, figée au commit `d861224` (la v1, sans ce fichier) : le 08/10, GitHub a refusé de la passer sur `main` (« Could not change default branch »), cause inconnue. Toujours partir de `main` et ouvrir les PR vers `main`, en choisissant `main` explicitement comme base. À retenter après la fusion du J0 ; si ça marche, supprimer `Mainold`.
 - **Environnement cloud temporaire** : ce qui n'est pas poussé sur GitHub est perdu. Commiter et pousser au fil de l'eau.

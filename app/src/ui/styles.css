@@ -1,0 +1,72 @@
+:root {
+  color-scheme: dark;
+  --fond: #161b19;
+  --carte: #1f2623;
+  --texte: #ede9df;
+  --discret: #a3aca7;
+  --lien: #8fa3e8;
+  --erreur: #e8a08f;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: max(1.5rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom));
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin: 0 0 1rem;
+}
+
+p {
+  margin: 0 0 0.75rem;
+}
+
+.carte {
+  background: var(--carte);
+  border-radius: 12px;
+  padding: 1rem 1rem 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.principal {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.discret {
+  color: var(--discret);
+}
+
+.erreur .principal {
+  color: var(--erreur);
+}
+
+a {
+  color: var(--lien);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+a,
+button {
+  touch-action: manipulation;
+}

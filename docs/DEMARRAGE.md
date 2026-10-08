@@ -5,7 +5,7 @@
 ## 1. Le kit est dans le dépôt
 
 - **Fait le 07/10/2026** : le kit est sur la branche `kit-v2`. La branche `main`, celle que GitHub Pages publie, n'a pas bougé.
-- **Recommandé, une fois (1 minute)** : dans Chrome, GitHub → Fit-dad → **Settings** → **General** → **Default branch** → choisis `main`. La branche par défaut actuelle, `ccr-5400ddd2-jcuhr3`, est un reste de la session du 28/09. Sans ce réglage, ça marche quand même : les messages ci-dessous disent à Claude Code de viser `main`.
+- **Branche par défaut** : tentée le 08/10, GitHub refuse de la passer sur `main` (« Could not change default branch »). Elle s'appelle `Mainold` et reste sur l'ancienne version. Sans conséquence : les messages ci-dessous disent à Claude Code de viser `main`. On retentera après la fusion du J0.
 
 ## 2. Première session : le socle (J0)
 
