@@ -3,8 +3,8 @@
   "meta": {
     "titre": "Programme d'entraînement — refonte 2026",
     "version": "2026-10-07",
-    "source": "docs/PROGRAMME.md (export du document Claude Docs, révision 44)",
-    "statut": "Brouillon : décisions de José du 07/10/2026 intégrées (docs/decisions.md). À vérifier ligne à ligne contre docs/PROGRAMME.md au jalon J1. En cas d'écart, PROGRAMME.md fait foi.",
+    "source": "docs/PROGRAMME.md (copie du document Claude Docs, révision 44, mise à jour le 07/10/2026 ; elle fait foi)",
+    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; validé au chargement par app/src/data/schema.ts. Points à trancher par José : docs/relecture-programme.md. En cas d'écart, PROGRAMME.md fait foi.",
     "conventions": {
       "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… » et « pas_min » ; « jours_minimum » est un nombre de jours, « cycle_minimum » un numéro de cycle",
       "charges": "kg",
@@ -123,7 +123,7 @@
       "reussi": "lever tenu ET (plancher fait OU nuit difficile OU plancher non obligatoire au palier)",
       "partiel": "lever tenu, plancher manquant (palier où il est obligatoire, nuit non difficile)"
     },
-    "plancher": "Le plancher est la séance du matin du palier. Dans l'artefact actuel : 5 min au palier 2, 10 min aux paliers 3 à 5.",
+    "plancher": "Le plancher est la séance du matin du palier, en version complète, courte ou minimum (PROGRAMME.md : « le plancher correspond à cette séance »). Les durées fixes de l'artefact (5 min au palier 2, 10 min aux paliers 3 à 5) ne s'appliquent plus ; elles restent décrites dans docs/MIGRATION.md.",
     "regles_affichees": [
       "Le coucher est le levier : si tu ne peux pas avancer le coucher, n'avance pas le lever.",
       "Mauvaise nuit : tu gardes l'heure de lever, le plancher devient facultatif, le matin compte comme réussi.",

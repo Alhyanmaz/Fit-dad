@@ -59,6 +59,16 @@ p {
   color: var(--erreur);
 }
 
+.erreur ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.erreur li {
+  margin-bottom: 0.5rem;
+}
+
 a {
   color: var(--lien);
   display: inline-flex;
