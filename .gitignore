@@ -1,0 +1,10 @@
+# Dépendances et builds
+node_modules/
+dist/
+*.local
+.DS_Store
+
+# Données personnelles : jamais dans le dépôt (il est public)
+fit-dad-sauvegarde-*.json
+lever-tot-export-*.json
+donnees-privees/
