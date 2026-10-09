@@ -1,24 +1,23 @@
-# Reprise de la session (08/10/2026)
+# Reprise de la session (09/10/2026)
 
 ## État
 
-- **J0 terminé** sur la branche `kit-v2` : socle de la v2 dans `app/` (Vite 8, React 19, TypeScript 6.0 strict, ESLint, Prettier, Vitest ; versions figées), build commité dans `v2/`. La page d'accueil lit `data/programme.json` et affiche « Programme chargé : 41 exercices ».
-- PR `kit-v2` → `main` ouverte : elle contient le kit, les décisions du 07/10 et le socle. **À fusionner par José**, puis vérifier sur le téléphone :
-  - `https://alhyanmaz.github.io/Fit-dad/` : la v1, inchangée ;
-  - `https://alhyanmaz.github.io/Fit-dad/v2/` : la page d'accueil de la v2.
-- Vérifié dans la session : 7 tests verts, types, lint et mise en forme OK ; build reproductible ; rendu à 360, 412 et 430 px dans Chromium ; aucune requête réseau extérieure dans la v2 ; fichiers de la v1 identiques à `main` ; installation automatique des dépendances (`scripts/install_pkgs.sh`) testée.
-- Revue du kit faite avec José le 07/10 : décisions dans `docs/decisions.md` (entrée du 07/10).
-- `data/programme.json` reste un brouillon : il sera relu contre `docs/PROGRAMME.md` au jalon J1.
+- **J0 terminé et fusionné** (PR #1, le 08/10) : la v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/`, la v1 est intacte à la racine.
+- **J1 fait en autonomie la nuit du 08 au 09/10**, sur la branche `j1-programme`, PR en brouillon vers `main` :
+  - schéma zod de `data/programme.json` (`app/src/data/schema.ts`), branché au chargement de l'appli ;
+  - relecture ligne à ligne contre `docs/PROGRAMME.md` : fichier conforme, 2 corrections, 4 questions (`docs/relecture-programme.md`) ;
+  - 18 tests verts, build à jour.
+- **Rien n'est tranché à la place de José** : les 4 questions attendent sa réponse.
 
-## Prochaine étape : jalon J1, le programme
+## Prochaine étape
 
-Après la fusion de la PR du J0, nouvelle session, partir de `main` à jour :
+1. José répond aux 4 questions de `docs/relecture-programme.md`, une à la fois (proposition par défaut pour chacune).
+2. Claude reporte les réponses dans `data/programme.json`, `docs/PROGRAMME.md` et `docs/decisions.md`, refait les tests et le build, puis passe la PR en « prête ».
+3. José fusionne. Ensuite : jalon J2 (moteur de règles, `docs/SPEC.md` §10), dans une nouvelle session partie de `main` à jour :
 
 ```
-Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J1 de docs/SPEC.md §10. Propose le plan avant de coder.
+Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J2 de docs/SPEC.md §10. Propose le plan avant de coder.
 ```
-
-Contenu du J1 (`docs/SPEC.md` §10) : schéma zod de `data/programme.json`, relecture ligne à ligne contre `docs/PROGRAMME.md`, écarts signalés à José et tranchés avec lui.
 
 ## À fournir au démarrage
 
@@ -26,6 +25,8 @@ Rien : tout est dans le dépôt. L'export de « Lever tôt » ne servira qu'au j
 
 ## Questions ouvertes
 
-- **Branche par défaut** : `Mainold`, figée sur l'ancienne version. Le 08/10, GitHub a refusé de la passer sur `main` (« Could not change default branch »), cause inconnue. À retenter après la fusion du J0 ; si ça marche, supprimer `Mainold`. En attendant, toujours viser `main` explicitement.
+- **J1** : les 4 questions de `docs/relecture-programme.md` (swing selon les jours, « série courte » du cossack et du reverse table top, séries du one arm hang, séries fixes des ajouts).
+- **Poids de l'appli** : zod ajoute environ 31 Ko compressés (110 Ko au total). Acceptable pour une appli mise en cache ; allègement possible plus tard avec `zod/mini`, au prix d'une réécriture du schéma.
+- **Branche par défaut** : `Mainold`, figée sur l'ancienne version (commit `d861224`). GitHub refuse de la passer sur `main` (« Could not change default branch »), même après la fusion du J0 ; cause inconnue. La synchroniser depuis une session a été bloqué par le garde-fou de l'environnement. Sans conséquence tant que chaque session vise `main` explicitement.
 - À confirmer au J5 : la proposition « redescendre de 2 répétitions », gardée par défaut (`docs/decisions.md`, fin de l'entrée du 07/10).
 - Le document Claude Docs du programme (révision 44) ne contient pas les décisions du 07/10 ; `docs/PROGRAMME.md` fait foi. À mettre à jour par José, ou à demander à Claude.

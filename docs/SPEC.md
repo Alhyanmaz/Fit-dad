@@ -240,6 +240,7 @@ Décisions, après chaque séance d'un exercice :
 ### 7.1 Programme
 
 - `data/programme.json` est la source des valeurs (exercices, échelons, fourchettes, paliers, rotations, tests). Le valider au chargement avec un schéma zod ; `pas_s` et les champs `*_interpretation` sont facultatifs.
+- Schéma : `app/src/data/schema.ts` (jalon J1). Objets stricts (une clé inconnue est une erreur) et contrôles croisés : exercices cités existants et du bon bloc, étirements de la bonne zone, paliers dans l'ordre, rotations et tests complets. En cas d'erreur, la page d'accueil affiche « Programme illisible » et la liste des erreurs. Relecture du 08/10/2026 : `docs/relecture-programme.md`.
 - Les réglages de José (niveaux de départ, exercices ajoutés, variantes choisies) sont des données utilisateur ; ils ne modifient pas le fichier.
 
 ### 7.2 Stockage local

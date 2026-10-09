@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fr } from 'zod/locales';
 
 /**
  * Schéma de data/programme.json (docs/SPEC.md §7.1).
@@ -8,7 +9,8 @@ import { z } from 'zod';
  * Les contrôles croisés (identifiants d'exercices, blocs, paliers) sont en fin de fichier.
  */
 
-z.config(z.locales.fr());
+// Messages d'erreur en français ; seule cette langue est intégrée à l'appli.
+z.config(fr());
 
 // ---------- Briques ----------
 
