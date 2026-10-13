@@ -67,3 +67,8 @@ Total : 41 exercices = 12 de musculation, 4 du pied, 12 de mobilité, 7 étireme
 - Renvois entre sections : chaque exercice cité (séances, matin, mobilité, étirements, bloc clé, pied, équilibre) existe et appartient au bon bloc, et chaque étirement à la bonne zone.
 - Cohérences : chaque élément du bas de jambe a au moins un exercice ; chaque palier a un contenu de week-end ; les tests ont des identifiants uniques ; la rotation de boxe et les rounds sont complets.
 - En cas d'erreur, la page d'accueil affiche « Programme illisible » et la liste des erreurs, avec leur emplacement dans le fichier.
+
+## Ajout du 13/10/2026
+
+- La section « Cycles d'ancrage » entre dans `docs/PROGRAMME.md` (décision du 13/10/2026, `docs/decisions.md`). Elle n'est pas encore dans `data/programme.json` : elle y sera structurée, avec son schéma, dans la PR du J1.
+- Q1 à Q4 restent ouvertes. Elles portent surtout sur le programme complet ; l'ancrage exclut les exercices du palier 4 (Q4) et fixe déjà le swing à 1 série de 10 en semaine et 3 × 10 le week-end (Q1).

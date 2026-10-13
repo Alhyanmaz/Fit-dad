@@ -1,6 +1,6 @@
 # Programme d'entraînement — refonte 2026
 
-> Copie du document Claude Docs « Programme d'entraînement — refonte 2026 », exportée le 06/10/2026 (révision 44), mise à jour le 07/10/2026 avec les décisions de José (`docs/decisions.md`).
+> Copie du document Claude Docs « Programme d'entraînement — refonte 2026 », exportée le 06/10/2026 (révision 44), mise à jour le 07/10/2026 puis le 13/10/2026 (cycles d'ancrage) avec les décisions de José (`docs/decisions.md`).
 > Depuis le 07/10/2026, ce fichier contient des décisions absentes du document Claude Docs : en cas d'écart, ce fichier fait foi. Le dépôt étant public, le profil familial en a été retiré.
 > Les deux graphiques du document sont remplacés ici par leurs tableaux de valeurs.
 
@@ -8,6 +8,7 @@
 
 Le programme repose sur une journée type répétée 7 jours sur 7 : musculation le matin, cardio le midi en semaine, pied et mobilité le soir, boxe le week-end.
 
+- **Pour commencer** : deux cycles d'ancrage de 5 semaines au minimum, avec un socle réduit chaque jour ; le programme complet ensuite, quand l'habitude tient (section « Cycles d'ancrage »).
 - **Matin** : respiration, café, mobilité, musculation (push, pull, squat, hinge) et étirements. Il s'installe par paliers, au rythme de « Lever tôt ».
 - **Midi, en semaine** : bouger ; objectif de 3 séances de corde et flow rope, marche les autres midis.
 - **Soir** : bloc clé (suspension, deep squat), puis une routine pied de 2 exercices et 4 étirements.
@@ -80,6 +81,68 @@ Le contenu du matin dépend du palier de « Lever tôt » : 1 exercice de muscul
 - La corde se propose les midis qui ne sont ni le jour de boxe ni le jour de récupération, jusqu'à 3 séances faites dans la semaine (objectif) ; la marche reste toujours possible.
 - Boxe le vendredi : pas de jour de récupération. Le samedi et le dimanche restent des journées normales, avec la musculation complète ; ce week-end-là, un seul bloc boxe, le dimanche.
 
+## Cycles d'ancrage
+
+Pour installer l'habitude avant le programme complet : deux cycles de 5 semaines au minimum, avec un socle réduit chaque jour ; le reste est en bonus. Décision du 13/10/2026, après un démarrage difficile.
+
+Pendant l'ancrage, cette section remplace le contenu des sections « Le matin par paliers », « Musculation », « Mobilité et échauffement », « Étirements », « Bloc clé du soir », « Pied et cheville », « Cardio du midi », « Boxe à la maison » et « Week-end ». « Lever tôt » (heures de lever et de coucher, passage de palier), le jour de récupération et les règles de progression restent en vigueur, avec les adaptations ci-dessous.
+
+**Règles**
+
+- Durée : 2 cycles de 5 semaines au minimum, soit 10 semaines. Pas de semaine de décharge : tout est déjà à 1 série \[Interprétation\].
+- Jour tenu : matin et soir faits, au moins en version minimum. Le midi et le « au mieux » du week-end sont des bonus, jamais comptés comme ratés.
+- Sortie : après 10 semaines, quand le socle a tenu 5 jours sur les 7 derniers, samedi et dimanche compris, l'appli propose de sortir ; tu valides. Viennent alors les tests, puis tu règles la suite. Sinon, l'ancrage continue.
+- « Lever tôt » : le plancher devient le matin d'ancrage, en version normale ou minimum. Au palier 1, le lever seul valide toujours le matin de « Lever tôt » ; le jour tenu demande, lui, la séance du matin.
+- Progression dans chaque exercice : règles habituelles (+2 répétitions ou +5 s, « Ajuster », une seule hausse par semaine sur le bas de jambe).
+- Les cycles d'ancrage ne comptent pas dans les cycles du programme : les étirements du pied restent à 1 série, et le cycle 1 commence à la sortie \[Interprétation\].
+
+**Matin : ≈ 10 min, café en plus**
+
+Ordre fixe : respiration → café → mobilité → musculation → étirement → douche. Le café reste la marge.
+
+|                              | Matin A                                                  | Matin B                      |
+|------------------------------|----------------------------------------------------------|------------------------------|
+| Respiration                  | 5 min                                                    | 5 min                        |
+| Mobilité, 30 s par mouvement | Hip hinge au bâton, shoulder dislocate                   | Scapula pull-up, duck walk   |
+| Musculation, 1 série         | KT press (chaque bras), swing (10)                       | Rings row, goblet squat (20) |
+| Étirement, 1 × 30 s          | Le suivant dans l'ordre : couch stretch, pigeon, pancake | Idem                         |
+
+- Les exercices sont ceux du palier 2 : les quatre patrons (pousser, charnière, tirer, squat) sur deux matins. Le swing passe à 1 série pendant l'ancrage (2 séries au palier 2, décision du 07/10/2026).
+- La mobilité est prise dans la routine du jour et prépare les deux exercices (section « Mobilité et échauffement ») \[Interprétation\].
+- Couch stretch et pigeon se font de chaque côté.
+- Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
+- Jour de récupération : la musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens).
+- Au palier 1, le matin passe ainsi de 3 à environ 10 min.
+
+**Midi** : bouger, ce que tu peux : marche ou corde, sans durée imposée. C'est un bonus.
+
+**Soir : ≈ 10 min**
+
+- Suspension + knee raises : 1 série, à ta cible.
+- Deep squat : 1 × 2 min, à ton contrepoids.
+- Routine pied, 1 tour, A et B en alternance : 1 série de chaque exercice au lieu de 2, puis les 4 étirements, 1 × 30 s.
+- Version minimum : suspension et deep squat, ≈ 4 min.
+- Soir de boxe en club : la version minimum ; les 4 étirements du pied si possible.
+- Jour de récupération : suspension passive, sans knee raises ; deep squat et routine pied comme les autres soirs.
+
+**Chaque jour** : single leg balance pendant le brossage des dents, 1 min sur chaque jambe, matin et soir.
+
+**Week-end**
+
+|            | Contenu                                                                                                                                                                                                                                                         | Durée                 |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| Au minimum | Le matin de la semaine ; le soir, comme chaque jour                                                                                                                                                                                                             | ≈ 20 min              |
+| Au mieux   | Routine Mob. matin complète (A le samedi, B le dimanche, 30 s par mouvement) → séance complète en 3 séries (A le samedi, B le dimanche, sans les exercices du palier 4 ; swing 3 × 10) → étirements de hanche, 2 × 30 s → boxe en 3 rounds ; puis le soir | ≈ 45 min, plus le soir |
+
+- Boxe en 3 rounds : rounds 1 (corde), 3 (technique seule) et 5 (libre) du bloc boxe, 1 min de repos entre deux rounds, ≈ 11 min \[Interprétation\].
+
+**Pourquoi**
+
+- Une habitude quotidienne devient automatique en 66 jours en médiane, de 18 à 254 jours selon les personnes (B, une étude, Lally 2010) ; l'habitude d'aller à la salle de sport demande plutôt plusieurs mois (B, [Buyalskaya 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC10151500)). D'où une durée minimale suivie d'un critère, comme pour « Lever tôt », plutôt qu'une date de fin.
+- Rater une fois ne compromet pas la formation de l'habitude (Lally 2010) : la version minimum garde le jour tenu les jours difficiles \[Interprétation\].
+- Une série par exercice fait progresser moins vite en force que 2 ou 3 séries (B, méta-analyse de 14 études, [Krieger 2009](https://www.bisp-surf.de/Record/PU200912007455)) : c'est le prix de l'ancrage.
+- Avec les quatre patrons sur les matins A et B, la musculation reste au niveau du repère de l'OMS, au moins 2 jours par semaine (A pour le repère ; \[Interprétation\] pour ce calcul).
+
 ## Le matin par paliers
 
 **Minutes de chaque bloc du matin, par palier** (valeurs du graphique du document)
@@ -106,6 +169,7 @@ Au palier 2, le matin A (KT press et 2 séries de swing) prend environ 3 min : l
 - Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
 - Le jour de récupération, la musculation est remplacée par l'autre routine Mob. matin et des neck CARs.
 - Dans « Lever tôt », le « plancher » correspond à cette séance.
+- Pendant les cycles d'ancrage, le contenu du matin est celui de la section « Cycles d'ancrage », quel que soit le palier ; heures de lever et de coucher et passage de palier restent ceux de ce tableau.
 
 **Intentions « si… alors… »**
 
@@ -463,11 +527,15 @@ Le programme s'appuie sur des preuves solides (A) pour ses grands choix, et sur 
 | Espacer la pratique de gestes complexes                                                       | B, effet quasi nul                 | Donovan et Radosevich 1999                |
 | Intentions « si… alors… » et activité physique                                                | A, effet petit à moyen             | Bélanger-Gravel 2013                      |
 | Délai d'automatisation d'une habitude                                                         | B, une étude                       | Lally 2010 : médiane 66 jours             |
+| Délai d'habitude pour aller à la salle de sport                                               | B                                  | Buyalskaya 2023 : plusieurs mois          |
+| Une série ou plusieurs, pour la force                                                         | B                                  | Krieger 2009 : 2 à 3 séries > 1, 14 études |
 | Exercice seul et perte de poids                                                               | A, effet faible                    | Shaw 2006 (Cochrane)                      |
 
 ## À vérifier pendant l'essai à blanc
 
 Deux semaines à suivre le programme sur une simple liste cochée, pour confirmer qu'il tient dans tes journées avant de construire l'appli. Seuil proposé : au moins 80 % du socle tenu (C) ; sinon, on redimensionne.
+
+**12/10/2026** : le programme ne tient pas dans tes journées ; il est redimensionné en cycles d'ancrage (décision du 13/10/2026).
 
 - **Durées** : bloc clé ≈ 8 min, soir ≈ 18 à 20 min, séance B ≈ 18 min, week-end ≈ 70 à 80 min. Ce sont des estimations.
 - **Charges de départ** : à reprendre des dernières séances de l'appli actuelle, et à saisir avec « Ajuster ».
@@ -487,6 +555,7 @@ L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes t
 - **Semaines de tests** : tu saisis tes résultats, puis tu fixes toi-même les cibles du cycle suivant, comme dans l'appli actuelle.
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.
+- **Cycles d'ancrage** : jour tenu (matin et soir, au moins en version minimum), suivi des 10 semaines, proposition de sortie à valider par toi.
 
 ## Sources
 
@@ -506,6 +575,9 @@ L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes t
 - [Refalo et al. 2023, Sports Medicine 53(3) — proximité de l'échec et hypertrophie](https://pmc.ncbi.nlm.nih.gov/articles/PMC9935748)
 - [Grgic et al. 2022, Journal of Sport and Health Science — échec ou non-échec, force et hypertrophie](https://doaj.org/article/dc36ba7ccd994798964f66b93bd8f662)
 - [Robinson et al. 2024, Sports Medicine 54(9) — proximité de l'échec, force et hypertrophie](https://rke.abertay.ac.uk/en/publications/exploring-the-dose-response-relationship-between-estimated-resist/)
+- [Buyalskaya et al. 2023, PNAS — formation des habitudes : salle de sport et lavage des mains](https://pmc.ncbi.nlm.nih.gov/articles/PMC10151500)
+- [Krieger 2009, Journal of Strength and Conditioning Research — une série ou plusieurs, méta-régression](https://www.bisp-surf.de/Record/PU200912007455)
+- [Lally, entretien à l'université du Surrey — 66 jours en médiane, de 18 à 254](https://www.surrey.ac.uk/news/does-it-really-take-66-days-form-habit-we-asked-expert-dr-pippa-lally)
 
 **Reprises du document de passation (vérifiées lors de l'audit)**
 

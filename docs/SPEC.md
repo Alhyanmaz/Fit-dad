@@ -3,6 +3,7 @@
 > Version du 06/10/2026, relue par un second agent. Rédigé pour Claude Code à partir du programme (`docs/PROGRAMME.md`), de la v1 en ligne (`index.html` à la racine du dépôt, code lisible après la bibliothèque React ; `README.md`) et de l'artefact « Lever tôt » (`legacy/lever-tot.html`).
 > Les choix marqués **[Interprétation]** n'ont pas de source directe : ils sont à confirmer par José.
 > Mise à jour du 07/10/2026 : décisions de José intégrées (`docs/decisions.md`, revue du kit).
+> 13/10/2026 : cycles d'ancrage décidés (`docs/decisions.md`). Ils ne sont pas encore spécifiés ici (§6 et §9) ; d'ici là, `docs/PROGRAMME.md`, section « Cycles d'ancrage », fait foi.
 
 ## 1. Objet
 

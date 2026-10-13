@@ -56,3 +56,16 @@ Revue des 10 choix « à valider » du 06/10 et des 10 questions ouvertes de `do
 
 - La proposition « redescendre d'un cran » (−2 répétitions après une cible manquée 2 séances de suite) reste dans le programme : José ne l'a pas annulée explicitement.
 
+## 13/10/2026 — décisions de José (cycles d'ancrage)
+
+Le 12/10, José a du mal à tenir le programme et demande une version minimale pour ancrer l'habitude. Il propose le squelette du cycle 1 ; Claude l'étoffe à partir du programme ; José valide le 13/10. Détail : `docs/PROGRAMME.md`, section « Cycles d'ancrage ».
+
+- **Cycles d'ancrage** : avant le programme complet, 2 cycles de 5 semaines au minimum, avec un socle réduit : matin ≈ 10 min, soir ≈ 10 min, midi libre, week-end au minimum comme un matin de semaine ; au mieux, séance complète en 3 séries et boxe en 3 rounds.
+- **Sortie** : pas de date de fin (règle n° 1). Après 10 semaines, quand le socle tient 5 jours sur les 7 derniers, samedi et dimanche compris, l'appli propose de sortir ; José valide. Puis tests et réglage de la suite.
+- **Jour tenu** : matin et soir faits, au moins en version minimum (matin : un mouvement de mobilité ; soir : suspension et deep squat). Midi et « au mieux » du week-end : bonus.
+- **Swing** : 1 série de 10 pendant l'ancrage ; les 2 séries du palier 2 (décision du 07/10) reprennent après.
+- **Single leg balance** : gardé, au brossage des dents (absent du squelette, gardé par défaut).
+- **« Lever tôt »** : continue (heures, passage de palier) ; le contenu du matin reste celui de l'ancrage, et le plancher devient le matin d'ancrage.
+- **Cycles** : pas de décharge pendant l'ancrage ; les cycles d'ancrage ne comptent pas dans la numérotation des cycles (étirements du pied à 1 série) ; tests à la sortie.
+- **À reporter par Claude** : `data/programme.json`, son schéma et `docs/SPEC.md`, dans la PR du J1.
+
