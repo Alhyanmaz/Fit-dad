@@ -3,17 +3,16 @@
 ## État
 
 - **J0 terminé et fusionné** (PR #1, le 08/10) : la v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/`, la v1 est intacte à la racine.
-- **J1 en cours** sur la branche `j1-programme`, PR #2 en brouillon vers `main` : schéma zod de `data/programme.json`, relecture du programme (`docs/relecture-programme.md`, 4 questions en attente), 18 tests verts, build à jour.
-- **13/10 : cycles d'ancrage décidés** (`docs/decisions.md`) et écrits dans `docs/PROGRAMME.md`. Ils ne sont pas encore dans `data/programme.json`, son schéma ni `docs/SPEC.md`.
+- **J1 en cours** sur la branche `j1-programme`, PR #2 en brouillon vers `main` : schéma zod de `data/programme.json`, relecture du programme (`docs/relecture-programme.md`, 4 questions en attente), 22 tests verts, build à jour.
+- **13/10 : cycles d'ancrage décidés** (`docs/decisions.md`) et reportés partout : `docs/PROGRAMME.md`, `data/programme.json` (clé `ancrage`), schéma et tests, `docs/SPEC.md` (§6.11, scénarios 15 à 17, jalons J2 et J5).
 - **GitHub bloqué depuis le 09/10** : toute requête de la session renvoie « Sorry. Your account was suspended » (erreur 403), jusqu'au 13/10 compris. Dernier commit poussé : `cbf8416` (« build v2 »). Les commits du 13/10 sont seulement locaux. José a reçu une copie complète du dépôt (fichier `.bundle`).
 
 ## Prochaine étape
 
 1. José vérifie son compte GitHub : connexion à github.com, e-mails de GitHub. S'il est suspendu : demande de réactivation (formulaire « Appeal and Reinstatement »), puis reconnexion de GitHub à Claude.
 2. Dès que l'accès revient : pousser `j1-programme`.
-3. Claude reporte les cycles d'ancrage dans `data/programme.json`, le schéma (`app/src/data/schema.ts`, tests) et `docs/SPEC.md` (§6, scénarios du §9), dans la PR du J1.
-4. José répond aux 4 questions de `docs/relecture-programme.md`, une à la fois ; Claude les reporte, refait tests et build, passe la PR en « prête » ; José fusionne.
-5. Ensuite : jalon J2 (moteur de règles), dans une nouvelle session partie de `main` à jour :
+3. Les 4 questions de `docs/relecture-programme.md` : Claude a proposé à José, le 13/10, de garder ses propositions à titre provisoire, à revoir à la sortie de l'ancrage (réponse attendue). Ensuite : report dans le programme, tests et build, PR en « prête » ; José fusionne.
+4. Ensuite : jalon J2 (moteur de règles, ancrage compris), dans une nouvelle session partie de `main` à jour :
 
 ```
 Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J2 de docs/SPEC.md §10. Propose le plan avant de coder.

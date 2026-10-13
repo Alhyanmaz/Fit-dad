@@ -3,14 +3,14 @@
 > Version du 06/10/2026, relue par un second agent. Rédigé pour Claude Code à partir du programme (`docs/PROGRAMME.md`), de la v1 en ligne (`index.html` à la racine du dépôt, code lisible après la bibliothèque React ; `README.md`) et de l'artefact « Lever tôt » (`legacy/lever-tot.html`).
 > Les choix marqués **[Interprétation]** n'ont pas de source directe : ils sont à confirmer par José.
 > Mise à jour du 07/10/2026 : décisions de José intégrées (`docs/decisions.md`, revue du kit).
-> 13/10/2026 : cycles d'ancrage décidés (`docs/decisions.md`). Ils ne sont pas encore spécifiés ici (§6 et §9) ; d'ici là, `docs/PROGRAMME.md`, section « Cycles d'ancrage », fait foi.
+> Mise à jour du 13/10/2026 : cycles d'ancrage (décision de José, `docs/decisions.md`) : §5.1, §6.11, scénarios 15 à 17, jalons J2 et J5.
 
 ## 1. Objet
 
 Remplacer l'appli de suivi actuelle par une v2 qui :
 
 - applique le programme 2026 (`docs/PROGRAMME.md`), sa journée type et sa semaine type ;
-- intègre « Lever tôt » : le palier du matin décide du contenu du matin ;
+- intègre « Lever tôt » : le palier du matin décide du contenu du matin, sauf pendant les cycles d'ancrage (§6.11) ;
 - pilote la progression par critères de performance, jamais par la date ;
 - garde le principe de la v1 : pendant la semaine de tests, José règle lui-même le cycle suivant ;
 - s'installe sur le téléphone (PWA), fonctionne hors ligne, sans problème de zoom ;
@@ -64,6 +64,7 @@ Les mêmes sept règles figurent dans `CLAUDE.md`.
 - Chaque bloc liste son contenu dans l'ordre, coché au fur et à mesure ; un tap ouvre la saisie.
 - Bouton « Boxe ce soir » (et « Pas de boxe cette semaine »). Déclarer la boxe recalcule le soir du jour et le lendemain.
 - Bandeaux contextuels : version courte conseillée (nuits hachées), semaine de décharge, propositions de progression à valider, rappel d'export.
+- Pendant l'ancrage (§6.11) : semaine en cours sur les 10 du minimum, jours tenus sur les 7 derniers ; les blocs bonus (midi, « au mieux » du week-end) sont marqués comme tels et ne sont jamais présentés comme manqués [Interprétation].
 - Navigation interne sans dépendre du chemin de l'URL (GitHub Pages n'a pas de repli pour les applis à une page) : état interne ou routes en `#`.
 
 ### 5.2 Séance (saisie)
@@ -119,6 +120,8 @@ Toutes ces règles vivent dans `app/src/domain`, en fonctions pures testées (se
 - Une déclaration tardive (boxe saisie le soir même ou après coup) recalcule le soir du jour et tout le lendemain ; ce qui est déjà saisi reste tel quel.
 
 ### 6.2 Matin, selon le palier
+
+Pendant les cycles d'ancrage, le contenu du matin suit le §6.11, quel que soit le palier.
 
 Ordre fixe : respiration → café → mobilité → musculation → étirements, puis douche. Minutes par bloc :
 
@@ -236,12 +239,29 @@ Décisions, après chaque séance d'un exercice :
 - Après les tests : écran « Préparer le cycle suivant » (5.5) ; les hausses « bas de jambe » s'étalent, une par semaine (6.9). Le numéro de cycle augmente au début du cycle suivant ; il règle les séries des étirements du pied.
 - Mesure hebdomadaire : poids ou tour de taille, le jour choisi ; ce n'est pas un critère de progression.
 
+### 6.11 Cycles d'ancrage
+
+Décision du 13/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancrage » ; valeurs dans `data/programme.json`, clé `ancrage`). Un socle réduit chaque jour, le reste en bonus, avant le programme complet.
+
+- **Phase** : l'ancrage commence à la date choisie par José et dure jusqu'à la sortie validée par lui. Date de début et date de sortie sont des données utilisateur [Interprétation].
+- **Contenu du jour** : il remplace celui des §6.2, 6.4, 6.5 et 6.6. Le type de jour (§6.1) et les alternances « la suivante » (§6.3) ne changent pas.
+  - **Matin A ou B** (alternance de la musculation, jour de récupération exclu) : respiration 5 min ; café (marge) ; 2 mouvements de la routine du jour à 30 s (A : hip hinge au bâton, shoulder dislocate ; B : scapula pull-up, duck walk) [Interprétation] ; 2 exercices à 1 série (A : KT press, swing 1 × 10 ; B : rings row, goblet squat) ; 1 étirement de hanche à 30 s, le suivant de la rotation couch stretch → pigeon → pancake, un par matin. Version minimum (nuit très hachée) : un seul mouvement de mobilité. Jour de récupération : l'autre routine Mob. matin, au ralenti, puis neck CARs.
+  - **Midi** : « bouger », marche ou corde, sans durée imposée ; bonus. Pas de compteur « corde : n/3 » pendant l'ancrage [Interprétation].
+  - **Soir sans boxe** : suspension 1 série ; deep squat 1 × 2 min ; routine pied A ou B (« la suivante ») en 1 tour : 1 série par exercice, puis les 4 étirements 1 × 30 s. Version minimum : suspension et deep squat. Soir de boxe : la version minimum, étirements du pied facultatifs. Jour de récupération : suspension passive sans knee raises, le reste identique.
+  - **Chaque jour** : single leg balance au brossage des dents, matin et soir.
+  - **Week-end** : au minimum, le matin et le soir de la semaine. Au mieux (bonus) : routine Mob. matin complète à 30 s, séance complète en 3 séries sans les exercices du palier 4 (swing 3 × 10), étirements de hanche 2 × 30 s, boxe en 3 rounds (rounds 1, 3 et 5 du bloc) [Interprétation pour les rounds].
+- **Jour tenu** : matin fait (normal ou minimum) et soir fait (normal, minimum ou version boxe). Un bloc bonus non fait ne rend jamais un jour « raté ».
+- **Sortie** : proposée quand les deux conditions sont réunies : la 10e semaine est terminée (70e jour, jour de début compris, soit 2 cycles de 5 semaines), et 5 jours sont tenus sur les 7 derniers, dont le samedi et le dimanche. Appliquée seulement après confirmation de José. Viennent alors les tests de la semaine 1 du programme et « Préparer le cycle suivant » (§5.5). Sinon, rien ne change.
+- **Lever tôt** (§6.7) : heures, verdict et passage de palier inchangés. Le plancher est le matin d'ancrage, normal ou minimum. Au palier 1, le lever seul valide toujours le matin de « Lever tôt » ; le jour tenu demande la séance du matin.
+- **Cycles** (§6.10) : pas de décharge ni de tests pendant l'ancrage ; le numéro de cycle reste à 1 jusqu'à la sortie (étirements du pied à 1 série) [Interprétation].
+- **Progression** (§6.8, §6.9) : inchangée ; « Ajuster » reste disponible.
+
 ## 7. Données
 
 ### 7.1 Programme
 
 - `data/programme.json` est la source des valeurs (exercices, échelons, fourchettes, paliers, rotations, tests). Le valider au chargement avec un schéma zod ; `pas_s` et les champs `*_interpretation` sont facultatifs.
-- Schéma : `app/src/data/schema.ts` (jalon J1). Objets stricts (une clé inconnue est une erreur) et contrôles croisés : exercices cités existants et du bon bloc, étirements de la bonne zone, paliers dans l'ordre, rotations et tests complets. En cas d'erreur, la page d'accueil affiche « Programme illisible » et la liste des erreurs. Relecture du 08/10/2026 : `docs/relecture-programme.md`.
+- Schéma : `app/src/data/schema.ts` (jalon J1). Objets stricts (une clé inconnue est une erreur) et contrôles croisés : exercices cités existants et du bon bloc, étirements de la bonne zone, paliers dans l'ordre, rotations et tests complets ; pour l'ancrage, mobilité prise dans la routine du jour, durée minimale égale aux cycles, rounds de boxe existants. En cas d'erreur, la page d'accueil affiche « Programme illisible » et la liste des erreurs. Relecture du 08/10/2026 : `docs/relecture-programme.md`.
 - Les réglages de José (niveaux de départ, exercices ajoutés, variantes choisies) sont des données utilisateur ; ils ne modifient pas le fichier.
 
 ### 7.2 Stockage local
@@ -303,6 +323,9 @@ Décisions, après chaque séance d'un exercice :
 12. **Étirements du pied** : cycle 1 → 1 série ; cycle 2 → 1 et 2 en alternance ; cycle 3 → 2 séries.
 13. **Ajuster** : José règle le KT press à 1 série de 20 kg × 6 et 1 série de 16 kg × 14 → la séance suivante affiche ces cibles, sans validation ; le réglage figure dans l'historique. Après 9 jours sans séance, rien ne change tout seul.
 14. **Export puis import** sur une base vide : toutes les données reviennent à l'identique.
+15. **Ancrage, contenu du jour** : palier 3, matin A → respiration 5 min, hip hinge au bâton et shoulder dislocate 30 s chacun, 1 série de KT press, 1 série de 10 swings, puis couch stretch ; le matin suivant (B) → scapula pull-up et duck walk, rings row, goblet squat, puis pigeon. Soir sans boxe → suspension 1 série, deep squat 1 × 2 min, routine pied en 1 tour. Soir de boxe → suspension et deep squat seulement.
+16. **Ancrage, jour tenu** : matin et soir en version minimum → tenu ; matin fait, soir non fait → non tenu ; midi non fait → sans effet ; samedi, matin et soir faits sans le « au mieux » → tenu.
+17. **Ancrage, sortie** : début le lundi 19/10 ; le dimanche 27/12 (fin de la semaine 10), 5 jours tenus sur les 7 derniers dont le samedi et le dimanche → sortie proposée, appliquée seulement après confirmation ; même situation le dimanche 20/12 (fin de la semaine 9) → rien ; en semaine 11, 6 jours tenus sur 7 mais le dimanche non tenu → rien.
 
 ## 10. Jalons
 
@@ -312,10 +335,10 @@ Une session Claude Code et une PR par jalon. José relit sur son téléphone, pu
 | --- | --- | --- |
 | J0 Socle | `app/` (Vite, React, TS, lint, Vitest), build commité dans `v2/`, page d'accueil qui lit `data/programme.json` | La v1 marche comme avant ; `/Fit-dad/v2/` affiche la page d'accueil ; tests verts |
 | J1 Programme | Schéma zod de `data/programme.json`, relecture ligne à ligne contre `docs/PROGRAMME.md`, écarts signalés | Le fichier se valide ; écarts tranchés avec José |
-| J2 Moteur | `app/src/domain` : type de jour, matin par palier, alternances, midi, soir, bloc boxe | Scénarios 1 à 7 et 12 verts |
+| J2 Moteur | `app/src/domain` : type de jour, matin par palier, alternances, midi, soir, bloc boxe ; ancrage (contenu du jour, jour tenu) | Scénarios 1 à 7, 12, 15 et 16 verts |
 | J3 Aujourd'hui | Écran Aujourd'hui, saisie des séances, « Ajuster », minuteur, stockage, export et import | Une journée entière saisie sur le téléphone ; scénarios 13 et 14 verts |
 | J4 Lever tôt | Journal, verdict, paliers, historique, import depuis l'artefact | Scénario 8 vert ; données de l'artefact importées |
-| J5 Progression | Propositions dans l'échelon, bas de jambe, cycle, décharge, tests, préparation du cycle suivant | Scénarios 9 à 11 verts |
+| J5 Progression | Propositions dans l'échelon, bas de jambe, cycle, décharge, tests, préparation du cycle suivant, sortie de l'ancrage | Scénarios 9 à 11 et 17 verts |
 | J6 Bascule | Liste de contrôle du §8.1 : la v2 remplace la v1 à la racine | v2 à la racine, ouverte par l'icône existante ; copie de la v1 consultable sous `/Fit-dad/legacy/v1.html` |
 
 ## 11. Questions ouvertes

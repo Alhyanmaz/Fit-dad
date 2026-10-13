@@ -13,11 +13,11 @@ function erreursDe(donnees: unknown): string[] {
 }
 
 describe('lecture du programme', () => {
-  it('valide data/programme.json : 41 exercices, version du 07/10/2026', () => {
+  it('valide data/programme.json : 41 exercices, version du 13/10/2026', () => {
     const lecture = lireProgramme(programmeBrut);
     if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
     expect(resumerProgramme(lecture.programme)).toEqual({
-      version: '2026-10-07',
+      version: '2026-10-13',
       nombreExercices: 41,
     });
   });
@@ -117,6 +117,40 @@ describe('le schéma refuse un programme fautif, avec un message en français', 
     p.exercices.kt_press.fourchette = ['six', 14];
     expect(erreursDe(p).join('\n')).toMatch(
       /exercices › kt_press › fourchette › 0 : Entrée invalide : nombre attendu/,
+    );
+  });
+});
+
+describe('le schéma vérifie les cycles d’ancrage', () => {
+  it('mouvement de mobilité pris dans l’autre routine', () => {
+    const p = copie();
+    p.ancrage.matin.seances.A.mobilite[1] = 'duck_walk';
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › matin › seances › A › mobilite › 1 : « duck_walk » n'est pas dans la routine de mobilité A/,
+    );
+  });
+
+  it('durée minimale qui ne correspond pas aux cycles', () => {
+    const p = copie();
+    p.ancrage.sortie.semaines_minimum = 8;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › sortie › semaines_minimum : 8 semaines minimum pour 2 cycles de 5 semaines \(attendu : 10\)/,
+    );
+  });
+
+  it('étirement du matin hors de la zone des hanches', () => {
+    const p = copie();
+    p.ancrage.matin.etirement.rotation[0] = 'seiza';
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › matin › etirement › rotation › 0 : « seiza » est de la zone « pied_mollet », attendu : « hanches »/,
+    );
+  });
+
+  it('round de boxe inexistant', () => {
+    const p = copie();
+    p.ancrage.week_end.au_mieux.boxe_rounds = [1, 3, 6];
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › week_end › au_mieux › boxe_rounds › 2 : round 6 inexistant \(le bloc boxe en compte 5\)/,
     );
   });
 });

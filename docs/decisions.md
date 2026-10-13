@@ -67,5 +67,5 @@ Le 12/10, José a du mal à tenir le programme et demande une version minimale p
 - **Single leg balance** : gardé, au brossage des dents (absent du squelette, gardé par défaut).
 - **« Lever tôt »** : continue (heures, passage de palier) ; le contenu du matin reste celui de l'ancrage, et le plancher devient le matin d'ancrage.
 - **Cycles** : pas de décharge pendant l'ancrage ; les cycles d'ancrage ne comptent pas dans la numérotation des cycles (étirements du pied à 1 série) ; tests à la sortie.
-- **À reporter par Claude** : `data/programme.json`, son schéma et `docs/SPEC.md`, dans la PR du J1.
+- **Report** : `data/programme.json` (clé `ancrage`), son schéma et `docs/SPEC.md` (§6.11, scénarios 15 à 17), par Claude le 13/10, dans la PR du J1.
 

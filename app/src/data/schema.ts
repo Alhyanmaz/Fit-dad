@@ -248,6 +248,94 @@ const matin = z.strictObject({
   }),
 });
 
+// ---------- Cycles d'ancrage (décision du 13/10/2026) ----------
+
+const seanceAncrage = z.strictObject({
+  mobilite: z.array(idExercice).min(1),
+  musculation: z.array(exerciceDuMatin).min(1),
+});
+
+const ancrage = z.strictObject({
+  decision: dateIso,
+  objet: texte,
+  cycles_minimum: entierPositif,
+  semaines_par_cycle: entierPositif,
+  decharge: z.boolean(),
+  decharge_interpretation: drapeau,
+  compte_dans_les_cycles: z.boolean(),
+  compte_dans_les_cycles_interpretation: drapeau,
+  jour_tenu: z.strictObject({
+    regle: texte,
+    moments: z.array(z.enum(['matin', 'soir'])).min(1),
+    bonus: z.array(z.enum(['midi', 'week_end_au_mieux'])),
+  }),
+  sortie: z.strictObject({
+    semaines_minimum: entierPositif,
+    jours_tenus: entierPositif,
+    fenetre_jours: entierPositif,
+    samedi_et_dimanche: z.boolean(),
+    validation: texte,
+    sinon: texte,
+  }),
+  lever_tot: z.strictObject({ regle: texte, plancher: texte, palier_1: texte }),
+  progression: texte,
+  matin: z.strictObject({
+    ordre: z.array(z.enum(BLOCS_DU_MATIN)).length(BLOCS_DU_MATIN.length),
+    respiration_min: entierPositif,
+    duree_min: entierPositif,
+    duree_interpretation: drapeau,
+    cafe: texte,
+    mobilite_duree_mouvement_s: entierPositif,
+    mobilite_interpretation: drapeau,
+    seances: parLettre(seanceAncrage),
+    etirement: z.strictObject({
+      rotation: z.array(idExercice).min(1),
+      series: entierPositif,
+      regle: texte,
+    }),
+    version_minimum: z.strictObject({ declencheur: texte, contenu: texte }),
+    jour_recuperation: texte,
+    note: texte.optional(),
+  }),
+  midi: z.strictObject({ contenu: texte, bonus: z.boolean() }),
+  soir: z.strictObject({
+    suspension_series: entierPositif,
+    deep_squat_series: entierPositif,
+    pied: z.strictObject({
+      tours: entierPositif,
+      series_exercices: entierPositif,
+      series_etirements: entierPositif,
+      alternance: texte,
+    }),
+    duree_min: entierPositif,
+    duree_interpretation: drapeau,
+    version_minimum: z.strictObject({
+      exercices: z.array(idExercice).min(1),
+      duree_min: entierPositif,
+    }),
+    boxe: texte,
+    jour_recuperation: texte,
+  }),
+  chaque_jour: z.strictObject({ exercice: idExercice, moment: texte }),
+  week_end: z.strictObject({
+    minimum: z.strictObject({ contenu: texte, duree_min: entierPositif }),
+    au_mieux: z.strictObject({
+      mobilite: texte,
+      musculation: z.strictObject({
+        series: entierPositif,
+        sans_palier_4: z.boolean(),
+        swing: z.strictObject({ series: entierPositif, reps: entierPositif }),
+        regle: texte,
+      }),
+      etirements_hanches_series: entierPositif,
+      boxe_rounds: z.array(entierPositif).min(1),
+      boxe_interpretation: drapeau,
+      duree_min: entierPositif,
+      note: texte.optional(),
+    }),
+  }),
+});
+
 // ---------- Séances de musculation ----------
 
 const elementDeSeance = z.strictObject({
@@ -510,6 +598,7 @@ const programmeBrutSchema = z.strictObject({
       attribution: avecInterpretation(texte),
     }),
   }),
+  ancrage,
   lever_tot,
   matin,
   seances,
@@ -705,6 +794,53 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
       `${p.boxe.maison.contenu_rounds.length} contenus pour ${p.boxe.maison.rounds} rounds`,
     );
   }
+
+  // Ancrage : durée cohérente avec les cycles, exercices existants et à leur place
+  const an = p.ancrage;
+  const semainesAttendues = an.cycles_minimum * an.semaines_par_cycle;
+  if (an.sortie.semaines_minimum !== semainesAttendues) {
+    signaler(
+      ['ancrage', 'sortie', 'semaines_minimum'],
+      `${an.sortie.semaines_minimum} semaines minimum pour ${an.cycles_minimum} cycles de ${an.semaines_par_cycle} semaines (attendu : ${semainesAttendues})`,
+    );
+  }
+  if (an.sortie.jours_tenus > an.sortie.fenetre_jours) {
+    signaler(
+      ['ancrage', 'sortie', 'jours_tenus'],
+      'plus de jours tenus exigés que de jours dans la fenêtre',
+    );
+  }
+  for (const lettre of LETTRES) {
+    const s = an.matin.seances[lettre];
+    s.mobilite.forEach((id, j) => {
+      const ici = ['ancrage', 'matin', 'seances', lettre, 'mobilite', j];
+      verifier(ici, id, 'mobilite');
+      if (p.exercices[id] && !p.mobilite.routines[lettre].includes(id))
+        signaler(ici, `« ${id} » n'est pas dans la routine de mobilité ${lettre}`);
+    });
+    s.musculation.forEach((e, j) =>
+      verifier(
+        ['ancrage', 'matin', 'seances', lettre, 'musculation', j, 'exercice'],
+        e.exercice,
+        'musculation',
+      ),
+    );
+  }
+  an.matin.etirement.rotation.forEach((id, j) =>
+    verifier(['ancrage', 'matin', 'etirement', 'rotation', j], id, 'etirement', 'hanches'),
+  );
+  an.soir.version_minimum.exercices.forEach((id, j) =>
+    verifier(['ancrage', 'soir', 'version_minimum', 'exercices', j], id, 'bloc_cle'),
+  );
+  verifier(['ancrage', 'chaque_jour', 'exercice'], an.chaque_jour.exercice, 'equilibre');
+  const rounds = an.week_end.au_mieux.boxe_rounds;
+  rounds.forEach((r, j) => {
+    const ici = ['ancrage', 'week_end', 'au_mieux', 'boxe_rounds', j];
+    if (r > p.boxe.maison.rounds)
+      signaler(ici, `round ${r} inexistant (le bloc boxe en compte ${p.boxe.maison.rounds})`);
+    if (j > 0 && r <= (rounds[j - 1] ?? 0))
+      signaler(ici, "rounds attendus dans l'ordre, sans doublon");
+  });
 }
 
 export const programmeSchema = programmeBrutSchema.superRefine(controlesCroises);

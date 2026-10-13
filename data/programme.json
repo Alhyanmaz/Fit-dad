@@ -2,9 +2,9 @@
   "version_schema": 1,
   "meta": {
     "titre": "Programme d'entraînement — refonte 2026",
-    "version": "2026-10-07",
-    "source": "docs/PROGRAMME.md (copie du document Claude Docs, révision 44, mise à jour le 07/10/2026 ; elle fait foi)",
-    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; validé au chargement par app/src/data/schema.ts. Points à trancher par José : docs/relecture-programme.md. En cas d'écart, PROGRAMME.md fait foi.",
+    "version": "2026-10-13",
+    "source": "docs/PROGRAMME.md (copie du document Claude Docs, révision 44, mise à jour le 07/10/2026 puis le 13/10/2026 ; elle fait foi)",
+    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; cycles d'ancrage ajoutés le 13/10/2026 ; validé au chargement par app/src/data/schema.ts. Points à trancher par José : docs/relecture-programme.md. En cas d'écart, PROGRAMME.md fait foi.",
     "conventions": {
       "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… » et « pas_min » ; « jours_minimum » est un nombre de jours, « cycle_minimum » un numéro de cycle",
       "charges": "kg",
@@ -33,6 +33,163 @@
       },
       "attribution": {
         "valeur": "Règle stricte : au plus une hausse par semaine (lundi à dimanche), aucune en décharge. Une hausse demandée alors que celle de la semaine est déjà prise est reportée au lundi suivant. Plusieurs hausses décidées en semaine de test sont étalées, une par semaine, dans l'ordre corde → mollets → tibialis ; José peut changer l'ordre."
+      }
+    }
+  },
+  "ancrage": {
+    "decision": "2026-10-13",
+    "objet": "Installer l'habitude avant le programme complet : un socle réduit chaque jour, le reste en bonus.",
+    "cycles_minimum": 2,
+    "semaines_par_cycle": 5,
+    "decharge": false,
+    "decharge_interpretation": true,
+    "compte_dans_les_cycles": false,
+    "compte_dans_les_cycles_interpretation": true,
+    "jour_tenu": {
+      "regle": "Matin et soir faits, au moins en version minimum. Le midi et le « au mieux » du week-end sont des bonus, jamais comptés comme ratés.",
+      "moments": [
+        "matin",
+        "soir"
+      ],
+      "bonus": [
+        "midi",
+        "week_end_au_mieux"
+      ]
+    },
+    "sortie": {
+      "semaines_minimum": 10,
+      "jours_tenus": 5,
+      "fenetre_jours": 7,
+      "samedi_et_dimanche": true,
+      "validation": "L'appli propose de sortir ; José valide. Viennent alors les tests, puis José règle la suite.",
+      "sinon": "L'ancrage continue."
+    },
+    "lever_tot": {
+      "regle": "Heures de lever et de coucher et passage de palier inchangés ; le contenu du matin ne change pas avec le palier.",
+      "plancher": "le matin d'ancrage, en version normale ou minimum",
+      "palier_1": "Le lever seul valide toujours le matin de « Lever tôt » ; le jour tenu demande, lui, la séance du matin."
+    },
+    "progression": "Règles habituelles : propositions dans l'échelon, « Ajuster », une seule hausse par semaine sur le bas de jambe.",
+    "matin": {
+      "ordre": [
+        "respiration",
+        "cafe",
+        "mobilite",
+        "musculation",
+        "etirements"
+      ],
+      "respiration_min": 5,
+      "duree_min": 10,
+      "duree_interpretation": true,
+      "cafe": "Le café reste la marge, en plus des 10 min.",
+      "mobilite_duree_mouvement_s": 30,
+      "mobilite_interpretation": true,
+      "seances": {
+        "A": {
+          "mobilite": [
+            "hip_hinge_baton",
+            "shoulder_dislocate"
+          ],
+          "musculation": [
+            {
+              "exercice": "kt_press",
+              "series": 1
+            },
+            {
+              "exercice": "swing_emom",
+              "series": 1,
+              "reps": 10,
+              "note": "1 série de 10, pas en EMOM"
+            }
+          ]
+        },
+        "B": {
+          "mobilite": [
+            "scapula_pull_up",
+            "duck_walk"
+          ],
+          "musculation": [
+            {
+              "exercice": "rings_row",
+              "series": 1
+            },
+            {
+              "exercice": "goblet_squat",
+              "series": 1
+            }
+          ]
+        }
+      },
+      "etirement": {
+        "rotation": [
+          "couch_stretch",
+          "pigeon",
+          "pancake"
+        ],
+        "series": 1,
+        "regle": "Le suivant dans l'ordre, un par matin ; couch stretch et pigeon de chaque côté."
+      },
+      "version_minimum": {
+        "declencheur": "nuit très hachée",
+        "contenu": "un seul mouvement de mobilité"
+      },
+      "jour_recuperation": "La musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens).",
+      "note": "Exercices du palier 2 : les quatre patrons sur deux matins. Le swing passe à 1 série pendant l'ancrage (2 au palier 2, décision du 07/10/2026)."
+    },
+    "midi": {
+      "contenu": "Bouger, ce que José peut : marche ou corde, sans durée imposée.",
+      "bonus": true
+    },
+    "soir": {
+      "suspension_series": 1,
+      "deep_squat_series": 1,
+      "pied": {
+        "tours": 1,
+        "series_exercices": 1,
+        "series_etirements": 1,
+        "alternance": "A/B, « la suivante », chaque soir sans boxe"
+      },
+      "duree_min": 10,
+      "duree_interpretation": true,
+      "version_minimum": {
+        "exercices": [
+          "suspension",
+          "deep_squat"
+        ],
+        "duree_min": 4
+      },
+      "boxe": "La version minimum ; les 4 étirements du pied si possible.",
+      "jour_recuperation": "Suspension passive, sans knee raises ; deep squat et routine pied comme les autres soirs."
+    },
+    "chaque_jour": {
+      "exercice": "single_leg_balance",
+      "moment": "pendant le brossage des dents, matin et soir"
+    },
+    "week_end": {
+      "minimum": {
+        "contenu": "Le matin de la semaine ; le soir, comme chaque jour.",
+        "duree_min": 20
+      },
+      "au_mieux": {
+        "mobilite": "Routine Mob. matin complète (A le samedi, B le dimanche), 30 s par mouvement.",
+        "musculation": {
+          "series": 3,
+          "sans_palier_4": true,
+          "swing": {
+            "series": 3,
+            "reps": 10
+          },
+          "regle": "Séance complète A le samedi, B le dimanche, sans les exercices du palier 4."
+        },
+        "etirements_hanches_series": 2,
+        "boxe_rounds": [
+          1,
+          3,
+          5
+        ],
+        "boxe_interpretation": true,
+        "duree_min": 45,
+        "note": "Puis le soir, comme chaque jour."
       }
     }
   },
