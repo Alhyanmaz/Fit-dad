@@ -14,7 +14,7 @@ Le programme repose sur une journée type répétée 7 jours sur 7 : musculation
 - **Soir** : bloc clé (suspension, deep squat), puis une routine pied de 2 exercices et 4 étirements ; 10 min pendant l'ancrage, puis 15 et 20 min.
 - **Chaque jour** : single leg balance pendant le brossage des dents.
 - **Week-end** : une base d'environ 20 min, qui grandit avec les paliers jusqu'à la journée complète et 20 min de boxe, samedi et dimanche.
-- **Boxe en club** : un soir de semaine ; le lendemain est un jour de récupération active.
+- **Boxe en club** : un soir de semaine ; le lendemain est un jour de récupération active, sauf pendant l'ancrage.
 - **Progression** : par critères de performance, pas au calendrier, avec une semaine de décharge et de tests toutes les 4 à 6 semaines ; c'est toi qui ajustes le cycle suivant d'après les tests, et tu peux tout régler à la main à tout moment (« Ajuster »).
 
 Chaque section donne le contenu, les durées et la règle pour progresser. Les lettres A à D indiquent le niveau de preuve (échelle en fin de document) ; « \[Interprétation\] » signale un choix de conception sans source directe.
@@ -76,7 +76,7 @@ Le contenu du matin dépend du niveau : pendant l'ancrage, 1 puis 2 exercices de
 
 **Quand la boxe change de jour**
 
-- Le lendemain de la boxe devient le jour de récupération, sauf quand la boxe tombe le vendredi ; tout le reste se décale.
+- Le lendemain de la boxe devient le jour de récupération, sauf quand la boxe tombe le vendredi et pendant l'ancrage ; tout le reste se décale.
 - La musculation alterne A et B d'un matin à l'autre, jour de récupération exclu. La routine pied alterne A et B chaque soir sans boxe. On fait toujours « la suivante », sans compter les jours.
 - La corde se propose les midis qui ne sont ni le jour de boxe ni le jour de récupération, jusqu'à 3 séances faites dans la semaine (objectif) ; la marche reste toujours possible.
 - Boxe le vendredi : pas de jour de récupération. Le samedi et le dimanche restent des journées normales, avec la musculation complète ; ce week-end-là, un seul bloc boxe, le dimanche.
@@ -85,7 +85,7 @@ Le contenu du matin dépend du niveau : pendant l'ancrage, 1 puis 2 exercices de
 
 Pour installer l'habitude avant le programme complet : deux cycles de 5 semaines au minimum, un par niveau (N1, puis N2), avec un socle réduit chaque jour ; le reste est en bonus. Décisions du 13/10/2026, puis du 14/10/2026 pour les deux niveaux.
 
-Pendant l'ancrage, cette section remplace le contenu des sections « Le matin par paliers », « Musculation », « Mobilité et échauffement », « Étirements », « Bloc clé du soir », « Pied et cheville », « Cardio du midi », « Boxe à la maison » et « Week-end ». Le jour de récupération et les règles de progression restent en vigueur, avec les adaptations ci-dessous.
+Pendant l'ancrage, cette section remplace le contenu des sections « Le matin par paliers », « Musculation », « Mobilité et échauffement », « Étirements », « Bloc clé du soir », « Pied et cheville », « Cardio du midi », « Boxe à la maison » et « Week-end ». Les règles de progression restent en vigueur, avec les adaptations ci-dessous. Pas de jour de récupération : le lendemain d'une boxe en club suit le schéma des autres jours, matin et soir (décision du 14/10/2026).
 
 **Les deux niveaux**
 
@@ -122,19 +122,18 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 - Couch stretch de chaque côté. Le pigeon ne fait pas partie de l'ancrage.
 - À N2, les 10 min sont un créneau : le contenu prend 5 à 7 min, le reste sert de marge \[Interprétation\].
 - Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
-- Jour de récupération : pas de musculation ; les mouvements de mobilité du niveau, au ralenti, puis des neck CARs (3 par sens) \[Interprétation\].
+- Pas de version courte : la version normale, ou la version minimum (décision du 14/10/2026).
 - N1 travaille le tirage et le squat ; N2, les quatre patrons. La base du week-end porte les quatre exercices dès N1.
 
 **Midi** : bouger, ce que tu peux : marche ou corde, sans durée imposée. C'est un bonus.
 
 **Soir : ≈ 10 min**
 
-- Suspension + knee raises : 1 série, à ta cible.
+- Suspension + knee raises : 1 série, à ta cible ; le one arm hang une fois ajouté (suspension à 80 s) \[Interprétation\].
 - Deep squat : 1 × 2 min, à ton contrepoids.
 - Routine pied, 1 tour, A et B en alternance : 1 série de chaque exercice au lieu de 2, puis les 4 étirements, 1 × 30 s.
-- Version minimum : suspension et deep squat, ≈ 4 min.
+- Version minimum : suspension seule, sans knee raises (one arm hang une fois ajouté), et deep squat, ≈ 4 min.
 - Soir de boxe en club : la version minimum ; les 4 étirements du pied si possible.
-- Jour de récupération : suspension passive, sans knee raises ; deep squat et routine pied comme les autres soirs.
 
 **Chaque jour** : single leg balance pendant le brossage des dents, 1 min sur chaque jambe, matin et soir.
 
@@ -325,11 +324,11 @@ L'appli propose +5 s de suspension, +2 knee raises et, une fois le one arm hang 
 
 **Trois versions**
 
-| Soir         | Contenu                                                                                  | Durée                                |
-|--------------|------------------------------------------------------------------------------------------|--------------------------------------|
-| Sans boxe    | Bloc complet                                                                             | ≈ 8 min                              |
-| Récupération | Suspension passive, sans knee raises ni one arm hang ; deep squat à ta charge habituelle | ≈ 6 min                              |
-| Boxe en club | 1 suspension + 1 × 2 min de deep squat ; les 4 étirements du pied si possible            | ≈ 4 min, ≈ 7 min avec les étirements |
+| Soir         | Contenu                                                                                                                                | Durée                                |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| Sans boxe    | Bloc complet                                                                                                                           | ≈ 8 min                              |
+| Récupération | Suspension passive, sans knee raises ni one arm hang ; deep squat à ta charge habituelle                                               | ≈ 6 min                              |
+| Boxe en club | 1 suspension seule, sans knee raises (one arm hang une fois ajouté), et 1 × 2 min de deep squat ; les 4 étirements du pied si possible | ≈ 4 min, ≈ 7 min avec les étirements |
 
 Le jour de récupération, le deep squat garde sa charge : dans ta progression, la charge sert de contrepoids et facilite la position. Sans charge, il serait plus difficile.
 
@@ -433,7 +432,7 @@ Une rotation complète prend 6 semaines, à peu près la durée d'un cycle. Le r
 
 ## Jour de récupération
 
-Le lendemain de la boxe en club : pas de musculation, du mouvement léger du matin au soir. Exception : boxe le vendredi, pas de jour de récupération (section « Week-end »).
+Le lendemain de la boxe en club : pas de musculation, du mouvement léger du matin au soir. Exception : boxe le vendredi, pas de jour de récupération (section « Week-end »). Pendant l'ancrage non plus (section « Cycles d'ancrage »).
 
 | Créneau   | Contenu                                                                                                                                                              |
 |-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -578,7 +577,7 @@ L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes t
 - **Semaines de tests** : tu saisis tes résultats, puis tu fixes toi-même les cibles du cycle suivant, comme dans l'appli actuelle.
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.
-- **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 5 jours sur 7 ont tenu, à valider par toi.
+- **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 5 jours sur 7 ont tenu, à valider par toi ; ni jour de récupération ni version courte.
 
 ## Sources
 

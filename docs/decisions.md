@@ -102,3 +102,21 @@ Retour de José du 13/10 sur les paliers et les phases (document Word, lecture d
   - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier ;
   - version courte et décharge : règles actuelles.
 - **Q1 à Q4 du J1** : toujours ouvertes, avec les nouveaux numéros (ancien palier 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3). Le J1 se termine avec ces points provisoires (accord de José du 14/10).
+
+## 14/10/2026 — réponses de José aux interprétations du moteur (J2)
+
+Réponses de José, le 14/10, à la liste de la PR #3. Détail : `docs/PROGRAMME.md` (« Cycles d'ancrage », « Bloc clé du soir ») et `docs/SPEC.md` (§6.1, §6.5, §6.11).
+
+- **Acceptés** :
+  - lettre du week-end : A le samedi, B le dimanche, à tous les niveaux ; elle choisit aussi l'échauffement de la base et la journée type du palier 4 ;
+  - week-end des paliers 2 et 3 : la routine de mobilité garde le temps du palier (30 s au palier 2, 60 s au palier 3) ;
+  - soir de récupération aux paliers : 2 séries de suspension passive et 2 de deep squat.
+- **Pas de jour de récupération pendant l'ancrage** : le lendemain d'une boxe en club suit le schéma des autres jours, matin et soir.
+- **Pas de version courte pendant l'ancrage** : version normale ou version minimum.
+- **Soir de boxe** : suspension seule, sans knee raises ; le one arm hang s'y ajoute une fois que José l'a débloqué (suspension à 80 s).
+- **Déductions de Claude, à valider** :
+  - la version minimum du soir de l'ancrage, qui est aussi son soir de boxe, suit la même règle : suspension seule ;
+  - le soir normal de l'ancrage prend le one arm hang une fois ajouté, comme le soir de boxe (« 1 série du bloc clé », entrée précédente).
+- **En attente** : José a demandé des explications sur deux points ; les choix de Claude restent en place d'ici là :
+  - « au mieux » du week-end : cossack squat et reverse table top en 1 série à la cible, étirements de hanche sans le pigeon ;
+  - étirements du pied au cycle 2 du programme : 1 série, puis 2, d'une routine pied à l'autre.

@@ -114,7 +114,7 @@ Toutes ces règles vivent dans `app/src/domain`, en fonctions pures testées (se
 ### 6.1 Type de jour
 
 - **Jour de boxe** : José a déclaré la boxe en club ce soir-là.
-- **Jour de récupération** : le lendemain d'un jour de boxe, sauf quand la boxe tombe le vendredi (pas de jour de récupération ce week-end-là, décision du 07/10/2026). Un jour de récupération tombe donc toujours en semaine.
+- **Jour de récupération** : le lendemain d'un jour de boxe, sauf quand la boxe tombe le vendredi (pas de jour de récupération ce week-end-là, décision du 07/10/2026). Un jour de récupération tombe donc toujours en semaine. Pendant l'ancrage, pas de jour de récupération : le lendemain d'un jour de boxe est un jour normal (décision du 14/10/2026, §6.11).
 - **Jour normal** : les autres jours.
 - **Semaine de décharge** : se superpose au type de jour (section 6.10).
 - Le samedi et le dimanche ajoutent le bloc boxe, sauf le samedi qui suit une boxe le vendredi.
@@ -162,7 +162,7 @@ Contenu :
 
 ### 6.5 Soir
 
-- **Bloc clé** selon le jour : standard (≈ 8 min : 2 séries de suspension avec knee raises, one arm hang une fois les 80 s atteintes, deep squat 2 × 2 min), récupération (≈ 6 min : suspension passive sans knee raises ni one arm hang, deep squat à la charge habituelle, 2 séries de chaque [Interprétation]), boxe (≈ 4 min : 1 suspension avec knee raises, sans one arm hang [Interprétation], et 1 × 2 min de deep squat).
+- **Bloc clé** selon le jour : standard (≈ 8 min : 2 séries de suspension avec knee raises, one arm hang une fois les 80 s atteintes, deep squat 2 × 2 min), récupération (≈ 6 min : suspension passive sans knee raises ni one arm hang, deep squat à la charge habituelle, 2 séries de chaque [Interprétation]), boxe (≈ 4 min : 1 suspension seule, sans knee raises, avec le one arm hang une fois ajouté, et 1 × 2 min de deep squat ; décision du 14/10/2026).
 - **Routine pied** chaque soir sans boxe : la suivante (A : short foot et extension de mollet ; B : tibialis posterior et tibialis raise), puis les 4 étirements (étirement mollet, kiza, seiza, ATG split squat). Séries par exercice selon le palier (`soir_par_palier`, provisoire) : 1 aux paliers 1 et 2 (soir ≈ 15 min), 2 aux paliers 3 et 4 (≈ 20 min) ; pendant l'ancrage, §6.11.
 - Séries des 4 étirements : 1 au premier cycle ; 1 et 2 en alternance au deuxième, d'une routine pied à l'autre en commençant par 1 [Interprétation] ; 2 à partir du troisième.
 - Soir de boxe : les 4 étirements du pied après la boxe, 1 série, facultatifs.
@@ -246,19 +246,19 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 
 - **Phase** : l'ancrage commence à la date choisie par José et dure jusqu'au passage au palier 1, validé par lui. Date de début, niveau en cours et dates de passage sont des données utilisateur [Interprétation].
 - **Niveaux** : N1, lever 6h50 et coucher 22h50, semaines 1 à 5 au plus tôt ; N2, lever 6h40 et coucher 22h40, à partir de la semaine 6.
-- **Contenu du jour** : il remplace celui des §6.2, 6.4, 6.5 et 6.6. Le type de jour (§6.1) et les alternances « la suivante » (§6.3) ne changent pas.
-  - **Matin N1**, A ou B (alternance de la musculation, jour de récupération exclu) : A, reverse table top puis 1 série de rings row ; B, cossack squat puis 1 série de goblet squat.
+- **Contenu du jour** : il remplace celui des §6.2, 6.4, 6.5 et 6.6. Les alternances « la suivante » (§6.3) ne changent pas. Pas de jour de récupération : le lendemain d'un jour de boxe est un jour normal, matin et soir (décision du 14/10/2026).
+  - **Matin N1**, A ou B (alternance de la musculation) : A, reverse table top puis 1 série de rings row ; B, cossack squat puis 1 série de goblet squat.
   - **Matin N2** : respiration 5 min, café (marge), puis A : bear walk et hip hinge au bâton, 1 série de KT press et 1 × 10 swings ; B : reverse table top et cossack squat, 1 série de rings row et de goblet squat ; puis 1 étirement, couch stretch et pancake à tour de rôle.
-  - Cossack squat et reverse table top : 1 série à la cible ; les autres mouvements de mobilité : 30 s. Version minimum (nuit très hachée) : un seul mouvement de mobilité. Version courte : à N2, sans l'étirement, comme au §6.2 [Interprétation]. Jour de récupération : pas de musculation ; les mouvements de mobilité du niveau, ceux de l'autre lettre que la veille (comme au §6.2), au ralenti, puis neck CARs ; à N2, l'étirement reste [Interprétation].
+  - Cossack squat et reverse table top : 1 série à la cible ; les autres mouvements de mobilité : 30 s. Version minimum (nuit très hachée) : un seul mouvement de mobilité. Pas de version courte (décision du 14/10/2026).
   - **Midi** : « bouger », marche ou corde, sans durée imposée ; bonus. Pas de compteur « corde : n/3 » pendant l'ancrage [Interprétation].
-  - **Soir sans boxe** : suspension 1 série ; deep squat 1 × 2 min ; routine pied A ou B (« la suivante ») en 1 tour : 1 série par exercice, puis les 4 étirements 1 × 30 s. Version minimum : suspension et deep squat. Soir de boxe : la version minimum, étirements du pied facultatifs. Jour de récupération : suspension passive sans knee raises, le reste identique.
+  - **Soir sans boxe** : suspension avec knee raises, 1 série, et le one arm hang une fois ajouté [Interprétation] ; deep squat 1 × 2 min ; routine pied A ou B (« la suivante ») en 1 tour : 1 série par exercice, puis les 4 étirements 1 × 30 s. Version minimum : suspension seule (sans knee raises, one arm hang une fois ajouté) et deep squat. Soir de boxe : la version minimum, étirements du pied facultatifs (décision du 14/10/2026).
   - **Chaque jour** : single leg balance au brossage des dents, matin et soir.
   - **Week-end** : base, 2 mouvements d'échauffement (ceux du matin N2 du jour [Interprétation]), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement, puis le soir. Au mieux (bonus) : routine Mob. matin complète à 30 s (cossack squat et reverse table top : 1 série à la cible [Interprétation]), séance complète en 3 séries sans les exercices du palier 2 (swing 3 × 10), étirements de hanche 2 × 30 s (couch stretch et pancake, sans le pigeon [Interprétation]), boxe en 3 rounds (rounds 1, 3 et 5 du bloc) [Interprétation pour les rounds].
 - **Jour tenu** : matin fait (normal ou minimum) et soir fait (normal, minimum ou version boxe). Un bloc bonus non fait ne rend jamais un jour « raté ».
 - **Passages** : vers N2 au plus tôt au début de la semaine 6, vers le palier 1 au plus tôt au début de la semaine 11. L'appli propose le passage seulement si les 7 derniers jours comptent au moins 5 jours tenus, dont le samedi et le dimanche ; sinon, elle le propose de nouveau la semaine suivante. Appliqué seulement après confirmation de José. Au passage au palier 1 : tests de la semaine 1 du programme et « Préparer le cycle suivant » (§5.5).
 - **Lever tôt** (§6.7) : heures du niveau en cours, verdict inchangé. Le plancher est le matin du niveau, normal ou minimum. À N1, le lever seul valide le matin de « Lever tôt » ; le jour tenu demande la séance du matin.
 - **Cycles** (§6.10) : pas de décharge ni de tests pendant l'ancrage ; le numéro de cycle reste à 1 jusqu'au palier 1 (étirements du pied à 1 série) [Interprétation].
-- **Progression** (§6.8, §6.9) : inchangée ; « Ajuster » reste disponible.
+- **Progression** (§6.8, §6.9) : inchangée ; « Ajuster » reste disponible. « Alléger » n'a pas de version courte à proposer pendant l'ancrage : à trancher au J5 (proposition : la version minimum).
 
 ## 7. Données
 
@@ -327,7 +327,7 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 12. **Étirements du pied** : cycle 1 → 1 série ; cycle 2 → 1 et 2 en alternance ; cycle 3 → 2 séries.
 13. **Ajuster** : José règle le KT press à 1 série de 20 kg × 6 et 1 série de 16 kg × 14 → la séance suivante affiche ces cibles, sans validation ; le réglage figure dans l'historique. Après 9 jours sans séance, rien ne change tout seul.
 14. **Export puis import** sur une base vide : toutes les données reviennent à l'identique.
-15. **Ancrage, contenu du jour** : N2, matin A → respiration 5 min, bear walk et hip hinge au bâton 30 s chacun, 1 série de KT press, 1 série de 10 swings, puis couch stretch ; le matin suivant (B) → reverse table top et cossack squat, rings row, goblet squat, puis pancake. N1, matin A → reverse table top, 1 série de rings row, pas d'étirement. Soir sans boxe → suspension 1 série, deep squat 1 × 2 min, routine pied en 1 tour. Soir de boxe → suspension et deep squat seulement.
+15. **Ancrage, contenu du jour** : N2, matin A → respiration 5 min, bear walk et hip hinge au bâton 30 s chacun, 1 série de KT press, 1 série de 10 swings, puis couch stretch ; le matin suivant (B) → reverse table top et cossack squat, rings row, goblet squat, puis pancake. N1, matin A → reverse table top, 1 série de rings row, pas d'étirement. Soir sans boxe → suspension 1 série, deep squat 1 × 2 min, routine pied en 1 tour. Soir de boxe → suspension seule (sans knee raises) et deep squat. Lendemain de boxe → jour normal, avec la séance du matin (pas de jour de récupération).
 16. **Ancrage, jour tenu** : matin et soir en version minimum → tenu ; matin fait, soir non fait → non tenu ; midi non fait → sans effet ; samedi, matin et soir faits sans le « au mieux » → tenu.
 17. **Ancrage, passages** : début le lundi 19/10 à N1. Lundi 23/11 (début de la semaine 6), 5 jours tenus sur les 7 précédents dont le samedi 21 et le dimanche 22 → passage à N2 proposé, appliqué seulement après confirmation ; même situation le lundi 16/11 → rien (trop tôt). Lundi 28/12 (début de la semaine 11), 6 jours tenus sur 7 mais le dimanche 27 non tenu → pas de passage au palier 1 ; lundi 04/01/2027, 5 jours tenus dont le samedi et le dimanche → passage proposé.
 

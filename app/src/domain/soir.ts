@@ -7,10 +7,10 @@ import { estEnAncrage, type Niveau } from './niveau';
 /** Soir (docs/SPEC.md §6.5 ; pendant l'ancrage, §6.11). */
 
 export interface BlocCle {
-  version: 'standard' | 'recuperation' | 'boxe';
+  version: 'standard' | 'recuperation' | 'boxe' | 'minimum';
   suspension_series: number;
   knee_raises: boolean;
-  /** One arm hang inclus s'il a été ajouté par José (suspension à 80 s). */
+  /** One arm hang inclus une fois ajouté par José (suspension à 80 s). */
   one_arm_hang_si_ajoute: boolean;
   deep_squat_series: number;
 }
@@ -39,7 +39,7 @@ export interface ContexteDuSoir {
   /** Routines pied déjà faites dans le cycle, pour l'alternance des séries du cycle 2. */
   piedsFaitsDansLeCycle: number;
   /**
-   * Version minimum (suspension et deep squat) : prévue pendant l'ancrage seulement. Aux paliers,
+   * Version minimum (suspension seule et deep squat) : prévue pendant l'ancrage seulement. Aux paliers,
    * le programme n'en définit pas et le soir reste le soir du palier.
    */
   version?: 'normale' | 'minimum';
@@ -70,11 +70,12 @@ export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
     const apres = programme.etirements.soir_boxe;
     return {
       duree_min: boxe.duree_min,
+      // Suspension seule, sans knee raises ; one arm hang une fois ajouté (décision du 14/10/2026).
       bloc_cle: {
         version: 'boxe',
         suspension_series: boxe.suspension_series,
-        knee_raises: true,
-        one_arm_hang_si_ajoute: false,
+        knee_raises: false,
+        one_arm_hang_si_ajoute: true,
         deep_squat_series: boxe.deep_squat_series,
       },
       pied: null,
@@ -90,15 +91,19 @@ export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
   const exercices = programme.pied.routines[lettre].exercices;
 
   if (estEnAncrage(niveau)) {
+    // Pas de jour de récupération pendant l'ancrage (décision du 14/10/2026).
+    if (recuperation) throw new Error("pas de jour de récupération pendant l'ancrage");
     const soir = programme.ancrage.soir;
     const minimum = ctx.version === 'minimum';
     return {
       duree_min: minimum ? soir.version_minimum.duree_min : soir.duree_min,
+      // Version minimum : suspension seule, comme le soir de boxe. One arm hang une fois ajouté,
+      // comme le soir de boxe [Interprétation].
       bloc_cle: {
-        version: recuperation ? 'recuperation' : 'standard',
+        version: minimum ? 'minimum' : 'standard',
         suspension_series: soir.suspension_series,
-        knee_raises: !recuperation,
-        one_arm_hang_si_ajoute: false,
+        knee_raises: !minimum,
+        one_arm_hang_si_ajoute: true,
         deep_squat_series: soir.deep_squat_series,
       },
       pied: minimum

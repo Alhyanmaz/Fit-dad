@@ -7,6 +7,10 @@ import { estEnAncrage, niveauDAncrage, palierDuMatin, type Niveau } from './nive
 
 export type VersionDuMatin = 'normale' | 'courte' | 'minimum';
 
+/** Versions que José peut choisir : pas de version courte pendant l'ancrage (décision du 14/10/2026). */
+export const versionsDuMatin = (niveau: Niveau): VersionDuMatin[] =>
+  estEnAncrage(niveau) ? ['normale', 'minimum'] : ['normale', 'courte', 'minimum'];
+
 export interface Mouvement {
   exercice: string;
   /** Durée par mouvement ; absente pour un mouvement fait en série. */
@@ -68,7 +72,7 @@ export function matinDuJour(programme: Programme, ctx: ContexteDuMatin): Matin {
     : matinDuPalier(programme, ctx.niveau.palier, ctx, version);
 }
 
-/** Lettre des mouvements de mobilité : l'autre que la veille le jour de récupération. */
+/** Lettre des mouvements de mobilité des paliers : l'autre que la veille le jour de récupération. */
 function lettreDeMobilite(ctx: ContexteDuMatin): Lettre {
   if (ctx.type === 'recuperation')
     return ctx.lettreDeLaVeille ? autreLettre(ctx.lettreDeLaVeille) : 'A';
@@ -98,40 +102,38 @@ function matinDAncrage(
   ctx: ContexteDuMatin,
   version: VersionDuMatin,
 ): Matin {
+  // Ni jour de récupération ni version courte pendant l'ancrage (décision du 14/10/2026).
+  if (ctx.type === 'recuperation') throw new Error("pas de jour de récupération pendant l'ancrage");
+  if (version === 'courte') throw new Error("pas de version courte pendant l'ancrage");
   const niveau = niveauDAncrage(programme, id);
   const regles = programme.ancrage.matin;
-  const recuperation = ctx.type === 'recuperation';
-  const seance = niveau.matin.seances[lettreDeMobilite(ctx)];
+  const lettre = ctx.lettre ?? 'A';
+  const seance = niveau.matin.seances[lettre];
   const mobilite: Mouvement[] = seance.mobilite.map((exercice) =>
     regles.mobilite_a_la_cible.includes(exercice)
       ? { exercice, a_la_cible: true }
       : { exercice, duree_s: regles.mobilite_duree_mouvement_s },
   );
-  const lettre = recuperation ? null : ctx.lettre;
   if (version === 'minimum') return matinMinimum(lettre, mobilite[0]);
-  const etirements: Etirement[] =
-    niveau.matin.etirement && version === 'normale'
-      ? [
-          {
-            exercice: suivantDansLaRotation(
-              regles.etirement.rotation,
-              ctx.dernierEtirement ?? null,
-            ),
-            series: regles.etirement.series,
-          },
-        ]
-      : [];
+  const etirements: Etirement[] = niveau.matin.etirement
+    ? [
+        {
+          exercice: suivantDansLaRotation(regles.etirement.rotation, ctx.dernierEtirement ?? null),
+          series: regles.etirement.series,
+        },
+      ]
+    : [];
   const respiration = niveau.matin.respiration_min;
   return {
     lettre,
     respiration_min: respiration,
     cafe_min: Math.max(0, niveau.matin.marge_min - respiration),
     mobilite,
-    mobilite_au_ralenti: recuperation,
-    neck_cars_par_sens: recuperation ? neckCars(programme) : null,
-    musculation: recuperation ? [] : seance.musculation.map((e) => ({ ...e })),
+    mobilite_au_ralenti: false,
+    neck_cars_par_sens: null,
+    musculation: seance.musculation.map((e) => ({ ...e })),
     etirements,
-    travail_min: version === 'normale' ? niveau.matin.creneau_min : null,
+    travail_min: niveau.matin.creneau_min,
     a_definir_min: 0,
   };
 }

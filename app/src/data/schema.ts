@@ -290,6 +290,7 @@ const ancrage = z.strictObject({
     moments: z.array(z.enum(['matin', 'soir'])).min(1),
     bonus: z.array(z.enum(['midi', 'week_end_au_mieux'])),
   }),
+  jour_recuperation: texte,
   passage: z.strictObject({
     regle: texte,
     jours_tenus: entierPositif,
@@ -312,14 +313,15 @@ const ancrage = z.strictObject({
       regle: texte,
     }),
     version_minimum: z.strictObject({ declencheur: texte, contenu: texte }),
-    jour_recuperation: texte,
-    jour_recuperation_interpretation: drapeau,
+    version_courte: texte,
     note: texte.optional(),
   }),
   midi: z.strictObject({ contenu: texte, bonus: z.boolean() }),
   soir: z.strictObject({
     suspension_series: entierPositif,
     deep_squat_series: entierPositif,
+    one_arm_hang: texte,
+    one_arm_hang_interpretation: drapeau,
     pied: z.strictObject({
       tours: entierPositif,
       series_exercices: entierPositif,
@@ -331,9 +333,9 @@ const ancrage = z.strictObject({
     version_minimum: z.strictObject({
       exercices: z.array(idExercice).min(1),
       duree_min: entierPositif,
+      suspension: texte,
     }),
     boxe: texte,
-    jour_recuperation: texte,
   }),
   chaque_jour: z.strictObject({ exercice: idExercice, moment: texte }),
   week_end: z.strictObject({
@@ -454,6 +456,7 @@ const bloc_cle = z.strictObject({
     }),
     boxe: z.strictObject({
       quand: texte,
+      suspension: texte,
       suspension_series: entierPositif,
       deep_squat_series: entierPositif,
       duree_min: entierPositif,

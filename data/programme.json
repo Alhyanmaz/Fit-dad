@@ -56,6 +56,7 @@
         "week_end_au_mieux"
       ]
     },
+    "jour_recuperation": "Aucun : le lendemain d'une boxe en club suit le schéma des autres jours, matin et soir (décision du 14/10/2026).",
     "passage": {
       "regle": "L'appli propose le passage au niveau suivant au plus tôt à la semaine indiquée, et seulement si les 7 derniers jours ont tenu 5 jours, samedi et dimanche compris ; sinon, elle le propose de nouveau la semaine suivante. José valide.",
       "jours_tenus": 5,
@@ -187,8 +188,7 @@
         "declencheur": "nuit très hachée",
         "contenu": "un seul mouvement de mobilité"
       },
-      "jour_recuperation": "Pas de musculation : les mouvements de mobilité du niveau, au ralenti, puis des neck CARs (3 par sens).",
-      "jour_recuperation_interpretation": true,
+      "version_courte": "Aucune : version normale ou version minimum (décision du 14/10/2026).",
       "note": "N1 travaille le tirage et le squat ; N2, les quatre patrons. Le swing reste à 1 série pendant l'ancrage."
     },
     "midi": {
@@ -198,6 +198,8 @@
     "soir": {
       "suspension_series": 1,
       "deep_squat_series": 1,
+      "one_arm_hang": "Une fois ajouté par José (suspension à 80 s), avec la suspension.",
+      "one_arm_hang_interpretation": true,
       "pied": {
         "tours": 1,
         "series_exercices": 1,
@@ -211,10 +213,10 @@
           "suspension",
           "deep_squat"
         ],
-        "duree_min": 4
+        "duree_min": 4,
+        "suspension": "seule, sans knee raises ; one arm hang une fois ajouté"
       },
-      "boxe": "La version minimum ; les 4 étirements du pied si possible.",
-      "jour_recuperation": "Suspension passive, sans knee raises ; deep squat et routine pied comme les autres soirs."
+      "boxe": "La version minimum ; les 4 étirements du pied si possible."
     },
     "chaque_jour": {
       "exercice": "single_leg_balance",
@@ -1331,6 +1333,7 @@
       },
       "boxe": {
         "quand": "soir de boxe en club",
+        "suspension": "seule, sans knee raises ; one arm hang une fois ajouté (décision du 14/10/2026)",
         "suspension_series": 1,
         "deep_squat_series": 1,
         "duree_min": 4,

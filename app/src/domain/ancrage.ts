@@ -1,6 +1,7 @@
 /** Jour tenu pendant l'ancrage (docs/SPEC.md §6.11, scénario 16). */
 
-export type MatinFait = 'normale' | 'courte' | 'minimum' | null;
+/** Pas de version courte pendant l'ancrage (décision du 14/10/2026). */
+export type MatinFait = 'normale' | 'minimum' | null;
 export type SoirFait = 'normal' | 'minimum' | 'boxe' | null;
 
 export interface JourDAncrage {

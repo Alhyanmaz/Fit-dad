@@ -4,9 +4,9 @@ import { lettreDuMatin, lettreDuPied, suivantDansLaRotation, type Lettre } from 
 import { jourTenu } from './ancrage';
 import { ajouterJours, jourDeLaSemaine, joursEntre, type DateIso } from './dates';
 import { aUnBlocBoxe, techniqueDuClubEnPriorite, typeDeJour } from './jour';
-import { matinDuJour } from './matin';
+import { matinDuJour, versionsDuMatin } from './matin';
 import { midiDuJour } from './midi';
-import type { Niveau } from './niveau';
+import { estEnAncrage, type Niveau } from './niveau';
 import { seriesEtirementsPied, soirDuJour } from './soir';
 import { weekEndDuJour } from './weekEnd';
 
@@ -23,13 +23,14 @@ const SAMEDI = ajouterJours(LUNDI, 5);
 const DIMANCHE = ajouterJours(LUNDI, 6);
 
 /** Déroule une semaine en faisant tout ce qui est proposé : les pointeurs avancent chaque jour. */
-function simulerSemaine(joursDeBoxe: DateIso[], enAncrage = false) {
+function simulerSemaine(joursDeBoxe: DateIso[], niveau: Niveau = { palier: 2 }) {
+  const enAncrage = estEnAncrage(niveau);
   let derniereSeance: Lettre | null = null;
   let dernierPied: Lettre | null = null;
   let cordes = 0;
   return Array.from({ length: 7 }, (_, i) => {
     const date = ajouterJours(LUNDI, i);
-    const type = typeDeJour(date, joursDeBoxe);
+    const type = typeDeJour(date, joursDeBoxe, niveau);
     const lettre = lettreDuMatin(date, type, derniereSeance);
     if (lettre) derniereSeance = lettre;
     const midi = midiDuJour(programme, { date, type, cordesFaitesCetteSemaine: cordes, enAncrage });
@@ -252,7 +253,7 @@ describe('scénario 6 : palier 2, samedi (provisoire)', () => {
 
 describe('scénario 7 : jour de récupération après un mardi B, palier 2', () => {
   const mercredi = ajouterJours(LUNDI, 2);
-  const type = typeDeJour(mercredi, [MARDI]);
+  const type = typeDeJour(mercredi, [MARDI], { palier: 2 });
 
   it('mobilité A au ralenti puis neck CARs, pas de musculation', () => {
     expect(type).toBe('recuperation');
@@ -284,7 +285,11 @@ describe('scénario 7 : jour de récupération après un mardi B, palier 2', () 
       cycle: 1,
       piedsFaitsDansLeCycle: 1,
     });
-    expect(soir.bloc_cle).toMatchObject({ version: 'recuperation', knee_raises: false });
+    expect(soir.bloc_cle).toMatchObject({
+      version: 'recuperation',
+      knee_raises: false,
+      one_arm_hang_si_ajoute: false,
+    });
     expect(soir.pied?.lettre).toBe('B');
   });
 });
@@ -317,6 +322,54 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
     expect(n1.etirements).toEqual([]);
   });
 
+  it('lendemain de boxe : un jour normal, avec sa séance (pas de jour de récupération)', () => {
+    const semaine = simulerSemaine([MARDI], { ancrage: 'N1' });
+    expect(semaine.map((j) => j.type)).toEqual([
+      'normal',
+      'boxe',
+      'normal',
+      'normal',
+      'normal',
+      'normal',
+      'normal',
+    ]);
+    expect(semaine.map((j) => j.lettre)).toEqual(['A', 'B', 'A', 'B', 'A', 'A', 'B']);
+    expect(semaine.map((j) => j.pied)).toEqual(['A', null, 'B', 'A', 'B', 'A', 'B']);
+    const mercredi = matinDuJour(programme, {
+      niveau: { ancrage: 'N1' },
+      type: semaine[2]?.type ?? 'normal',
+      lettre: 'A',
+      lettreDeLaVeille: 'B',
+    });
+    expect(mercredi.musculation).toEqual([{ exercice: 'rings_row', series: 1 }]);
+    expect([mercredi.mobilite_au_ralenti, mercredi.neck_cars_par_sens]).toEqual([false, null]);
+  });
+
+  it('ni jour de récupération ni version courte pendant l’ancrage', () => {
+    expect(versionsDuMatin({ ancrage: 'N2' })).toEqual(['normale', 'minimum']);
+    expect(versionsDuMatin({ palier: 1 })).toEqual(['normale', 'courte', 'minimum']);
+    const contexte = {
+      niveau: { ancrage: 'N2' as const },
+      lettre: 'A' as const,
+      lettreDeLaVeille: null,
+    };
+    expect(() =>
+      matinDuJour(programme, { ...contexte, type: 'normal', version: 'courte' }),
+    ).toThrow(/version courte/);
+    expect(() => matinDuJour(programme, { ...contexte, type: 'recuperation' })).toThrow(
+      /récupération/,
+    );
+    expect(() =>
+      soirDuJour(programme, {
+        niveau: { ancrage: 'N1' },
+        type: 'recuperation',
+        lettrePied: 'B',
+        cycle: 1,
+        piedsFaitsDansLeCycle: 0,
+      }),
+    ).toThrow(/récupération/);
+  });
+
   it('soir sans boxe : suspension 1 série, deep squat 1 × 2 min, routine pied en 1 tour', () => {
     const soir = soirDuJour(programme, {
       niveau: { ancrage: 'N1' },
@@ -325,12 +378,18 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
       cycle: 1,
       piedsFaitsDansLeCycle: 0,
     });
-    expect(soir.bloc_cle).toMatchObject({ suspension_series: 1, deep_squat_series: 1 });
+    expect(soir.bloc_cle).toMatchObject({
+      version: 'standard',
+      suspension_series: 1,
+      knee_raises: true,
+      one_arm_hang_si_ajoute: true,
+      deep_squat_series: 1,
+    });
     expect(soir.pied?.series_par_exercice).toBe(1);
     expect(soir.pied?.etirements.every((e) => e.series === 1)).toBe(true);
   });
 
-  it('soir de boxe : suspension et deep squat seulement', () => {
+  it('soir de boxe : suspension seule (one arm hang une fois ajouté) et deep squat', () => {
     const soir = soirDuJour(programme, {
       niveau: { ancrage: 'N2' },
       type: 'boxe',
@@ -338,9 +397,11 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
       cycle: 1,
       piedsFaitsDansLeCycle: 0,
     });
-    expect(soir.bloc_cle).toMatchObject({
+    expect(soir.bloc_cle).toEqual({
       version: 'boxe',
       suspension_series: 1,
+      knee_raises: false,
+      one_arm_hang_si_ajoute: true,
       deep_squat_series: 1,
     });
     expect(soir.pied).toBeNull();
@@ -411,7 +472,7 @@ describe('scénario 16 : ancrage, jour tenu', () => {
     expect(jourTenu({ matin: 'normale', soir: 'normal', au_mieux: false })).toBe(true);
   });
 
-  it('versions minimum : un mouvement de mobilité le matin ; suspension et deep squat le soir', () => {
+  it('versions minimum : un mouvement de mobilité le matin ; suspension seule et deep squat le soir', () => {
     const matin = matinDuJour(programme, {
       niveau: { ancrage: 'N2' },
       type: 'normal',
@@ -430,20 +491,27 @@ describe('scénario 16 : ancrage, jour tenu', () => {
       version: 'minimum',
     });
     expect(soir.duree_min).toBe(4);
-    expect(soir.bloc_cle).toMatchObject({ suspension_series: 1, deep_squat_series: 1 });
+    expect(soir.bloc_cle).toMatchObject({
+      version: 'minimum',
+      suspension_series: 1,
+      knee_raises: false,
+      deep_squat_series: 1,
+    });
     expect(soir.pied).toBeNull();
   });
+});
 
-  it('soir du jour de récupération : suspension passive, routine pied conservée', () => {
+describe('paliers : soir de boxe', () => {
+  it('palier 2 : suspension seule, one arm hang une fois ajouté, pas de routine pied', () => {
     const soir = soirDuJour(programme, {
-      niveau: { ancrage: 'N1' },
-      type: 'recuperation',
-      lettrePied: 'B',
+      niveau: { palier: 2 },
+      type: 'boxe',
+      lettrePied: null,
       cycle: 1,
-      piedsFaitsDansLeCycle: 1,
+      piedsFaitsDansLeCycle: 0,
     });
-    expect(soir.bloc_cle).toMatchObject({ version: 'recuperation', knee_raises: false });
-    expect(soir.pied?.lettre).toBe('B');
+    expect(soir.bloc_cle).toMatchObject({ knee_raises: false, one_arm_hang_si_ajoute: true });
+    expect(soir.pied).toBeNull();
   });
 });
 
