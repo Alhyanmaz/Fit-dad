@@ -522,6 +522,16 @@ const boxe = z.strictObject({
   }),
 });
 
+/** Contenu structuré du week-end d'un palier, lu par le moteur (décision du 14/10/2026, provisoire). */
+const structureDuWeekEnd = z.strictObject({
+  base_ancrage: z.boolean().optional(),
+  journee_type: z.boolean().optional(),
+  mobilite_complete: z.boolean().optional(),
+  seance: z.strictObject({ series: entierPositif, avec_ajouts: z.boolean() }).optional(),
+  etirements_hanches_series: entierPositif.optional(),
+  boxe_rounds: z.array(entierPositif).min(1),
+});
+
 const semaine = z.strictObject({
   boxe_club: texte,
   alternance_musculation: texte,
@@ -533,6 +543,7 @@ const semaine = z.strictObject({
         contenu: texte,
         duree_min: entierPositif,
         interpretation: drapeau,
+        structure: structureDuWeekEnd,
       }),
     )
     .min(1),
@@ -670,6 +681,18 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     if (zone && ex.zone !== zone)
       signaler(path, `« ${id} » est de la zone « ${ex.zone ?? 'aucune'} », attendu : « ${zone} »`);
   };
+
+  /** Rounds de boxe : existants, dans l'ordre, sans doublon. */
+  const verifierRounds = (path: (string | number)[], rounds: number[]) =>
+    rounds.forEach((r, j) => {
+      if (r > p.boxe.maison.rounds)
+        signaler(
+          [...path, j],
+          `round ${r} inexistant (le bloc boxe en compte ${p.boxe.maison.rounds})`,
+        );
+      if (j > 0 && r <= (rounds[j - 1] ?? 0))
+        signaler([...path, j], "rounds attendus dans l'ordre, sans doublon");
+    });
 
   // Lever tôt
   p.lever_tot.paliers.forEach((pal, i) => {
@@ -894,14 +917,13 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
   an.week_end.minimum.exercices.forEach((id, j) =>
     verifier(['ancrage', 'week_end', 'minimum', 'exercices', j], id, 'musculation'),
   );
-  const rounds = an.week_end.au_mieux.boxe_rounds;
-  rounds.forEach((r, j) => {
-    const ici = ['ancrage', 'week_end', 'au_mieux', 'boxe_rounds', j];
-    if (r > p.boxe.maison.rounds)
-      signaler(ici, `round ${r} inexistant (le bloc boxe en compte ${p.boxe.maison.rounds})`);
-    if (j > 0 && r <= (rounds[j - 1] ?? 0))
-      signaler(ici, "rounds attendus dans l'ordre, sans doublon");
-  });
+  verifierRounds(
+    ['ancrage', 'week_end', 'au_mieux', 'boxe_rounds'],
+    an.week_end.au_mieux.boxe_rounds,
+  );
+  p.semaine.week_end.forEach((w, i) =>
+    verifierRounds(['semaine', 'week_end', i, 'structure', 'boxe_rounds'], w.structure.boxe_rounds),
+  );
 
   // Lever et coucher de plus en plus tôt, de N1 au dernier palier
   const enMinutes = (h: string) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));

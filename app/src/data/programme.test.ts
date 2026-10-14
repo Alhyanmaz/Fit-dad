@@ -180,4 +180,12 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
       /ancrage › week_end › au_mieux › boxe_rounds › 2 : round 6 inexistant \(le bloc boxe en compte 5\)/,
     );
   });
+
+  it('rounds du week-end d’un palier dans le désordre', () => {
+    const p = copie();
+    p.semaine.week_end[1].structure.boxe_rounds = [1, 5, 3];
+    expect(erreursDe(p).join('\n')).toMatch(
+      /semaine › week_end › 1 › structure › boxe_rounds › 2 : rounds attendus dans l'ordre, sans doublon/,
+    );
+  });
 });

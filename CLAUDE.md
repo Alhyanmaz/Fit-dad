@@ -64,7 +64,7 @@ Toutes dans `app/` (`cd app`), avec Node 22.12 ou plus récent.
 
 ```
 /                     v1 en ligne (ne pas modifier avant J6)
-app/                  code de la v2 : src/data (programme et son schéma zod), src/ui (écrans) ; src/domain et src/storage à venir ; config/ (sécurité du build)
+app/                  code de la v2 : src/data (programme et son schéma zod), src/domain (règles métier, fonctions pures), src/ui (écrans) ; src/storage à venir (J3) ; config/ (sécurité du build)
 v2/                   build de la v2, servi sous /Fit-dad/v2/ (généré, ne pas éditer à la main)
 data/programme.json   programme structuré
 docs/                 PROGRAMME, SPEC, MIGRATION, decisions, reprise, DEMARRAGE, relecture-programme (J1)

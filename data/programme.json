@@ -1518,7 +1518,15 @@
         ],
         "contenu": "Base de l'ancrage, puis boxe en 3 rounds (corde, technique seule, libre)",
         "duree_min": 30,
-        "interpretation": true
+        "interpretation": true,
+        "structure": {
+          "base_ancrage": true,
+          "boxe_rounds": [
+            1,
+            3,
+            5
+          ]
+        }
       },
       {
         "paliers": [
@@ -1526,7 +1534,20 @@
         ],
         "contenu": "Routine Mob. matin complète, séance complète en 3 séries (A le samedi, B le dimanche) avec les ajouts, étirements de hanche 2 × 30 s, boxe en 3 rounds",
         "duree_min": 45,
-        "interpretation": true
+        "interpretation": true,
+        "structure": {
+          "mobilite_complete": true,
+          "seance": {
+            "series": 3,
+            "avec_ajouts": true
+          },
+          "etirements_hanches_series": 2,
+          "boxe_rounds": [
+            1,
+            3,
+            5
+          ]
+        }
       },
       {
         "paliers": [
@@ -1534,7 +1555,22 @@
         ],
         "contenu": "Comme au palier 2, avec la boxe en 5 rounds",
         "duree_min": 60,
-        "interpretation": true
+        "interpretation": true,
+        "structure": {
+          "mobilite_complete": true,
+          "seance": {
+            "series": 3,
+            "avec_ajouts": true
+          },
+          "etirements_hanches_series": 2,
+          "boxe_rounds": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
       },
       {
         "paliers": [
@@ -1542,7 +1578,17 @@
         ],
         "contenu": "Journée type, matin et soir, puis bloc boxe",
         "duree_min": 75,
-        "interpretation": true
+        "interpretation": true,
+        "structure": {
+          "journee_type": true,
+          "boxe_rounds": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
       }
     ],
     "bloc_boxe_placement": "où José veut dans la journée, idéalement pas juste après la musculation",
