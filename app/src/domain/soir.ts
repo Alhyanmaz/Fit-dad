@@ -1,0 +1,144 @@
+import type { Programme } from '../data/schema';
+import type { Lettre } from './alternances';
+import type { TypeDeJour } from './jour';
+import type { Etirement } from './matin';
+import { estEnAncrage, type Niveau } from './niveau';
+
+/** Soir (docs/SPEC.md §6.5 ; pendant l'ancrage, §6.11). */
+
+export interface BlocCle {
+  version: 'standard' | 'recuperation' | 'boxe' | 'minimum';
+  suspension_series: number;
+  knee_raises: boolean;
+  /** One arm hang inclus une fois ajouté par José (suspension à 80 s). */
+  one_arm_hang_si_ajoute: boolean;
+  deep_squat_series: number;
+}
+
+export interface Soir {
+  duree_min: number;
+  bloc_cle: BlocCle;
+  /** Routine pied du soir ; null le soir de boxe et en version minimum. */
+  pied: {
+    lettre: Lettre;
+    exercices: string[];
+    series_par_exercice: number;
+    etirements: Etirement[];
+  } | null;
+  /** Soir de boxe : les 4 étirements du pied, facultatifs. */
+  etirements_apres_boxe: { etirements: Etirement[]; facultatif: boolean } | null;
+}
+
+export interface ContexteDuSoir {
+  niveau: Niveau;
+  type: TypeDeJour;
+  /** Lettre donnée par `lettreDuPied` ; null le soir de boxe. */
+  lettrePied: Lettre | null;
+  /** Numéro du cycle du programme ; 1 pendant l'ancrage. */
+  cycle: number;
+  /** Routines pied déjà faites dans le cycle, pour l'alternance des séries du cycle 2. */
+  piedsFaitsDansLeCycle: number;
+  /**
+   * Version minimum (suspension seule et deep squat) : prévue pendant l'ancrage seulement. Aux paliers,
+   * le programme n'en définit pas et le soir reste le soir du palier.
+   */
+  version?: 'normale' | 'minimum';
+}
+
+/** Séries des 4 étirements du pied selon le cycle (scénario 12) : 1, puis 1 et 2 en alternance, puis 2. */
+export function seriesEtirementsPied(
+  programme: Programme,
+  cycle: number,
+  piedsFaitsDansLeCycle: number,
+): number {
+  const regles = programme.etirements.routine_pied.series_par_cycle;
+  const regle =
+    regles.find((r) => r.cycle === cycle) ??
+    regles.find((r) => r.cycle_minimum !== undefined && cycle >= r.cycle_minimum);
+  if (!regle) return 1;
+  const { series } = regle;
+  return (regle.alternance ? series[piedsFaitsDansLeCycle % series.length] : series[0]) ?? 1;
+}
+
+export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
+  const { niveau } = ctx;
+  const etirementsPied = (series: number): Etirement[] =>
+    programme.etirements.routine_pied.liste.map((exercice) => ({ exercice, series }));
+
+  if (ctx.type === 'boxe') {
+    const boxe = programme.bloc_cle.versions.boxe;
+    const apres = programme.etirements.soir_boxe;
+    return {
+      duree_min: boxe.duree_min,
+      // Suspension seule, sans knee raises ; one arm hang une fois ajouté (décision du 14/10/2026).
+      bloc_cle: {
+        version: 'boxe',
+        suspension_series: boxe.suspension_series,
+        knee_raises: false,
+        one_arm_hang_si_ajoute: true,
+        deep_squat_series: boxe.deep_squat_series,
+      },
+      pied: null,
+      etirements_apres_boxe: {
+        etirements: apres.liste.map((exercice) => ({ exercice, series: apres.series })),
+        facultatif: apres.facultatif,
+      },
+    };
+  }
+
+  const recuperation = ctx.type === 'recuperation';
+  const lettre = ctx.lettrePied ?? 'A';
+  const exercices = programme.pied.routines[lettre].exercices;
+
+  if (estEnAncrage(niveau)) {
+    // Pas de jour de récupération pendant l'ancrage (décision du 14/10/2026).
+    if (recuperation) throw new Error("pas de jour de récupération pendant l'ancrage");
+    const soir = programme.ancrage.soir;
+    const minimum = ctx.version === 'minimum';
+    return {
+      duree_min: minimum ? soir.version_minimum.duree_min : soir.duree_min,
+      // Version minimum : suspension seule, comme le soir de boxe. One arm hang une fois ajouté,
+      // comme le soir de boxe [Interprétation].
+      bloc_cle: {
+        version: minimum ? 'minimum' : 'standard',
+        suspension_series: soir.suspension_series,
+        knee_raises: !minimum,
+        one_arm_hang_si_ajoute: true,
+        deep_squat_series: soir.deep_squat_series,
+      },
+      pied: minimum
+        ? null
+        : {
+            lettre,
+            exercices,
+            series_par_exercice: soir.pied.series_exercices,
+            etirements: etirementsPied(soir.pied.series_etirements),
+          },
+      etirements_apres_boxe: null,
+    };
+  }
+
+  const palier = niveau.palier;
+  const soirDuPalier = programme.soir_par_palier.find((s) => s.paliers.includes(palier));
+  const suspension = programme.exercices['suspension']?.series ?? 2;
+  const deepSquat = programme.exercices['deep_squat']?.series ?? 2;
+  return {
+    duree_min: soirDuPalier?.duree_min ?? programme.bloc_cle.versions.standard.duree_min,
+    bloc_cle: {
+      version: recuperation ? 'recuperation' : 'standard',
+      suspension_series: suspension,
+      knee_raises: !recuperation,
+      one_arm_hang_si_ajoute: !recuperation,
+      deep_squat_series: deepSquat,
+    },
+    pied: {
+      lettre,
+      exercices,
+      series_par_exercice: soirDuPalier?.pied_series_exercices ?? programme.pied.series_exercices,
+      etirements: etirementsPied(
+        seriesEtirementsPied(programme, ctx.cycle, ctx.piedsFaitsDansLeCycle),
+      ),
+    },
+    etirements_apres_boxe: null,
+  };
+}

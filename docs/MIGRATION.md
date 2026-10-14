@@ -36,6 +36,7 @@ En bref : rien n'est repris de la v1 (décision Q10 = b) ; l'historique de « Le
    - reprend `floor` comme plancher coché à la main ;
    - recalcule les verdicts avec les règles de la v2, identiques à celles de l'artefact (seul le critère de passage de palier change : il exige en plus le samedi et le dimanche, décision du 07/10/2026) ;
    - montre un aperçu avant d'enregistrer.
+   - Depuis le 14/10/2026, la v2 n'a plus les mêmes paliers : niveaux N1 et N2 de l'ancrage, puis paliers 1 à 4, de 6h50 à 6h00. Les paliers de l'artefact (1 à 5, de 7h00 à 6h00) restent dans l'historique importé, avec leurs cibles figées ; ils ne fixent pas le niveau en cours de la v2, que José choisit [Interprétation, à confirmer au J4].
 4. Une date déjà présente dans la v2 garde la version de la v2 ; l'aperçu le signale.
 5. Après l'import final, l'artefact n'est plus utilisé. Il reste consultable.
 
