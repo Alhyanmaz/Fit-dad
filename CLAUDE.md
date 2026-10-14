@@ -64,10 +64,10 @@ Toutes dans `app/` (`cd app`), avec Node 22.12 ou plus récent.
 
 ```
 /                     v1 en ligne (ne pas modifier avant J6)
-app/                  code de la v2 : src/data (programme), src/ui (écrans) ; src/domain et src/storage à venir ; config/ (sécurité du build)
+app/                  code de la v2 : src/data (programme et son schéma zod), src/ui (écrans) ; src/domain et src/storage à venir ; config/ (sécurité du build)
 v2/                   build de la v2, servi sous /Fit-dad/v2/ (généré, ne pas éditer à la main)
 data/programme.json   programme structuré
-docs/                 PROGRAMME, SPEC, MIGRATION, decisions, reprise, DEMARRAGE
+docs/                 PROGRAMME, SPEC, MIGRATION, decisions, reprise, DEMARRAGE, relecture-programme (J1)
 legacy/               lever-tot.html (artefact « Lever tôt ») ; suivi-pied-mollet.jsx (source de l'artefact claude.ai d'origine, sans l'export ni les ajouts de la v1 en ligne) ; v1.html à partir du J6 (copie consultable de la v1)
 .claude/ et scripts/  installation des dépendances au démarrage des sessions cloud
 ```
