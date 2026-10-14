@@ -63,7 +63,7 @@ Total : 41 exercices = 12 de musculation, 4 du pied, 12 de mobilité, 7 étireme
 ## Ce que vérifie l'appli à chaque ouverture
 
 - Structure complète du fichier : chaque section, chaque champ, chaque type. Une faute de frappe dans un nom de champ est signalée.
-- Valeurs : fourchettes dans le bon ordre, heures au format 24 h, dates, paliers de 1 à 5 dans l'ordre.
+- Valeurs : fourchettes dans le bon ordre, heures au format 24 h, dates, paliers de 1 à 4 dans l'ordre.
 - Renvois entre sections : chaque exercice cité (séances, matin, mobilité, étirements, bloc clé, pied, équilibre) existe et appartient au bon bloc, et chaque étirement à la bonne zone.
 - Cohérences : chaque élément du bas de jambe a au moins un exercice ; chaque palier a un contenu de week-end ; les tests ont des identifiants uniques ; la rotation de boxe et les rounds sont complets.
 - En cas d'erreur, la page d'accueil affiche « Programme illisible » et la liste des erreurs, avec leur emplacement dans le fichier.
@@ -79,3 +79,4 @@ Total : 41 exercices = 12 de musculation, 4 du pied, 12 de mobilité, 7 étireme
 - L'ancrage passe à deux niveaux (N1, N2) et le programme complet à 4 paliers (décision du 14/10/2026, `docs/decisions.md`). `data/programme.json` suit : `ancrage.niveaux`, 4 paliers dans `lever_tot` et `matin`, `soir_par_palier`, week-end par palier ; les contenus des paliers 1 à 4 sont provisoires.
 - Le schéma vérifie aussi : un niveau par cycle et ses semaines de passage, les minutes de travail de chaque palier, des levers et des couchers de plus en plus tôt de N1 au palier 4, un contenu de week-end et de soir par palier. 25 tests.
 - Q1 à Q4 restent ouvertes, avec les nouveaux numéros : ancien palier 2 = N2, ancien 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3. Pour l'ancrage, Q2 est déjà tranchée : cossack et reverse table top à 1 série, à la cible du moment.
+- Formulation corrigée : le « au mieux » du week-end de l'ancrage exclut les exercices du palier 2 (anciennement 4), Copenhagen compris, comme décidé le 13/10. Le 14/10, j'avais écrit « sans les ajouts du palier 2 » : le Copenhagen n'étant pas un ajout, la phrase semblait le garder. Les données l'excluaient déjà.
