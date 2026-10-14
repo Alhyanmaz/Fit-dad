@@ -13,11 +13,11 @@ function erreursDe(donnees: unknown): string[] {
 }
 
 describe('lecture du programme', () => {
-  it('valide data/programme.json : 41 exercices, version du 13/10/2026', () => {
+  it('valide data/programme.json : 41 exercices, version du 14/10/2026', () => {
     const lecture = lireProgramme(programmeBrut);
     if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
     expect(resumerProgramme(lecture.programme)).toEqual({
-      version: '2026-10-13',
+      version: '2026-10-14',
       nombreExercices: 41,
     });
   });
@@ -93,15 +93,26 @@ describe('le schéma refuse un programme fautif, avec un message en français', 
       p.lever_tot.paliers[0],
     ];
     expect(erreursDe(p).join('\n')).toMatch(
-      /lever_tot › paliers › 0 › num : paliers attendus dans l'ordre 1 à 5/,
+      /lever_tot › paliers › 0 › num : paliers attendus dans l'ordre 1 à 4/,
     );
   });
 
   it('palier du matin qui mélange « contenu » et « exercices »', () => {
     const p = copie();
-    p.matin.paliers[1].musculation.contenu = 'seance_complete';
+    p.matin.paliers[0].musculation.exercices = {
+      A: [{ exercice: 'kt_press', series: 1 }],
+      B: [{ exercice: 'rings_row', series: 1 }],
+    };
     expect(erreursDe(p).join('\n')).toMatch(
-      /matin › paliers › 1 › musculation : indiquer soit « contenu »/,
+      /matin › paliers › 0 › musculation : indiquer soit « contenu »/,
+    );
+  });
+
+  it('minutes de travail qui ne tombent pas juste', () => {
+    const p = copie();
+    p.matin.paliers[0].travail_min = 25;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /matin › paliers › 0 › travail_min : 20 min de blocs pour 25 min de travail/,
     );
   });
 
@@ -122,19 +133,35 @@ describe('le schéma refuse un programme fautif, avec un message en français', 
 });
 
 describe('le schéma vérifie les cycles d’ancrage', () => {
-  it('mouvement de mobilité pris dans l’autre routine', () => {
+  it('niveau qui commence à la mauvaise semaine', () => {
     const p = copie();
-    p.ancrage.matin.seances.A.mobilite[1] = 'duck_walk';
+    p.ancrage.niveaux[1].des_semaine = 5;
     expect(erreursDe(p).join('\n')).toMatch(
-      /ancrage › matin › seances › A › mobilite › 1 : « duck_walk » n'est pas dans la routine de mobilité A/,
+      /ancrage › niveaux › 1 › des_semaine : N2 attendu à partir de la semaine 6 \(cycles de 5 semaines\)/,
     );
   });
 
-  it('durée minimale qui ne correspond pas aux cycles', () => {
+  it('passage au palier 1 à la mauvaise semaine', () => {
     const p = copie();
-    p.ancrage.sortie.semaines_minimum = 8;
+    p.ancrage.passage.vers_palier_1_des_semaine = 10;
     expect(erreursDe(p).join('\n')).toMatch(
-      /ancrage › sortie › semaines_minimum : 8 semaines minimum pour 2 cycles de 5 semaines \(attendu : 10\)/,
+      /ancrage › passage › vers_palier_1_des_semaine : passage au palier 1 attendu à partir de la semaine 11/,
+    );
+  });
+
+  it('exercice de l’ancrage rangé dans le mauvais bloc', () => {
+    const p = copie();
+    p.ancrage.niveaux[0].matin.seances.A.mobilite[0] = 'kt_press';
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › niveaux › 0 › matin › seances › A › mobilite › 0 : « kt_press » est du bloc « musculation »/,
+    );
+  });
+
+  it('lever qui ne recule pas d’un niveau à l’autre', () => {
+    const p = copie();
+    p.ancrage.niveaux[1].lever = '06:55';
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › niveaux › 1 › lever : lever de N2 \(06:55\) pas plus tôt que celui de N1 \(06:50\)/,
     );
   });
 

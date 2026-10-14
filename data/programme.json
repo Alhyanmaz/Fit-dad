@@ -2,9 +2,9 @@
   "version_schema": 1,
   "meta": {
     "titre": "Programme d'entraînement — refonte 2026",
-    "version": "2026-10-13",
-    "source": "docs/PROGRAMME.md (copie du document Claude Docs, révision 44, mise à jour le 07/10/2026 puis le 13/10/2026 ; elle fait foi)",
-    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; cycles d'ancrage ajoutés le 13/10/2026 ; validé au chargement par app/src/data/schema.ts. Points à trancher par José : docs/relecture-programme.md. En cas d'écart, PROGRAMME.md fait foi.",
+    "version": "2026-10-14",
+    "source": "docs/PROGRAMME.md (copie du document Claude Docs, révision 44, mise à jour le 07/10/2026, le 13/10/2026 puis le 14/10/2026 ; elle fait foi)",
+    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; cycles d'ancrage ajoutés le 13/10/2026, en deux niveaux le 14/10/2026, avec quatre paliers ensuite (contenus des paliers provisoires) ; validé au chargement par app/src/data/schema.ts. Points à trancher par José : docs/relecture-programme.md. En cas d'écart, PROGRAMME.md fait foi.",
     "conventions": {
       "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… » et « pas_min » ; « jours_minimum » est un nombre de jours, « cycle_minimum » un numéro de cycle",
       "charges": "kg",
@@ -37,8 +37,8 @@
     }
   },
   "ancrage": {
-    "decision": "2026-10-13",
-    "objet": "Installer l'habitude avant le programme complet : un socle réduit chaque jour, le reste en bonus.",
+    "decision": "2026-10-14",
+    "objet": "Installer l'habitude avant le programme complet : deux niveaux (N1, puis N2), un socle réduit chaque jour, le reste en bonus.",
     "cycles_minimum": 2,
     "semaines_par_cycle": 5,
     "decharge": false,
@@ -56,18 +56,109 @@
         "week_end_au_mieux"
       ]
     },
-    "sortie": {
-      "semaines_minimum": 10,
+    "passage": {
+      "regle": "L'appli propose le passage au niveau suivant au plus tôt à la semaine indiquée, et seulement si les 7 derniers jours ont tenu 5 jours, samedi et dimanche compris ; sinon, elle le propose de nouveau la semaine suivante. José valide.",
       "jours_tenus": 5,
       "fenetre_jours": 7,
       "samedi_et_dimanche": true,
-      "validation": "L'appli propose de sortir ; José valide. Viennent alors les tests, puis José règle la suite.",
-      "sinon": "L'ancrage continue."
+      "vers_palier_1_des_semaine": 11,
+      "puis": "Au passage au palier 1 : tests de la semaine 1 du programme, puis José règle la suite."
     },
+    "niveaux": [
+      {
+        "id": "N1",
+        "des_semaine": 1,
+        "lever": "06:50",
+        "coucher": "22:50",
+        "coucher_interpretation": true,
+        "plancher_obligatoire": false,
+        "matin": {
+          "marge_min": 0,
+          "respiration_min": 0,
+          "creneau_min": 3,
+          "seances": {
+            "A": {
+              "mobilite": [
+                "reverse_table_top"
+              ],
+              "musculation": [
+                {
+                  "exercice": "rings_row",
+                  "series": 1
+                }
+              ]
+            },
+            "B": {
+              "mobilite": [
+                "cossack_squat"
+              ],
+              "musculation": [
+                {
+                  "exercice": "goblet_squat",
+                  "series": 1
+                }
+              ]
+            }
+          },
+          "etirement": false
+        }
+      },
+      {
+        "id": "N2",
+        "des_semaine": 6,
+        "lever": "06:40",
+        "coucher": "22:40",
+        "coucher_interpretation": true,
+        "plancher_obligatoire": true,
+        "matin": {
+          "marge_min": 10,
+          "respiration_min": 5,
+          "creneau_min": 10,
+          "creneau_interpretation": true,
+          "seances": {
+            "A": {
+              "mobilite": [
+                "bear_walk",
+                "hip_hinge_baton"
+              ],
+              "musculation": [
+                {
+                  "exercice": "kt_press",
+                  "series": 1
+                },
+                {
+                  "exercice": "swing_emom",
+                  "series": 1,
+                  "reps": 10,
+                  "note": "1 série de 10, pas en EMOM"
+                }
+              ]
+            },
+            "B": {
+              "mobilite": [
+                "reverse_table_top",
+                "cossack_squat"
+              ],
+              "musculation": [
+                {
+                  "exercice": "rings_row",
+                  "series": 1
+                },
+                {
+                  "exercice": "goblet_squat",
+                  "series": 1
+                }
+              ]
+            }
+          },
+          "etirement": true
+        }
+      }
+    ],
     "lever_tot": {
-      "regle": "Heures de lever et de coucher et passage de palier inchangés ; le contenu du matin ne change pas avec le palier.",
-      "plancher": "le matin d'ancrage, en version normale ou minimum",
-      "palier_1": "Le lever seul valide toujours le matin de « Lever tôt » ; le jour tenu demande, lui, la séance du matin."
+      "regle": "Heures du niveau en cours ; le passage suit « ancrage.passage ».",
+      "plancher": "le matin du niveau, en version normale ou minimum",
+      "n1": "À N1, le lever seul valide le matin de « Lever tôt », comme l'ancien palier 1 ; le jour tenu demande, lui, la séance du matin."
     },
     "progression": "Règles habituelles : propositions dans l'échelon, « Ajuster », une seule hausse par semaine sur le bas de jambe.",
     "matin": {
@@ -78,63 +169,27 @@
         "musculation",
         "etirements"
       ],
-      "respiration_min": 5,
-      "duree_min": 10,
-      "duree_interpretation": true,
-      "cafe": "Le café reste la marge, en plus des 10 min.",
       "mobilite_duree_mouvement_s": 30,
-      "mobilite_interpretation": true,
-      "seances": {
-        "A": {
-          "mobilite": [
-            "hip_hinge_baton",
-            "shoulder_dislocate"
-          ],
-          "musculation": [
-            {
-              "exercice": "kt_press",
-              "series": 1
-            },
-            {
-              "exercice": "swing_emom",
-              "series": 1,
-              "reps": 10,
-              "note": "1 série de 10, pas en EMOM"
-            }
-          ]
-        },
-        "B": {
-          "mobilite": [
-            "scapula_pull_up",
-            "duck_walk"
-          ],
-          "musculation": [
-            {
-              "exercice": "rings_row",
-              "series": 1
-            },
-            {
-              "exercice": "goblet_squat",
-              "series": 1
-            }
-          ]
-        }
-      },
+      "mobilite_a_la_cible": [
+        "cossack_squat",
+        "reverse_table_top"
+      ],
+      "mobilite_regle": "Cossack squat et reverse table top : 1 série à la cible du moment ; les autres mouvements : 30 s.",
       "etirement": {
         "rotation": [
           "couch_stretch",
-          "pigeon",
           "pancake"
         ],
         "series": 1,
-        "regle": "Le suivant dans l'ordre, un par matin ; couch stretch et pigeon de chaque côté."
+        "regle": "Un par matin, à tour de rôle ; couch stretch de chaque côté. Le pigeon ne fait pas partie de l'ancrage."
       },
       "version_minimum": {
         "declencheur": "nuit très hachée",
         "contenu": "un seul mouvement de mobilité"
       },
-      "jour_recuperation": "La musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens).",
-      "note": "Exercices du palier 2 : les quatre patrons sur deux matins. Le swing passe à 1 série pendant l'ancrage (2 au palier 2, décision du 07/10/2026)."
+      "jour_recuperation": "Pas de musculation : les mouvements de mobilité du niveau, au ralenti, puis des neck CARs (3 par sens).",
+      "jour_recuperation_interpretation": true,
+      "note": "N1 travaille le tirage et le squat ; N2, les quatre patrons. Le swing reste à 1 série pendant l'ancrage."
     },
     "midi": {
       "contenu": "Bouger, ce que José peut : marche ou corde, sans durée imposée.",
@@ -167,19 +222,27 @@
     },
     "week_end": {
       "minimum": {
-        "contenu": "Le matin de la semaine ; le soir, comme chaque jour.",
-        "duree_min": 20
+        "contenu": "2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake) ; puis le soir.",
+        "duree_min": 20,
+        "exercices": [
+          "kt_press",
+          "swing_emom",
+          "rings_row",
+          "goblet_squat"
+        ],
+        "series": 3,
+        "echauffement_interpretation": true
       },
       "au_mieux": {
         "mobilite": "Routine Mob. matin complète (A le samedi, B le dimanche), 30 s par mouvement.",
         "musculation": {
           "series": 3,
-          "sans_palier_4": true,
+          "sans_ajouts": true,
           "swing": {
             "series": 3,
             "reps": 10
           },
-          "regle": "Séance complète A le samedi, B le dimanche, sans les exercices du palier 4."
+          "regle": "Séance complète A le samedi, B le dimanche, sans les ajouts du palier 2."
         },
         "etirements_hanches_series": 2,
         "boxe_rounds": [
@@ -198,10 +261,7 @@
     "fenetre_jours": 7,
     "matins_reussis_requis": 5,
     "dont_matins_week_end": 2,
-    "palier_depart": {
-      "num": 1,
-      "depuis": "2026-09-25"
-    },
+    "niveau_depart": "N1",
     "qualites_nuit": [
       {
         "id": "calme",
@@ -241,34 +301,27 @@
     "paliers": [
       {
         "num": 1,
-        "lever": "07:00",
-        "coucher": "23:00",
-        "plancher_obligatoire": false,
-        "jours_minimum": 14
-      },
-      {
-        "num": 2,
-        "lever": "06:45",
-        "coucher": "22:45",
-        "plancher_obligatoire": true,
-        "jours_minimum": 7
-      },
-      {
-        "num": 3,
         "lever": "06:30",
         "coucher": "22:30",
         "plancher_obligatoire": true,
         "jours_minimum": 7
       },
       {
-        "num": 4,
-        "lever": "06:15",
-        "coucher": "22:15",
+        "num": 2,
+        "lever": "06:20",
+        "coucher": "22:20",
         "plancher_obligatoire": true,
         "jours_minimum": 7
       },
       {
-        "num": 5,
+        "num": 3,
+        "lever": "06:10",
+        "coucher": "22:10",
+        "plancher_obligatoire": true,
+        "jours_minimum": 7
+      },
+      {
+        "num": 4,
         "lever": "06:00",
         "coucher": "22:00",
         "plancher_obligatoire": true,
@@ -277,10 +330,10 @@
     ],
     "verdict": {
       "manque": "lever après l'heure cible + tolérance",
-      "reussi": "lever tenu ET (plancher fait OU nuit difficile OU plancher non obligatoire au palier)",
-      "partiel": "lever tenu, plancher manquant (palier où il est obligatoire, nuit non difficile)"
+      "reussi": "lever tenu ET (plancher fait OU nuit difficile OU plancher non obligatoire au niveau)",
+      "partiel": "lever tenu, plancher manquant (niveau où il est obligatoire, nuit non difficile)"
     },
-    "plancher": "Le plancher est la séance du matin du palier, en version complète, courte ou minimum (PROGRAMME.md : « le plancher correspond à cette séance »). Les durées fixes de l'artefact (5 min au palier 2, 10 min aux paliers 3 à 5) ne s'appliquent plus ; elles restent décrites dans docs/MIGRATION.md.",
+    "plancher": "Le plancher est la séance du matin du niveau d'ancrage ou du palier, en version complète, courte ou minimum (PROGRAMME.md : « le plancher correspond à cette séance »). Les durées fixes de l'artefact (5 min au palier 2, 10 min aux paliers 3 à 5) ne s'appliquent plus ; elles restent décrites dans docs/MIGRATION.md.",
     "regles_affichees": [
       "Le coucher est le levier : si tu ne peux pas avancer le coucher, n'avance pas le lever.",
       "Mauvaise nuit : tu gardes l'heure de lever, le plancher devient facultatif, le matin compte comme réussi.",
@@ -297,7 +350,7 @@
       ],
       "interpretation": true
     },
-    "passage_de_palier": "Au moins 5 matins réussis sur les 7 derniers jours (jours du palier en cours), dont le samedi et le dimanche ; au moins 14 jours au palier 1, puis 7 jours ; appliqué après confirmation de José. Au palier 1, le lever seul valide le matin."
+    "passage_de_palier": "Pendant l'ancrage : ancrage.passage. Ensuite, au moins 5 matins réussis sur les 7 derniers jours (jours du palier en cours), dont le samedi et le dimanche, et au moins 7 jours au palier ; appliqué après confirmation de José (provisoire, décision du 14/10/2026)."
   },
   "matin": {
     "ordre": [
@@ -312,99 +365,14 @@
       {
         "palier": 1,
         "minutes": {
-          "respiration": 0,
-          "cafe": 0,
-          "mobilite": 1,
-          "musculation": 2,
-          "etirements": 0
-        },
-        "mobilite": {
-          "type": "echauffement_general",
-          "mouvements": [
-            "reverse_table_top",
-            "bear_walk"
-          ],
-          "duree_mouvement_s": 30,
-          "interpretation": true
-        },
-        "musculation": {
-          "series": 1,
-          "exercices": {
-            "A": [
-              {
-                "exercice": "kt_press",
-                "series": 1
-              }
-            ],
-            "B": [
-              {
-                "exercice": "rings_row",
-                "series": 1
-              }
-            ]
-          },
-          "note": "KT press le matin A, rings row le matin B (décision du 07/10/2026)."
-        }
-      },
-      {
-        "palier": 2,
-        "minutes": {
-          "respiration": 5,
-          "cafe": 3,
-          "mobilite": 5,
-          "musculation": 2,
-          "etirements": 0
-        },
-        "mobilite": {
-          "type": "routine_du_jour",
-          "duree_mouvement_s": 30,
-          "serie_courte": [
-            "cossack_squat",
-            "reverse_table_top"
-          ]
-        },
-        "musculation": {
-          "exercices": {
-            "A": [
-              {
-                "exercice": "kt_press",
-                "series": 1
-              },
-              {
-                "exercice": "swing_emom",
-                "series": 2,
-                "reps": 10,
-                "note": "2 séries de 10, pas en EMOM"
-              }
-            ],
-            "B": [
-              {
-                "exercice": "rings_row",
-                "series": 1
-              },
-              {
-                "exercice": "goblet_squat",
-                "series": 1
-              }
-            ]
-          },
-          "duree_min": {
-            "A": 3,
-            "B": 2
-          },
-          "duree_interpretation": true,
-          "note": "Les 4 patrons sur deux matins, un exercice du haut et un du bas chaque matin (décision du 07/10/2026). Matin A ≈ 3 min, pris sur le café."
-        }
-      },
-      {
-        "palier": 3,
-        "minutes": {
           "respiration": 5,
           "cafe": 5,
           "mobilite": 5,
           "musculation": 10,
           "etirements": 5
         },
+        "travail_min": 20,
+        "provisoire": true,
         "mobilite": {
           "type": "routine_du_jour",
           "duree_mouvement_s": 30,
@@ -426,7 +394,7 @@
         }
       },
       {
-        "palier": 4,
+        "palier": 2,
         "minutes": {
           "respiration": 5,
           "cafe": 10,
@@ -434,6 +402,8 @@
           "musculation": 20,
           "etirements": 5
         },
+        "travail_min": 30,
+        "provisoire": true,
         "mobilite": {
           "type": "routine_du_jour",
           "duree_mouvement_s": 30,
@@ -455,7 +425,7 @@
         }
       },
       {
-        "palier": 5,
+        "palier": 3,
         "minutes": {
           "respiration": 10,
           "cafe": 10,
@@ -463,6 +433,37 @@
           "musculation": 20,
           "etirements": 10
         },
+        "travail_min": 40,
+        "provisoire": true,
+        "mobilite": {
+          "type": "routine_du_jour",
+          "duree_mouvement_s": 60
+        },
+        "musculation": {
+          "contenu": "seance_complete",
+          "series": 2,
+          "duree_min": {
+            "A": 16,
+            "B": 18
+          }
+        },
+        "etirements": {
+          "hanches": 3,
+          "pied_mollet": 1
+        }
+      },
+      {
+        "palier": 4,
+        "minutes": {
+          "respiration": 10,
+          "cafe": 10,
+          "mobilite": 10,
+          "musculation": 20,
+          "etirements": 10,
+          "a_definir": 10
+        },
+        "travail_min": 50,
+        "provisoire": true,
         "mobilite": {
           "type": "routine_du_jour",
           "duree_mouvement_s": 60
@@ -492,12 +493,7 @@
       "contenu": "un seul mouvement de mobilité"
     },
     "jour_recuperation": {
-      "regle": "La musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens). Étirements conservés.",
-      "paliers_1_2": {
-        "palier_1": "reverse table top et bear walk, puis neck CARs, sans série de musculation",
-        "palier_2": "l'autre routine à 30 s par mouvement, puis neck CARs",
-        "interpretation": true
-      }
+      "regle": "La musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens). Étirements conservés."
     }
   },
   "seances": {
@@ -523,11 +519,11 @@
       "ajouts": [
         {
           "exercice": "horse_stance",
-          "des_palier": 4
+          "des_palier": 2
         },
         {
           "exercice": "carry",
-          "des_palier": 4
+          "des_palier": 2
         }
       ],
       "fin": null
@@ -548,14 +544,14 @@
           },
           {
             "exercice": "copenhagen",
-            "des_palier": 4
+            "des_palier": 2
           }
         ]
       ],
       "ajouts": [
         {
           "exercice": "tuck_l_sit",
-          "des_palier": 4
+          "des_palier": 2
         }
       ],
       "fin": {
@@ -565,15 +561,10 @@
     "format": {
       "repos_entre_tours_s": 60,
       "arret_avant_echec": "2 ou 3 répétitions de l'échec",
-      "seance_sans_ajouts": "binômes sans les éléments « des_palier » 4, plus le swing en fin de B",
-      "seance_complete": "binômes, éléments du palier 4, ajouts et swing en fin de B",
-      "week_end_paliers_1_3": {
-        "series": 3,
-        "avec_ajouts": true,
-        "duree_min": 25
-      },
+      "seance_sans_ajouts": "binômes sans les éléments « des_palier » 2, plus le swing en fin de B",
+      "seance_complete": "binômes, éléments du palier 2, ajouts et swing en fin de B",
       "contenus": {
-        "paliers_1_et_2": "exercices listés dans matin.paliers[].musculation.exercices"
+        "ancrage": "exercices listés dans ancrage.niveaux[].matin.seances"
       }
     },
     "pousser_plus_loin": {
@@ -1264,7 +1255,7 @@
     }
   },
   "etirements": {
-    "matin": "voir matin.paliers[].etirements (séries par zone)",
+    "matin": "voir matin.paliers[].etirements (séries par zone) ; pendant l'ancrage, ancrage.matin.etirement",
     "zones": {
       "hanches": [
         "couch_stretch",
@@ -1277,12 +1268,6 @@
         "kiza",
         "atg_split_squat"
       ]
-    },
-    "week_end_paliers_1_2": {
-      "zone": "hanches",
-      "series": 2,
-      "moment": "après la séance complète",
-      "note": "Au palier 3, les étirements de hanche du week-end sont ceux du matin : une seule fois."
     },
     "routine_pied": {
       "liste": [
@@ -1385,6 +1370,27 @@
     "exercice": "single_leg_balance",
     "moment": "pendant le brossage des dents, matin et soir"
   },
+  "soir_par_palier": [
+    {
+      "paliers": [
+        1,
+        2
+      ],
+      "duree_min": 15,
+      "contenu": "Bloc clé complet, routine pied à 1 série par exercice",
+      "pied_series_exercices": 1,
+      "interpretation": true
+    },
+    {
+      "paliers": [
+        3,
+        4
+      ],
+      "duree_min": 20,
+      "contenu": "Bloc clé complet, routine pied complète",
+      "pied_series_exercices": 2
+    }
+  ],
   "midi": {
     "jours": [
       "lundi",
@@ -1508,26 +1514,35 @@
     "week_end": [
       {
         "paliers": [
-          1,
-          2,
+          1
+        ],
+        "contenu": "Base de l'ancrage, puis boxe en 3 rounds (corde, technique seule, libre)",
+        "duree_min": 30,
+        "interpretation": true
+      },
+      {
+        "paliers": [
+          2
+        ],
+        "contenu": "Routine Mob. matin complète, séance complète en 3 séries (A le samedi, B le dimanche) avec les ajouts, étirements de hanche 2 × 30 s, boxe en 3 rounds",
+        "duree_min": 45,
+        "interpretation": true
+      },
+      {
+        "paliers": [
           3
         ],
-        "contenu": "Matin du palier, dont la musculation est remplacée par la séance complète (A le samedi, B le dimanche, 3 séries + ajouts) ; étirements de hanche 2 × 30 s (paliers 1 et 2 ; au palier 3, ce sont ceux du matin) ; bloc clé ; pied ; bloc boxe",
-        "duree_min": 75
+        "contenu": "Comme au palier 2, avec la boxe en 5 rounds",
+        "duree_min": 60,
+        "interpretation": true
       },
       {
         "paliers": [
           4
         ],
         "contenu": "Journée type, matin et soir, puis bloc boxe",
-        "duree_min": 70
-      },
-      {
-        "paliers": [
-          5
-        ],
-        "contenu": "Journée type, puis bloc boxe",
-        "duree_min": 80
+        "duree_min": 75,
+        "interpretation": true
       }
     ],
     "bloc_boxe_placement": "où José veut dans la journée, idéalement pas juste après la musculation",
@@ -1666,7 +1681,7 @@
     },
     "validation": "L'appli propose les pas dans l'échelon ; José valide. Les changements de charge ou de variante ne sont jamais proposés.",
     "seances_courtes": {
-      "valeur": "Les séances d'une seule série (paliers 1 à 3) comptent pour les décisions.",
+      "valeur": "Les séances d'une seule série (ancrage et palier 1) comptent pour les décisions.",
       "interpretation": true
     },
     "absence": "Pas de règle automatique de reprise : José règle lui-même ses exercices avec « Ajuster » (décision du 07/10/2026).",

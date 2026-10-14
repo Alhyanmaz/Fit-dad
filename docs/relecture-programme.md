@@ -73,3 +73,9 @@ Total : 41 exercices = 12 de musculation, 4 du pied, 12 de mobilité, 7 étireme
 - La section « Cycles d'ancrage » entre dans `docs/PROGRAMME.md` (décision du 13/10/2026, `docs/decisions.md`), puis dans `data/programme.json` (clé `ancrage`, version du programme du 13/10/2026). Le schéma la vérifie : mobilité prise dans la routine du jour, exercices du bon bloc, étirement du matin dans la zone des hanches, durée minimale égale à 2 cycles de 5 semaines, rounds de boxe existants. 4 fichiers faussés de plus sont refusés (22 tests).
 - `docs/SPEC.md` : §6.11, scénarios 15 à 17, jalons J2 et J5.
 - Q1 à Q4 restent ouvertes. Elles portent surtout sur le programme complet ; l'ancrage exclut les exercices du palier 4 (Q4) et fixe déjà le swing à 1 série de 10 en semaine et 3 × 10 le week-end (Q1).
+
+## Ajout du 14/10/2026
+
+- L'ancrage passe à deux niveaux (N1, N2) et le programme complet à 4 paliers (décision du 14/10/2026, `docs/decisions.md`). `data/programme.json` suit : `ancrage.niveaux`, 4 paliers dans `lever_tot` et `matin`, `soir_par_palier`, week-end par palier ; les contenus des paliers 1 à 4 sont provisoires.
+- Le schéma vérifie aussi : un niveau par cycle et ses semaines de passage, les minutes de travail de chaque palier, des levers et des couchers de plus en plus tôt de N1 au palier 4, un contenu de week-end et de soir par palier. 25 tests.
+- Q1 à Q4 restent ouvertes, avec les nouveaux numéros : ancien palier 2 = N2, ancien 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3. Pour l'ancrage, Q2 est déjà tranchée : cossack et reverse table top à 1 série, à la cible du moment.
