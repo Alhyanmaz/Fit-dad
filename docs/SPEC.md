@@ -5,6 +5,8 @@
 > Mise à jour du 07/10/2026 : décisions de José intégrées (`docs/decisions.md`, revue du kit).
 > Mise à jour du 13/10/2026 : cycles d'ancrage (décision de José, `docs/decisions.md`) : §5.1, §6.11, scénarios 15 à 17, jalons J2 et J5.
 > Mise à jour du 14/10/2026 : ancrage en deux niveaux (N1, N2), puis quatre paliers aux contenus provisoires : §1, §2, §5, §6.2, §6.3, §6.5, §6.7, §6.8, §6.11, §7.1, scénarios 1 à 8 et 15 à 17.
+>
+> Mise à jour du 17/10/2026 : une appli en deux tranches (§10) ; un palier par cycle (§6.7, scénario 8) ; pas d'import de l'historique « Lever tôt » ; réponses de José aux questions ouvertes (§3, §5.6, §6.2, §6.3, §6.5, §6.8, §6.10, §6.11, scénarios 6, 8 et 15).
 
 ## 1. Objet
 
@@ -34,7 +36,7 @@ Remplacer l'appli de suivi actuelle par une v2 qui :
 - Propositions de progression dans l'échelon, validées par José ; réglage manuel « Ajuster » ; règle « bas de jambe ».
 - Cycles, semaine de décharge, tests, bilan et réglage du cycle suivant par José.
 - Mesure hebdomadaire (poids ou tour de taille).
-- Export et import des données ; import de l'historique « Lever tôt ».
+- Export et import des données. L'historique de l'artefact « Lever tôt » n'est pas repris (décision du 17/10/2026).
 
 **Hors périmètre**
 
@@ -103,7 +105,6 @@ Le « plancher » n'est plus une case à part : il est fait quand la séance du 
 ### 5.6 Données et réglages
 
 - Exporter une sauvegarde, restaurer depuis un fichier (avec confirmation, après une sauvegarde automatique de l'état actuel).
-- Importer l'historique « Lever tôt » (`docs/MIGRATION.md`).
 - Niveaux de départ (première ouverture, avec « Ajuster »), sac installé ou non, tib bar achetée ou non, swing à un bras actif ou non, jour de la mesure hebdomadaire.
 - État du stockage persistant (`navigator.storage.persist()`), date du dernier export.
 
@@ -114,7 +115,7 @@ Toutes ces règles vivent dans `app/src/domain`, en fonctions pures testées (se
 ### 6.1 Type de jour
 
 - **Jour de boxe** : José a déclaré la boxe en club ce soir-là.
-- **Jour de récupération** : le lendemain d'un jour de boxe, sauf quand la boxe tombe le vendredi (pas de jour de récupération ce week-end-là, décision du 07/10/2026). Un jour de récupération tombe donc toujours en semaine.
+- **Jour de récupération** : le lendemain d'un jour de boxe, sauf quand la boxe tombe le vendredi (pas de jour de récupération ce week-end-là, décision du 07/10/2026). Un jour de récupération tombe donc toujours en semaine. Pendant l'ancrage, pas de jour de récupération : le lendemain d'un jour de boxe est un jour normal (décision du 14/10/2026, §6.11).
 - **Jour normal** : les autres jours.
 - **Semaine de décharge** : se superpose au type de jour (section 6.10).
 - Le samedi et le dimanche ajoutent le bloc boxe, sauf le samedi qui suit une boxe le vendredi.
@@ -122,7 +123,7 @@ Toutes ces règles vivent dans `app/src/domain`, en fonctions pures testées (se
 
 ### 6.2 Matin, selon le palier
 
-Pendant les cycles d'ancrage, le contenu du matin suit le niveau N1 ou N2 (§6.11). Ensuite, 4 paliers (décision du 14/10/2026) ; leurs contenus sont provisoires, repris des anciens paliers 3 à 5.
+Pendant les cycles d'ancrage, le contenu du matin suit le niveau N1 ou N2 (§6.11). Ensuite, 4 paliers, un par cycle (décisions des 14 et 17/10/2026) ; leurs contenus sont repris des anciens paliers 3 à 5. Le palier 1 est confirmé (17/10/2026) ; les paliers 2 à 4 restent provisoires.
 
 Ordre fixe : respiration → café → mobilité → musculation → étirements, puis douche. Minutes par bloc :
 
@@ -135,18 +136,18 @@ Ordre fixe : respiration → café → mobilité → musculation → étirements
 
 Contenu :
 
-- **Mobilité** : paliers 1 et 2, la routine du jour à 30 s par mouvement, cossack et reverse table top en une série courte ; paliers 3 et 4, la routine du jour à 60 s par mouvement. La routine du jour a la même lettre que la séance (A avant A, B avant B).
-- **Musculation** : palier 1, 1 série de chaque exercice sans les éléments « palier 2 », swing compris en B ; paliers 2 à 4, 2 séries de la séance complète avec ajouts.
+- **Mobilité** : paliers 1 et 2, la routine du jour à 30 s par mouvement ; paliers 3 et 4, à 60 s. Cossack squat et reverse table top : toujours 1 série à la cible, jamais au temps, à tous les niveaux, week-end compris (décision du 17/10/2026). La routine du jour a la même lettre que la séance (A avant A, B avant B).
+- **Musculation** : palier 1, 1 série de chaque exercice sans les éléments « palier 2 », swing compris en B ; paliers 2 à 4, 2 séries de la séance complète avec ajouts. Swing : EMOM de 6 min (6 × 10) à partir du palier 1, week-end compris. Horse stance, carry, Copenhagen et tuck hang L-sit gardent leurs séries fixes (1 ou 2), week-end compris. Décisions du 17/10/2026.
 - **Étirements** : paliers 1 et 2, hanches 2 × 30 s ; paliers 3 et 4, hanches 3 × 30 s puis pied et mollet 1 × 30 s.
-- **Palier 4** : 10 min de travail en plus, contenu à définir par José ; d'ici là, l'appli affiche le contenu du palier 3 et signale les 10 min à définir [Interprétation].
+- **Palier 4** : 10 min de travail en plus, contenu à définir par José ; d'ici là, l'appli affiche le contenu du palier 3 et signale les 10 min à définir (accepté le 17/10/2026).
 - **Jour de récupération** : la musculation est remplacée par l'autre routine Mob. matin (pas celle de la veille), au ralenti, puis des neck CARs (3 par sens) ; étirements conservés.
-- **Version courte** (retard au-delà de la marge du café) : 1 série par exercice, pas d'étirements. **Version minimum** (nuit très hachée) : un seul mouvement de mobilité. José choisit la version ; l'appli la propose (section 6.8, « Alléger »).
-- **Week-end** : la séance du week-end remplace le matin de la semaine ; contenu par palier dans `data/programme.json` → `semaine.week_end` (provisoire) : palier 1, base de l'ancrage puis boxe en 3 rounds ; palier 2, routine Mob. matin complète, séance complète en 3 séries avec les ajouts, étirements de hanche 2 × 30 s, boxe en 3 rounds ; palier 3, idem avec la boxe en 5 rounds ; palier 4, journée type puis bloc boxe.
+- **Version courte** (retard au-delà de la marge du café) : 1 série par exercice, swing en EMOM de 3 min, 1 série de chaque étirement (décision du 17/10/2026). **Version minimum** (nuit très hachée) : un seul mouvement de mobilité. José choisit la version ; l'appli la propose (section 6.8, « Alléger »).
+- **Week-end** : la séance du week-end remplace le matin de la semaine ; contenu par palier dans `data/programme.json` → `semaine.week_end` (texte et `structure` ; palier 1 confirmé le 17/10/2026, paliers 2 à 4 provisoires) : palier 1, base de l'ancrage puis boxe en 3 rounds ; palier 2, routine Mob. matin complète, séance complète en 3 séries avec les ajouts (à leurs séries fixes), étirements de hanche 2 × 30 s, boxe en 3 rounds ; palier 3, idem avec la boxe en 5 rounds ; palier 4, journée type puis bloc boxe. La routine Mob. matin complète garde le temps par mouvement du palier : 30 s au palier 2, 60 s au palier 3 (décision du 14/10/2026).
 
 ### 6.3 Alternances « la suivante »
 
 - Musculation : A puis B d'un matin à l'autre, jour de récupération exclu. On fait toujours la séance qui suit la dernière faite, sans compter les jours.
-- Week-end, quand il porte une séance A ou B (« au mieux » de l'ancrage, paliers 2 et 3) : A le samedi, B le dimanche, y compris quand la boxe tombe le vendredi ; la séance du dimanche fixe la suivante (A le lundi).
+- Week-end, quand il porte une séance A ou B (« au mieux » de l'ancrage, paliers 2 et 3) : A le samedi, B le dimanche, y compris quand la boxe tombe le vendredi ; la séance du dimanche fixe la suivante (A le lundi). La même lettre choisit l'échauffement de la base (ancrage, palier 1) et la journée type du palier 4 (décision du 14/10/2026). La base faite compte pour sa lettre : base du dimanche faite → lundi A ; seul le samedi fait → lundi B (décision du 17/10/2026).
 - Routine pied : A puis B chaque soir sans boxe, jour de récupération compris.
 - Thèmes de boxe : la rotation avance à chaque bloc qui utilise un thème de la rotation.
 - Les pointeurs avancent quand le bloc est fait (ou marqué « sauté » par José), pas quand le jour passe.
@@ -162,9 +163,9 @@ Contenu :
 
 ### 6.5 Soir
 
-- **Bloc clé** selon le jour : standard (≈ 8 min : 2 séries de suspension avec knee raises, one arm hang une fois les 80 s atteintes, deep squat 2 × 2 min), récupération (≈ 6 min : suspension passive sans knee raises ni one arm hang, deep squat à la charge habituelle), boxe (≈ 4 min : 1 suspension et 1 × 2 min de deep squat).
-- **Routine pied** chaque soir sans boxe : la suivante (A : short foot et extension de mollet ; B : tibialis posterior et tibialis raise), puis les 4 étirements (étirement mollet, kiza, seiza, ATG split squat). Séries par exercice selon le palier (`soir_par_palier`, provisoire) : 1 aux paliers 1 et 2 (soir ≈ 15 min), 2 aux paliers 3 et 4 (≈ 20 min) ; pendant l'ancrage, §6.11.
-- Séries des 4 étirements : 1 au premier cycle ; 1 et 2 en alternance au deuxième ; 2 à partir du troisième.
+- **Bloc clé** selon le jour : standard (≈ 8 min : 2 séries de suspension avec knee raises, one arm hang une fois les 80 s atteintes, 1 tenue par bras, deep squat 2 × 2 min), récupération (≈ 6 min : suspension passive sans knee raises ni one arm hang, deep squat à la charge habituelle, 2 séries de chaque, décision du 14/10/2026), boxe (≈ 4 min : 1 min de suspension seule, sans knee raises, avec le one arm hang une fois ajouté, et 1 × 2 min de deep squat ; décisions des 14 et 17/10/2026).
+- **Routine pied** chaque soir sans boxe : la suivante (A : short foot et extension de mollet ; B : tibialis posterior et tibialis raise), puis les 4 étirements (étirement mollet, kiza, seiza, ATG split squat). Séries par exercice selon le palier (`soir_par_palier` ; paliers 1 et 2 confirmés le 17/10/2026) : 1 aux paliers 1 et 2 (soir ≈ 15 min), 2 aux paliers 3 et 4 (≈ 20 min) ; pendant l'ancrage, §6.11.
+- Séries des 4 étirements : 1 au premier cycle ; 1 et 2 en alternance au deuxième, d'une routine pied à l'autre en commençant par 1 (décision du 17/10/2026) ; 2 à partir du troisième.
 - Soir de boxe : les 4 étirements du pied après la boxe, 1 série, facultatifs.
 - Single leg balance : le matin et le soir, pendant le brossage des dents, 1 min par jambe.
 - Si le soir déborde, premier levier proposé : 1 série de suspension au lieu de 2 [Interprétation].
@@ -184,8 +185,8 @@ Reprend la logique de `legacy/lever-tot.html` :
 
 - Une entrée par date : coucher de la veille, lever, nuit (calme, 1 réveil, plusieurs réveils, très hachée), lumière, minutes faites, plancher fait, note ; niveau ou palier et cibles du jour figés à la première saisie.
 - Verdict : **manqué** si le lever dépasse la cible de plus de 10 min ; **réussi** si le lever est tenu et que le plancher est fait, ou que la nuit est difficile (plusieurs réveils ou très hachée), ou que le niveau ne l'exige pas (N1 : le lever seul valide le matin, comme l'ancien palier 1, décision du 07/10/2026) ; **partiel** sinon.
-- Pendant l'ancrage, les passages suivent le §6.11. Ensuite, passage au palier suivant : au moins 5 matins réussis sur les 7 derniers jours (jours du palier en cours seulement), **dont le samedi et le dimanche**, et au moins 7 jours au palier (provisoire, décision du 14/10/2026 ; en semaine, le travail impose déjà le lever). La barre de progression montre les deux conditions (« 4/5 matins · week-end 1/2 »). Le bouton s'active ; José confirme. Retour d'un palier possible à tout moment, avec confirmation.
-- Les entrées sont importables depuis l'artefact actuel (`docs/MIGRATION.md`). Ses paliers (1 à 5, de 7h00 à 6h00) ne correspondent plus aux niveaux de la v2 : à l'import, ils restent dans l'historique, sans fixer le niveau en cours [Interprétation, à confirmer au J4].
+- Pendant l'ancrage, les passages suivent le §6.11. Ensuite, un palier par cycle (décision du 17/10/2026) : l'appli propose le passage au palier suivant au plus tôt au début du cycle suivant (§6.10), et seulement si les 7 derniers jours comptent au moins 5 matins réussis (jours du palier en cours seulement), **dont le samedi et le dimanche** (critère du 14/10/2026 gardé [Interprétation] ; en semaine, le travail impose déjà le lever) ; sinon, elle le propose de nouveau la semaine suivante. La barre de progression montre les conditions (« au plus tôt le 01/02 · 4/5 matins · week-end 1/2 »). Le bouton s'active ; José confirme. Retour d'un palier possible à tout moment, avec confirmation.
+- Pas d'import de l'historique de l'artefact (décision du 17/10/2026) : le journal de la v2 commence vide.
 
 ### 6.8 Progression des exercices
 
@@ -208,8 +209,8 @@ Décisions, après chaque séance d'un exercice :
 | --- | --- | --- |
 | Monter | Cible atteinte sur toutes les séries, 2 séances de suite, ressenti « Propre, ~2 en réserve » les deux fois | +2 répétitions ou +`pas_s`, sans dépasser la fourchette |
 | Maintenir | Cible atteinte, ressenti « À l'échec ou technique dégradée » ; ou « Juste, 1 en réserve » [Interprétation] | Aucune |
-| Redescendre d'un cran | Cible manquée 2 séances de suite | −2 répétitions ou −`pas_s`, sans passer sous la fourchette [Interprétation] |
-| Alléger | Plusieurs nuits difficiles de suite dans « Lever tôt » (2 ou plus), ou José signale une fréquence cardiaque au repos nettement au-dessus de sa moyenne | Version courte du matin [Interprétation] |
+| Redescendre d'un cran | Cible manquée 2 séances de suite | −2 répétitions ou −`pas_s`, sans passer sous la fourchette (confirmé le 17/10/2026) |
+| Alléger | Plusieurs nuits difficiles de suite dans « Lever tôt » (2 ou plus), ou José signale une fréquence cardiaque au repos nettement au-dessus de sa moyenne | Version courte du matin [Interprétation] ; pendant l'ancrage, version minimum (décision du 17/10/2026) |
 
 - Pas de règle de reprise après une absence : José règle ses exercices avec « Ajuster » (décision du 07/10/2026).
 - Les séances d'une seule série (ancrage et palier 1) comptent pour les décisions [Interprétation].
@@ -234,8 +235,8 @@ Décisions, après chaque séance d'un exercice :
 
 ### 6.10 Cycle, décharge, tests
 
-- Cycle par défaut : 4 semaines de travail, puis 1 semaine de décharge. José peut avancer la décharge (« tout stagne ») ou la décaler jusqu'à 6 semaines.
-- Décharge : musculation et exercices du pied à 1 série, mêmes charges ; corde réduite de moitié ; sac remplacé par du shadow ; mobilité, étirements, bloc clé et équilibre inchangés ; tests.
+- Cycle par défaut : 4 semaines de travail, puis 1 semaine de décharge. José peut avancer la décharge (« tout stagne ») ou la décaler jusqu'à 6 semaines. Après l'ancrage, chaque cycle porte un palier : le passage au palier suivant se propose au début du cycle suivant (§6.7, décision du 17/10/2026).
+- Décharge : musculation et exercices du pied à 1 série (séries fixes comprises), mêmes charges ; swing en EMOM de 3 min ; corde réduite de moitié ; sac remplacé par du shadow ; mobilité, étirements, bloc clé et équilibre inchangés ; tests.
 - Tests : en semaine 1 du programme, puis pendant chaque décharge, dans les mêmes conditions.
 - Après les tests : écran « Préparer le cycle suivant » (5.5) ; les hausses « bas de jambe » s'étalent, une par semaine (6.9). Le numéro de cycle augmente au début du cycle suivant ; il règle les séries des étirements du pied.
 - Mesure hebdomadaire : poids ou tour de taille, le jour choisi ; ce n'est pas un critère de progression.
@@ -246,19 +247,19 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 
 - **Phase** : l'ancrage commence à la date choisie par José et dure jusqu'au passage au palier 1, validé par lui. Date de début, niveau en cours et dates de passage sont des données utilisateur [Interprétation].
 - **Niveaux** : N1, lever 6h50 et coucher 22h50, semaines 1 à 5 au plus tôt ; N2, lever 6h40 et coucher 22h40, à partir de la semaine 6.
-- **Contenu du jour** : il remplace celui des §6.2, 6.4, 6.5 et 6.6. Le type de jour (§6.1) et les alternances « la suivante » (§6.3) ne changent pas.
-  - **Matin N1**, A ou B (alternance de la musculation, jour de récupération exclu) : A, reverse table top puis 1 série de rings row ; B, cossack squat puis 1 série de goblet squat.
+- **Contenu du jour** : il remplace celui des §6.2, 6.4, 6.5 et 6.6. Les alternances « la suivante » (§6.3) ne changent pas. Pas de jour de récupération : le lendemain d'un jour de boxe est un jour normal, matin et soir (décision du 14/10/2026).
+  - **Matin N1**, A ou B (alternance de la musculation) : A, reverse table top puis 1 série de rings row ; B, cossack squat puis 1 série de goblet squat.
   - **Matin N2** : respiration 5 min, café (marge), puis A : bear walk et hip hinge au bâton, 1 série de KT press et 1 × 10 swings ; B : reverse table top et cossack squat, 1 série de rings row et de goblet squat ; puis 1 étirement, couch stretch et pancake à tour de rôle.
-  - Cossack squat et reverse table top : 1 série à la cible ; les autres mouvements de mobilité : 30 s. Version minimum (nuit très hachée) : un seul mouvement de mobilité. Jour de récupération : pas de musculation, les mouvements de mobilité du niveau au ralenti, puis neck CARs [Interprétation].
+  - Cossack squat et reverse table top : 1 série à la cible ; les autres mouvements de mobilité : 30 s. Version minimum (nuit très hachée) : un seul mouvement de mobilité. Pas de version courte (décision du 14/10/2026).
   - **Midi** : « bouger », marche ou corde, sans durée imposée ; bonus. Pas de compteur « corde : n/3 » pendant l'ancrage [Interprétation].
-  - **Soir sans boxe** : suspension 1 série ; deep squat 1 × 2 min ; routine pied A ou B (« la suivante ») en 1 tour : 1 série par exercice, puis les 4 étirements 1 × 30 s. Version minimum : suspension et deep squat. Soir de boxe : la version minimum, étirements du pied facultatifs. Jour de récupération : suspension passive sans knee raises, le reste identique.
+  - **Soir sans boxe** : suspension avec knee raises, 1 série, et le one arm hang une fois ajouté (1 tenue par bras, décision du 17/10/2026) ; deep squat 1 × 2 min ; routine pied A ou B (« la suivante ») en 1 tour : 1 série par exercice, puis les 4 étirements 1 × 30 s. Version minimum : 1 min de suspension seule (sans knee raises, one arm hang une fois ajouté) et 2 min de deep squat (décision du 17/10/2026). Soir de boxe : la version minimum, étirements du pied facultatifs (décision du 14/10/2026).
   - **Chaque jour** : single leg balance au brossage des dents, matin et soir.
-  - **Week-end** : base, 2 mouvements d'échauffement (ceux du matin N2 du jour [Interprétation]), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement, puis le soir. Au mieux (bonus) : routine Mob. matin complète à 30 s, séance complète en 3 séries sans les exercices du palier 2 (swing 3 × 10), étirements de hanche 2 × 30 s, boxe en 3 rounds (rounds 1, 3 et 5 du bloc) [Interprétation pour les rounds].
+  - **Week-end** : base, 2 mouvements d'échauffement (ceux du matin N2 du jour [Interprétation]), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement, puis le soir. Au mieux (bonus) : routine Mob. matin complète à 30 s (cossack squat et reverse table top : 1 série à la cible, décision du 17/10/2026), séance complète en 3 séries sans les exercices du palier 2 (swing 3 × 10), étirements de hanche 2 × 30 s (les 3 : couch stretch, pigeon, pancake ; décision du 17/10/2026), boxe en 3 rounds (rounds 1, 3 et 5 du bloc) [Interprétation pour les rounds].
 - **Jour tenu** : matin fait (normal ou minimum) et soir fait (normal, minimum ou version boxe). Un bloc bonus non fait ne rend jamais un jour « raté ».
 - **Passages** : vers N2 au plus tôt au début de la semaine 6, vers le palier 1 au plus tôt au début de la semaine 11. L'appli propose le passage seulement si les 7 derniers jours comptent au moins 5 jours tenus, dont le samedi et le dimanche ; sinon, elle le propose de nouveau la semaine suivante. Appliqué seulement après confirmation de José. Au passage au palier 1 : tests de la semaine 1 du programme et « Préparer le cycle suivant » (§5.5).
 - **Lever tôt** (§6.7) : heures du niveau en cours, verdict inchangé. Le plancher est le matin du niveau, normal ou minimum. À N1, le lever seul valide le matin de « Lever tôt » ; le jour tenu demande la séance du matin.
 - **Cycles** (§6.10) : pas de décharge ni de tests pendant l'ancrage ; le numéro de cycle reste à 1 jusqu'au palier 1 (étirements du pied à 1 série) [Interprétation].
-- **Progression** (§6.8, §6.9) : inchangée ; « Ajuster » reste disponible.
+- **Progression** (§6.8, §6.9) : inchangée ; « Ajuster » reste disponible. « Alléger » propose la version minimum (décision du 17/10/2026).
 
 ## 7. Données
 
@@ -318,16 +319,16 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 3. **Semaine sans boxe** : aucun jour de récupération ; corde 3 midis, marche 2 ; pied tous les soirs en alternance.
 4. **N1, matin A** : reverse table top, puis 1 série de rings row ; environ 3 min, sans étirement. **Matin B** : cossack squat, puis 1 série de goblet squat.
 5. **N2, matin B** : respiration 5 min, café, reverse table top et cossack squat (1 série à la cible), 1 série de rings row et de goblet squat, puis l'étirement de la rotation (couch stretch ou pancake). **Matin A** : bear walk et hip hinge au bâton 30 s chacun, 1 série de KT press et 1 × 10 swings, puis l'autre étirement.
-6. **Palier 2, samedi** (provisoire) : routine Mob. matin A complète, séance complète A en 3 séries avec les ajouts, étirements de hanche 2 × 30 s, boxe en 3 rounds ; le soir du palier 2 (≈ 15 min, routine pied à 1 série).
+6. **Palier 2, samedi** (provisoire) : routine Mob. matin A complète (cossack squat en 1 série à la cible), séance complète A en 3 séries, avec horse stance et carry à leurs séries fixes (1 et 2), étirements de hanche 2 × 30 s, boxe en 3 rounds ; le soir du palier 2 (≈ 15 min, routine pied à 1 série).
 7. **Jour de récupération après un mardi B, palier 2** : mobilité A au ralenti puis neck CARs, pas de musculation ; marche ; bloc clé version récupération et routine pied (la suivante).
-8. **Lever tôt** : 7 jours au palier 1, 5 matins réussis sur 7 dont le samedi et le dimanche → passage au palier 2 proposé, appliqué seulement après confirmation ; 5 matins réussis du lundi au vendredi, week-end manqué → pas de passage. Nuit « très hachée » + lever à l'heure sans plancher au palier 3 → réussi. À N1, lever à l'heure sans plancher → réussi. Lever à cible + 11 min → manqué.
+8. **Lever tôt** : palier 1 depuis le lundi 28/12, premier cycle de 4 semaines plus la décharge. Lundi 01/02/2027, début du cycle 2, 5 matins réussis sur les 7 précédents dont le samedi et le dimanche → passage au palier 2 proposé, appliqué seulement après confirmation ; même situation le lundi 11/01 → rien (un palier par cycle) ; le 01/02, 5 matins réussis du lundi au vendredi, week-end manqué → pas de passage, nouvelle proposition la semaine suivante. Nuit « très hachée » + lever à l'heure sans plancher au palier 3 → réussi. À N1, lever à l'heure sans plancher → réussi. Lever à cible + 11 min → manqué.
 9. **Progression** : KT press 16 kg × 12 sur toutes les séries, 2 séances de suite, « Propre » → proposition 16 kg × 14 ; à 16 kg × 14, tenu 2 fois → « plafond atteint », aucune proposition de charge. Pistol appui 45 cm × 7 tenu 2 fois → proposition × 8, pas × 9. Cible manquée 2 fois → proposition −2 répétitions, jamais sous le bas de la fourchette. Aucun niveau ne change sans validation.
 10. **Bas de jambe** : cette semaine, José a déjà ajouté 2 min de corde ; il passe l'extension de mollet au bidon de 5 kg avec « Ajuster » → l'appli propose de l'appliquer lundi prochain. Après une semaine de test, corde, mollets et tibialis montent tous → étalés sur 3 semaines, dans cet ordre. Une montée de +2 répétitions dans un échelon reste possible. Introduire le sac ne compte pas.
 11. **Décharge** : séances à 1 série, mêmes charges ; corde 10 min si la durée courante est 20 min ; aucune proposition de progression ; tests proposés.
 12. **Étirements du pied** : cycle 1 → 1 série ; cycle 2 → 1 et 2 en alternance ; cycle 3 → 2 séries.
 13. **Ajuster** : José règle le KT press à 1 série de 20 kg × 6 et 1 série de 16 kg × 14 → la séance suivante affiche ces cibles, sans validation ; le réglage figure dans l'historique. Après 9 jours sans séance, rien ne change tout seul.
 14. **Export puis import** sur une base vide : toutes les données reviennent à l'identique.
-15. **Ancrage, contenu du jour** : N2, matin A → respiration 5 min, bear walk et hip hinge au bâton 30 s chacun, 1 série de KT press, 1 série de 10 swings, puis couch stretch ; le matin suivant (B) → reverse table top et cossack squat, rings row, goblet squat, puis pancake. N1, matin A → reverse table top, 1 série de rings row, pas d'étirement. Soir sans boxe → suspension 1 série, deep squat 1 × 2 min, routine pied en 1 tour. Soir de boxe → suspension et deep squat seulement.
+15. **Ancrage, contenu du jour** : N2, matin A → respiration 5 min, bear walk et hip hinge au bâton 30 s chacun, 1 série de KT press, 1 série de 10 swings, puis couch stretch ; le matin suivant (B) → reverse table top et cossack squat, rings row, goblet squat, puis pancake. N1, matin A → reverse table top, 1 série de rings row, pas d'étirement. Soir sans boxe → suspension 1 série, deep squat 1 × 2 min, routine pied en 1 tour. Soir de boxe et version minimum → 1 min de suspension seule (sans knee raises) et 2 min de deep squat. Au mieux du week-end → les 3 étirements de hanche. Lendemain de boxe → jour normal, avec la séance du matin (pas de jour de récupération).
 16. **Ancrage, jour tenu** : matin et soir en version minimum → tenu ; matin fait, soir non fait → non tenu ; midi non fait → sans effet ; samedi, matin et soir faits sans le « au mieux » → tenu.
 17. **Ancrage, passages** : début le lundi 19/10 à N1. Lundi 23/11 (début de la semaine 6), 5 jours tenus sur les 7 précédents dont le samedi 21 et le dimanche 22 → passage à N2 proposé, appliqué seulement après confirmation ; même situation le lundi 16/11 → rien (trop tôt). Lundi 28/12 (début de la semaine 11), 6 jours tenus sur 7 mais le dimanche 27 non tenu → pas de passage au palier 1 ; lundi 04/01/2027, 5 jours tenus dont le samedi et le dimanche → passage proposé.
 
@@ -335,15 +336,17 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 
 Une session Claude Code et une PR par jalon. José relit sur son téléphone, puis fusionne.
 
+**Deux tranches** (décision du 17/10/2026, `docs/decisions.md`) : une seule appli, livrée en deux tranches. Tranche 1 : l'ancrage (N1, N2) et le premier cycle du palier 1 ; tranche 2 : la suite. Les jalons J3 à J5 livrent d'abord la tranche 1, dans cet ordre : le jour 1 de l'ancrage (écran du jour, saisie, « Ajuster », jour tenu, « Lever tôt », export), les propositions de progression, le passage à N2, puis le palier 1 avec ses tests et sa décharge. José commence l'ancrage le lundi qui suit la fin du J4. Pendant la tranche 1, la v2 a sa propre icône sous `/Fit-dad/v2/` et la v1 reste en place, intacte ; la bascule vient en tranche 2, sous réserve d'un test de cohabitation hors ligne au J3. Défauts acceptés le 17/10/2026.
+
 | Jalon | Contenu | Fini quand |
 | --- | --- | --- |
 | J0 Socle | `app/` (Vite, React, TS, lint, Vitest), build commité dans `v2/`, page d'accueil qui lit `data/programme.json` | La v1 marche comme avant ; `/Fit-dad/v2/` affiche la page d'accueil ; tests verts |
 | J1 Programme | Schéma zod de `data/programme.json`, relecture ligne à ligne contre `docs/PROGRAMME.md`, écarts signalés | Le fichier se valide ; écarts tranchés avec José |
 | J2 Moteur | `app/src/domain` : type de jour, matin par palier, alternances, midi, soir, bloc boxe ; ancrage (contenu du jour, jour tenu) | Scénarios 1 à 7, 12, 15 et 16 verts |
-| J3 Aujourd'hui | Écran Aujourd'hui, saisie des séances, « Ajuster », minuteur, stockage, export et import | Une journée entière saisie sur le téléphone ; scénarios 13 et 14 verts |
-| J4 Lever tôt | Journal, verdict, paliers, historique, import depuis l'artefact | Scénario 8 vert ; données de l'artefact importées |
-| J5 Progression | Propositions dans l'échelon, bas de jambe, cycle, décharge, tests, préparation du cycle suivant, passages de l'ancrage | Scénarios 9 à 11 et 17 verts |
-| J6 Bascule | Liste de contrôle du §8.1 : la v2 remplace la v1 à la racine | v2 à la racine, ouverte par l'icône existante ; copie de la v1 consultable sous `/Fit-dad/legacy/v1.html` |
+| J3 Aujourd'hui (tranche 1) | Écran Aujourd'hui de l'ancrage (N1, N2), saisie des séances, « Ajuster », minuteur, jour tenu, stockage, export et import ; test de cohabitation hors ligne avec la v1 | Une journée d'ancrage entière saisie sur le téléphone ; scénarios 13, 14 et 16 verts |
+| J4 Lever tôt (tranche 1) | Journal, verdict, heures du niveau (N1, N2, palier 1), historique ; sans import de l'artefact | Scénario 8 vert ; José peut commencer l'ancrage |
+| J5 Progression (tranche 1) | Propositions dans l'échelon, bas de jambe, passages de l'ancrage (avant la semaine 6) ; puis le palier 1 : tests, décharge, « Préparer le cycle suivant » (avant la semaine 11) | Scénarios 9 à 11 et 17 verts |
+| J6 Tranche 2 | Paliers 2 à 4, un par cycle (avant la semaine 16), cycles suivants ; puis la liste de contrôle du §8.1 : la v2 remplace la v1 à la racine | v2 à la racine, ouverte par l'icône existante ; copie de la v1 consultable sous `/Fit-dad/legacy/v1.html` |
 
 ## 11. Questions ouvertes
 

@@ -35,7 +35,7 @@ Total : 41 exercices = 12 de musculation, 4 du pied, 12 de mobilité, 7 étireme
 
 - **Matin du jour de récupération** : une seule routine de mobilité, l'autre que celle de la veille, au ralenti, puis les neck CARs ; pas de bloc mobilité en plus. C'est le scénario 7 de `docs/SPEC.md` §9, et le JSON le dit déjà.
 
-## Questions pour José (4)
+## Questions pour José (4) — tranchées le 17/10/2026
 
 ### Q1. Le swing : combien, selon les jours ?
 
@@ -80,3 +80,12 @@ Total : 41 exercices = 12 de musculation, 4 du pied, 12 de mobilité, 7 étireme
 - Le schéma vérifie aussi : un niveau par cycle et ses semaines de passage, les minutes de travail de chaque palier, des levers et des couchers de plus en plus tôt de N1 au palier 4, un contenu de week-end et de soir par palier. 25 tests.
 - Q1 à Q4 restent ouvertes, avec les nouveaux numéros : ancien palier 2 = N2, ancien 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3. Pour l'ancrage, Q2 est déjà tranchée : cossack et reverse table top à 1 série, à la cible du moment.
 - Formulation corrigée : le « au mieux » du week-end de l'ancrage exclut les exercices du palier 2 (anciennement 4), Copenhagen compris, comme décidé le 13/10. Le 14/10, j'avais écrit « sans les ajouts du palier 2 » : le Copenhagen n'étant pas un ajout, la phrase semblait le garder. Les données l'excluaient déjà.
+
+## Ajout du 17/10/2026
+
+José a accepté les propositions par défaut pour Q1 à Q4, avec les nouveaux numéros de paliers (`docs/decisions.md`) :
+
+- **Q1, swing** : EMOM de 6 min (6 × 10) en fin de séance B, à partir du palier 1, week-end compris ; 3 min en version courte et en décharge. Pendant l'ancrage : 1 × 10 à N2, 3 × 10 au « au mieux ».
+- **Q2, cossack et reverse table top** : toujours 1 série à la cible du moment, jamais au temps, à tous les niveaux, week-end compris.
+- **Q3, one arm hang** : 1 tenue par bras, une fois ajouté ; tous les soirs sauf le jour de récupération, soir de boxe compris (réponse de José du 14/10, qui remplace ma proposition de l'en exclure).
+- **Q4, horse stance, carry, Copenhagen, tuck hang L-sit** : séries fixes (1 ou 2), week-end compris ; 1 série en décharge.

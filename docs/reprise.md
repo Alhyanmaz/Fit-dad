@@ -1,41 +1,40 @@
-# Reprise de la session (14/10/2026)
+# Reprise de la session (17/10/2026)
 
 ## État
 
-- **J0 terminé et fusionné** (PR #1, le 08/10) : la v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/`, la v1 est intacte à la racine.
-- **J1 terminé** sur la branche `j1-programme`, PR #2 prête à fusionner vers `main` : schéma zod de `data/programme.json`, relecture du programme, 25 tests verts, build à jour.
-- **Programme restructuré** (décisions des 13 et 14/10, `docs/decisions.md`) :
-  - ancrage en deux niveaux, un par cycle de 5 semaines : N1 (lever 6h50), puis N2 (lever 6h40) ;
-  - passages au plus tôt en semaines 6 et 11, seulement si 5 jours sur 7 ont tenu, samedi et dimanche compris ; José valide ;
-  - puis 4 paliers, de 6h30 à 6h00, avec 20, 30, 40 et 50 min de travail le matin ;
-  - contenus des paliers 1 à 4 **provisoires** (anciens paliers 3 à 5), à confirmer avant la semaine 11.
-- **GitHub** : compte suspendu du 09/10 au 13/10, rétabli le 13/10 au soir ; tout est poussé. Les fichiers de passation vers un projet Claude (13/10) ne servent plus, sauf si José préfère y travailler.
+- **J0, J1 et J2 terminés et fusionnés dans `main`** : PR #1 le 08/10 ; PR #2 (programme validé au chargement) et PR #3 (moteur de règles) le 17/10, à la demande de José. La v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/` ; la v1 est intacte à la racine.
+- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, en fonctions pures ; scénarios 1 à 7, 12, 15 et 16 verts ; 60 tests au total.
+- **Programme** (`docs/PROGRAMME.md`, `data/programme.json`, version du 17/10/2026) :
+  - ancrage en deux niveaux, un par cycle de 5 semaines : N1 (lever 6h50), puis N2 (6h40) ; ni jour de récupération ni version courte ;
+  - puis 4 paliers, de 6h30 à 6h00, **un par cycle** (décision du 17/10) ;
+  - palier 1 confirmé le 17/10 ; contenus des paliers 2 à 4 provisoires.
+- **Une appli, deux tranches** (décision du 17/10, `docs/SPEC.md` §10) : tranche 1, l'ancrage puis le premier cycle du palier 1 (jalons J3 à J5) ; tranche 2, les paliers 2 à 4 et la bascule de la v1 (J6).
+- **Les 22 questions du 17/10 sont tranchées** (`docs/decisions.md`, dernière entrée).
 
 ## Prochaine étape
 
-1. José fusionne la PR #2 (base `main`).
-2. Jalon J2 (moteur de règles, ancrage compris), dans une session partie de `main` à jour :
+Jalon J3 de la tranche 1 : l'écran Aujourd'hui de l'ancrage, la saisie, « Ajuster », le minuteur, le jour tenu, le stockage, l'export et l'import, plus le test de cohabitation hors ligne avec la v1. José commence l'ancrage le lundi qui suit la fin du J4.
 
 ```
-Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J2 de docs/SPEC.md §10. Propose le plan avant de coder.
+Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J3 de la tranche 1 (docs/SPEC.md §10). Propose le plan avant de coder.
 ```
 
 ## À fournir au démarrage
 
-Rien : tout est dans le dépôt. L'export de « Lever tôt » ne servira qu'au jalon J4.
+Rien : tout est dans le dépôt.
 
 ## Questions ouvertes
 
-- **Avant la semaine 11** (fin décembre au plus tôt), à confirmer par José :
-  - les contenus des paliers 1 à 4, dont les 10 min de plus du palier 4 ;
-  - le soir à 15 min (proposition : bloc clé complet, routine pied à 1 série) ;
-  - la progression du week-end (proposition : 30, 45, 60, puis 75 min) ;
-  - le passage entre paliers (5 matins sur 7, week-end compris, au moins 7 jours) ;
-  - la version courte et la décharge (règles actuelles par défaut).
-- **J1, Q1 à Q4** (`docs/relecture-programme.md`), avec les nouveaux numéros de paliers.
-- **Ancrage** : date de début choisie par José (jour 1 de N1).
-- **Import de « Lever tôt »** (J4) : les paliers de l'artefact ne correspondent plus aux niveaux de la v2 (`docs/MIGRATION.md`).
-- **Poids de l'appli** : zod ajoute environ 31 Ko compressés (111 Ko au total). Acceptable pour une appli mise en cache ; allègement possible plus tard avec `zod/mini`, au prix d'une réécriture du schéma.
-- **Branche par défaut** : `Mainold`, figée sur l'ancienne version (commit `d861224`). GitHub a refusé de la passer sur `main` le 08/10 (« Could not change default branch »), peut-être à cause du problème de compte : à retenter.
-- À confirmer au J5 : la proposition « redescendre de 2 répétitions », gardée par défaut (`docs/decisions.md`, fin de l'entrée du 07/10).
-- Le document Claude Docs du programme (révision 44) ne contient ni les décisions du 07/10 ni celles des 13 et 14/10 ; `docs/PROGRAMME.md` fait foi.
+Numérotation à la suite de celle du 17/10 (questions 1 à 22, tranchées).
+
+23. Le soir de boxe et la version minimum ont une suspension de durée fixe (1 min). Comptent-ils pour la progression de la suspension ? Défaut : non, une durée fixe n'est pas une cible [Interprétation]. À trancher au J5.
+24. Paliers 2 à 4 : contenus du matin repris des anciens paliers 4 et 5, et les 10 min du palier 4 ; à confirmer avant la semaine 16 (tranche 2). Défaut : les contenus actuels.
+
+**À faire par José (pas des décisions)**
+
+- Choisir une autre date de début de l'ancrage, s'il ne veut pas du lundi qui suit la fin du J4.
+- Retenter de passer la branche par défaut du dépôt de `Mainold` à `main` (refus de GitHub le 08/10, cause inconnue).
+
+**Note, sans décision à prendre**
+
+- Poids de l'appli : zod ajoute environ 31 Ko compressés (112 Ko au total). Acceptable pour une appli mise en cache ; allègement possible plus tard avec `zod/mini`, au prix d'une réécriture du schéma.

@@ -13,11 +13,11 @@ function erreursDe(donnees: unknown): string[] {
 }
 
 describe('lecture du programme', () => {
-  it('valide data/programme.json : 41 exercices, version du 14/10/2026', () => {
+  it('valide data/programme.json : 41 exercices, version du 17/10/2026', () => {
     const lecture = lireProgramme(programmeBrut);
     if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
     expect(resumerProgramme(lecture.programme)).toEqual({
-      version: '2026-10-14',
+      version: '2026-10-17',
       nombreExercices: 41,
     });
   });
@@ -178,6 +178,30 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
     p.ancrage.week_end.au_mieux.boxe_rounds = [1, 3, 6];
     expect(erreursDe(p).join('\n')).toMatch(
       /ancrage › week_end › au_mieux › boxe_rounds › 2 : round 6 inexistant \(le bloc boxe en compte 5\)/,
+    );
+  });
+
+  it('mouvement « à la cible » absent des routines Mob. matin', () => {
+    const p = copie();
+    p.mobilite.a_la_cible.push('neck_cars');
+    expect(erreursDe(p).join('\n')).toMatch(
+      /mobilite › a_la_cible › 2 : « neck_cars » n'est dans aucune routine Mob\. matin/,
+    );
+  });
+
+  it('swing de la version courte plus long que l’EMOM', () => {
+    const p = copie();
+    p.matin.version_courte.swing_minutes = 8;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /matin › version_courte › swing_minutes : plus long que l'EMOM de « swing_emom » \(6 min\)/,
+    );
+  });
+
+  it('rounds du week-end d’un palier dans le désordre', () => {
+    const p = copie();
+    p.semaine.week_end[1].structure.boxe_rounds = [1, 5, 3];
+    expect(erreursDe(p).join('\n')).toMatch(
+      /semaine › week_end › 1 › structure › boxe_rounds › 2 : rounds attendus dans l'ordre, sans doublon/,
     );
   });
 });
