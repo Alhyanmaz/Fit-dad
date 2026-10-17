@@ -174,10 +174,10 @@ const lever_tot = z.strictObject({
         lever: heure,
         coucher: heure,
         plancher_obligatoire: z.boolean(),
-        jours_minimum: entierPositif,
       }),
     )
     .length(NOMBRE_DE_PALIERS),
+  paliers_par_cycle: entierPositif,
   verdict: z.strictObject({ manque: texte, reussi: texte, partiel: texte }),
   plancher: texte,
   regles_affichees: z.array(texte),
@@ -217,7 +217,6 @@ const palierDuMatin = z.strictObject({
     type: z.enum(['echauffement_general', 'routine_du_jour']),
     mouvements: z.array(idExercice).min(1).optional(),
     duree_mouvement_s: entierPositif,
-    serie_courte: z.array(idExercice).min(1).optional(),
     interpretation: drapeau,
   }),
   musculation: z
@@ -246,7 +245,8 @@ const matin = z.strictObject({
   version_courte: z.strictObject({
     declencheur: texte,
     musculation_series: entierPositif,
-    etirements: z.boolean(),
+    etirements_series: entierPositif,
+    swing_minutes: entierPositif,
   }),
   version_minimum: z.strictObject({ declencheur: texte, contenu: texte }),
   jour_recuperation: z.strictObject({ regle: texte }),
@@ -305,7 +305,6 @@ const ancrage = z.strictObject({
   matin: z.strictObject({
     ordre: z.array(z.enum(BLOCS_DU_MATIN)).length(BLOCS_DU_MATIN.length),
     mobilite_duree_mouvement_s: entierPositif,
-    mobilite_a_la_cible: z.array(idExercice),
     mobilite_regle: texte,
     etirement: z.strictObject({
       rotation: z.array(idExercice).min(1),
@@ -334,6 +333,7 @@ const ancrage = z.strictObject({
       exercices: z.array(idExercice).min(1),
       duree_min: entierPositif,
       suspension: texte,
+      suspension_s: entierPositif,
     }),
     boxe: texte,
   }),
@@ -355,6 +355,7 @@ const ancrage = z.strictObject({
         regle: texte,
       }),
       etirements_hanches_series: entierPositif,
+      etirements_hanches: texte,
       boxe_rounds: z.array(entierPositif).min(1),
       boxe_interpretation: drapeau,
       duree_min: entierPositif,
@@ -406,6 +407,8 @@ const seances = z.strictObject({
 const mobilite = z.strictObject({
   routines: parLettre(z.array(idExercice).min(1)),
   routine_du_jour: texte,
+  a_la_cible: z.array(idExercice).min(1),
+  a_la_cible_regle: texte,
   jour_recuperation: z.strictObject({
     routine: texte,
     rythme: texte,
@@ -457,6 +460,7 @@ const bloc_cle = z.strictObject({
     boxe: z.strictObject({
       quand: texte,
       suspension: texte,
+      suspension_s: entierPositif,
       suspension_series: entierPositif,
       deep_squat_series: entierPositif,
       duree_min: entierPositif,
@@ -570,6 +574,7 @@ const cycle = z.strictObject({
     frequence: texte,
     musculation_series: entierPositif,
     pied_series: entierPositif,
+    swing_minutes: entierPositif,
     memes_charges: z.boolean(),
     corde: texte,
     sac: texte,
@@ -736,9 +741,6 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     pal.mobilite.mouvements?.forEach((id, j) =>
       verifier([...ici, 'mobilite', 'mouvements', j], id, 'mobilite'),
     );
-    pal.mobilite.serie_courte?.forEach((id, j) =>
-      verifier([...ici, 'mobilite', 'serie_courte', j], id, 'mobilite'),
-    );
     for (const lettre of LETTRES) {
       pal.musculation.exercices?.[lettre].forEach((e, j) =>
         verifier(
@@ -787,6 +789,28 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     p.mobilite.jour_recuperation.puis,
     'mobilite',
   );
+  p.mobilite.a_la_cible.forEach((id, j) => {
+    const ici = ['mobilite', 'a_la_cible', j];
+    verifier(ici, id, 'mobilite');
+    if (!LETTRES.some((lettre) => p.mobilite.routines[lettre].includes(id)))
+      signaler(ici, `« ${id} » n'est dans aucune routine Mob. matin`);
+  });
+
+  // Swing en EMOM : la version courte et la décharge en gardent une partie
+  for (const [id, ex] of Object.entries(p.exercices)) {
+    if (ex.mesure !== 'emom') continue;
+    const minutes = ex.minutes ?? 0;
+    if (p.matin.version_courte.swing_minutes > minutes)
+      signaler(
+        ['matin', 'version_courte', 'swing_minutes'],
+        `plus long que l'EMOM de « ${id} » (${minutes} min)`,
+      );
+    if (p.cycle.decharge.swing_minutes > minutes)
+      signaler(
+        ['cycle', 'decharge', 'swing_minutes'],
+        `plus long que l'EMOM de « ${id} » (${minutes} min)`,
+      );
+  }
 
   // Étirements
   p.etirements.zones.hanches.forEach((id, j) =>
@@ -907,9 +931,6 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
       'plus de jours tenus exigés que de jours dans la fenêtre',
     );
   }
-  an.matin.mobilite_a_la_cible.forEach((id, j) =>
-    verifier(['ancrage', 'matin', 'mobilite_a_la_cible', j], id, 'mobilite'),
-  );
   an.matin.etirement.rotation.forEach((id, j) =>
     verifier(['ancrage', 'matin', 'etirement', 'rotation', j], id, 'etirement', 'hanches'),
   );

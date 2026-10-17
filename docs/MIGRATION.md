@@ -1,6 +1,6 @@
 # Migration des données
 
-En bref : rien n'est repris de la v1 (décision Q10 = b) ; l'historique de « Lever tôt » est repris, parce que le passage de palier dépend des 7 derniers jours.
+En bref : rien n'est repris, ni de la v1 (décision Q10 = b), ni de l'artefact « Lever tôt » (décision du 17/10/2026). La v2 démarre avec un journal vide et des niveaux de départ saisis par José.
 
 ## 1. Appli v1 (Fit-dad actuelle)
 
@@ -11,6 +11,8 @@ En bref : rien n'est repris de la v1 (décision Q10 = b) ; l'historique de « Le
 - Si José utilise encore l'artefact claude.ai d'origine plutôt que Fit-dad, cet artefact n'a pas d'export. Sans conséquence avec Q10 = b.
 
 ## 2. « Lever tôt »
+
+**Abandonné le 17/10/2026** : José ne reprend pas l'historique de l'artefact (« historique supprimé »). L'import ci-dessous ne sera pas construit ; il reste décrit pour mémoire. La v2 ne lit ni n'efface l'artefact, qui reste dans claude.ai.
 
 ### Où sont les données
 

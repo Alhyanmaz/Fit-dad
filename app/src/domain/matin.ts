@@ -15,10 +15,8 @@ export interface Mouvement {
   exercice: string;
   /** Durée par mouvement ; absente pour un mouvement fait en série. */
   duree_s?: number;
-  /** Une série à la cible du moment (cossack, reverse table top pendant l'ancrage). */
+  /** Une série à la cible du moment : cossack squat et reverse table top, à tous les niveaux. */
   a_la_cible?: true;
-  /** « Série courte » des paliers 1 et 2 (question Q2 du J1, encore ouverte). */
-  serie_courte?: true;
 }
 
 export interface ExerciceDeSeance {
@@ -79,6 +77,35 @@ function lettreDeMobilite(ctx: ContexteDuMatin): Lettre {
   return ctx.lettre ?? 'A';
 }
 
+/** Cossack squat et reverse table top : 1 série à la cible, jamais au temps (décision du 17/10/2026). */
+export function mouvementDeMobilite(
+  programme: Programme,
+  exercice: string,
+  dureeMouvement_s: number,
+): Mouvement {
+  return programme.mobilite.a_la_cible.includes(exercice)
+    ? { exercice, a_la_cible: true }
+    : { exercice, duree_s: dureeMouvement_s };
+}
+
+/**
+ * Un exercice de séance avec ses séries : celles du palier ou du week-end, sauf pour les exercices à
+ * séries fixes (horse stance, carry, Copenhagen, tuck hang L-sit), qui n'en font jamais plus. Le swing
+ * en EMOM se compte en minutes : une série de `reps_par_minute` par minute. Décisions du 17/10/2026.
+ */
+export function exerciceDeSeance(
+  programme: Programme,
+  exercice: string,
+  series: number,
+  swingMinutes?: number,
+): ExerciceDeSeance {
+  const ex = programme.exercices[exercice];
+  if (ex?.mesure === 'emom')
+    return { exercice, series: swingMinutes ?? ex.minutes ?? series, reps: ex.reps_par_minute };
+  const fixes = ex?.series_fixes;
+  return { exercice, series: fixes === undefined ? series : Math.min(fixes, series) };
+}
+
 function neckCars(programme: Programme): number {
   return programme.exercices[programme.mobilite.jour_recuperation.puis]?.par_sens ?? 3;
 }
@@ -109,10 +136,8 @@ function matinDAncrage(
   const regles = programme.ancrage.matin;
   const lettre = ctx.lettre ?? 'A';
   const seance = niveau.matin.seances[lettre];
-  const mobilite: Mouvement[] = seance.mobilite.map((exercice) =>
-    regles.mobilite_a_la_cible.includes(exercice)
-      ? { exercice, a_la_cible: true }
-      : { exercice, duree_s: regles.mobilite_duree_mouvement_s },
+  const mobilite = seance.mobilite.map((exercice) =>
+    mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s),
   );
   if (version === 'minimum') return matinMinimum(lettre, mobilite[0]);
   const etirements: Etirement[] = niveau.matin.etirement
@@ -153,17 +178,14 @@ export function exercicesDeLaSeance(
   return [...binomes, ...ajouts, ...fin].map((e) => e.exercice);
 }
 
-/** Mouvements de la routine de mobilité du jour, au temps du palier, avec la « série courte ». */
+/** Mouvements de la routine de mobilité du jour, au temps du palier. */
 export function mobiliteDeLaRoutine(
   programme: Programme,
   lettre: Lettre,
   dureeMouvement_s: number,
-  serieCourte: readonly string[],
 ): Mouvement[] {
   return programme.mobilite.routines[lettre].map((exercice) =>
-    serieCourte.includes(exercice)
-      ? { exercice, serie_courte: true }
-      : { exercice, duree_s: dureeMouvement_s },
+    mouvementDeMobilite(programme, exercice, dureeMouvement_s),
   );
 }
 
@@ -179,11 +201,12 @@ function matinDuPalier(
     programme,
     lettreDeMobilite(ctx),
     palier.mobilite.duree_mouvement_s,
-    palier.mobilite.serie_courte ?? [],
   );
   const lettre = recuperation ? null : ctx.lettre;
   if (version === 'minimum') return matinMinimum(lettre, mobilite[0]);
-  const series = version === 'courte' ? 1 : (palier.musculation.series ?? 1);
+  // Version courte : 1 série par exercice, swing réduit, étirements à 1 série (décision du 17/10/2026).
+  const courte = version === 'courte' ? programme.matin.version_courte : null;
+  const series = courte ? courte.musculation_series : (palier.musculation.series ?? 1);
   const musculation =
     recuperation || !lettre
       ? []
@@ -192,23 +215,23 @@ function matinDuPalier(
           lettre,
           num,
           palier.musculation.contenu ?? 'seance_sans_ajouts',
-        ).map((exercice) => ({ exercice, series }));
+        ).map((exercice) => exerciceDeSeance(programme, exercice, series, courte?.swing_minutes));
   const e = palier.etirements;
-  const etirements: Etirement[] =
-    version === 'courte' || !e
-      ? []
-      : [
-          ...programme.etirements.zones.hanches.map((exercice) => ({
-            exercice,
-            series: e.hanches,
-          })),
-          ...(e.pied_mollet
-            ? programme.etirements.zones.pied_mollet.map((exercice) => ({
-                exercice,
-                series: e.pied_mollet ?? 1,
-              }))
-            : []),
-        ];
+  const seriesDEtirement = (s: number) => (courte ? courte.etirements_series : s);
+  const etirements: Etirement[] = !e
+    ? []
+    : [
+        ...programme.etirements.zones.hanches.map((exercice) => ({
+          exercice,
+          series: seriesDEtirement(e.hanches),
+        })),
+        ...(e.pied_mollet
+          ? programme.etirements.zones.pied_mollet.map((exercice) => ({
+              exercice,
+              series: seriesDEtirement(e.pied_mollet ?? 1),
+            }))
+          : []),
+      ];
   return {
     lettre,
     respiration_min: palier.minutes.respiration,

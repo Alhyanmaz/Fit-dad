@@ -99,8 +99,8 @@ Retour de José du 13/10 sur les paliers et les phases (document Word, lecture d
   - contenus des paliers 1 à 3 = ceux des anciens paliers 3 à 5 ; palier 4 = ancien palier 5, plus 10 min à définir ; respiration et café des anciens paliers 3 à 5 ;
   - soir à 15 min : bloc clé complet et routine pied à 1 série par exercice ; à 20 min : soir complet (proposition de Claude) ;
   - week-end : base + boxe en 3 rounds au palier 1 (≈ 30 min) ; séance complète en 3 séries, mobilité complète, étirements de hanche et boxe en 3 rounds au palier 2 (≈ 45 min) ; boxe en 5 rounds au palier 3 (≈ 60 min) ; journée type et bloc boxe au palier 4 (≈ 75 min) (proposition de Claude) ;
-  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier ;
-  - version courte et décharge : règles actuelles.
+  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier (**→ 17/10 : un palier par cycle**) ;
+  - version courte et décharge : règles actuelles (**→ 17/10 : version courte avec 1 série d'étirements**).
 - **Q1 à Q4 du J1** : toujours ouvertes, avec les nouveaux numéros (ancien palier 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3). Le J1 se termine avec ces points provisoires (accord de José du 14/10).
 
 ## 14/10/2026 — réponses de José aux interprétations du moteur (J2)
@@ -114,10 +114,10 @@ Réponses de José, le 14/10, à la liste de la PR #3. Détail : `docs/PROGRAMME
 - **Pas de jour de récupération pendant l'ancrage** : le lendemain d'une boxe en club suit le schéma des autres jours, matin et soir.
 - **Pas de version courte pendant l'ancrage** : version normale ou version minimum.
 - **Soir de boxe** : suspension seule, sans knee raises ; le one arm hang s'y ajoute une fois que José l'a débloqué (suspension à 80 s).
-- **Déductions de Claude, à valider** :
+- **Déductions de Claude, à valider** (**→ 17/10 : acceptées, avec 1 min de suspension et 2 min de deep squat**) :
   - la version minimum du soir de l'ancrage, qui est aussi son soir de boxe, suit la même règle : suspension seule ;
   - le soir normal de l'ancrage prend le one arm hang une fois ajouté, comme le soir de boxe (« 1 série du bloc clé », entrée précédente).
-- **En attente** : José a demandé des explications sur deux points ; les choix de Claude restent en place d'ici là :
+- **En attente** : José a demandé des explications sur deux points ; les choix de Claude restent en place d'ici là (**→ 17/10 : pigeon ajouté au « au mieux » ; alternance acceptée**) :
   - « au mieux » du week-end : cossack squat et reverse table top en 1 série à la cible, étirements de hanche sans le pigeon ;
   - étirements du pied au cycle 2 du programme : 1 série, puis 2, d'une routine pied à l'autre.
 
@@ -126,3 +126,30 @@ Réponses de José, le 14/10, à la liste de la PR #3. Détail : `docs/PROGRAMME
 - **Une seule appli, livrée en deux tranches** (proposition de Claude ; José demandait d'abord deux applis séparées) : même adresse, mêmes données ; la tranche 2 arrive comme une mise à jour.
 - **Tranche 1** : les deux cycles d'ancrage (N1, N2), puis le premier cycle du palier 1 (« niveau 1 », lu par Claude comme le palier 1). **Tranche 2** : la suite du programme.
 - **Ordre de livraison de la tranche 1** (proposition de Claude, non contestée) : pour le jour 1 de l'ancrage, l'écran du jour, la saisie avec « Ajuster », le jour tenu, « Lever tôt » et l'export ; dans les premières semaines, les propositions de progression ; avant la semaine 6, le passage à N2 ; avant la semaine 11, le palier 1, ses tests et sa décharge.
+
+## 17/10/2026 — réponses de José aux 22 questions ouvertes
+
+Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux questions 3, 4, 6, 7, 16 et 17, et accepté les choix par défaut pour les autres (« par défaut pose les autres questions », lu par Claude comme : appliquer les défauts). Il a ensuite demandé la fusion des PR #2 et #3.
+
+- **Réponses de José** :
+  - **3, historique de « Lever tôt »** : pas d'import (« historique supprimé ») ; la v2 commence avec un journal vide. L'artefact reste dans claude.ai ; la v2 ne le lit pas et ne l'efface pas.
+  - **4, palier 2 dans la tranche 1** : oui. Sans objet avec la réponse 16 : le palier 2 arrive au plus tôt en semaine 16, en tranche 2.
+  - **6, « au mieux » du week-end** : les 3 étirements de hanche (couch stretch, pigeon, pancake), 2 × 30 s.
+  - **7, version minimum du soir de l'ancrage**, qui est aussi son soir de boxe : 1 min de suspension, 2 min de deep squat. Claude l'applique aussi au soir de boxe des paliers, qui avait le même contenu [Interprétation].
+  - **16, passage entre paliers** : un palier par cycle de 5 semaines, comme pendant l'ancrage. Le passage se propose au plus tôt au début du cycle suivant ; le critère des 5 matins réussis sur 7, samedi et dimanche compris, est gardé [Interprétation].
+  - **17, version courte** : une série d'étirements gardée, soit 1 série de chaque étirement du palier [Interprétation] ; décharge : règles actuelles.
+- **Défauts acceptés** :
+  - **1** : l'ancrage commence le lundi qui suit la livraison du jour 1, soit la fin du J4.
+  - **2** : pendant la tranche 1, la v2 a sa propre icône et la v1 reste en place ; la bascule vient en tranche 2, sous réserve d'un test de cohabitation hors ligne.
+  - **5** : cossack squat et reverse table top, toujours 1 série à la cible, à tous les niveaux, week-end compris.
+  - **8** : one arm hang, 1 tenue par bras une fois ajouté, tous les soirs sauf le jour de récupération.
+  - **9** : la base du week-end compte pour sa lettre (dimanche fait → lundi A ; seul le samedi fait → lundi B).
+  - **10** : « Alléger » propose la version minimum pendant l'ancrage.
+  - **11** : « redescendre d'un cran » (−2 répétitions après 2 séances manquées) est gardé.
+  - **12, 14, 15** : palier 1 confirmé : matin (ancien palier 3), soir à 15 min, week-end à 30 min.
+  - **13** : swing en EMOM de 6 min à partir du palier 1, week-end compris ; 3 min en version courte et en décharge.
+  - **18** : étirements du pied au cycle 2, 1 puis 2 séries, d'une routine pied à l'autre.
+  - **19** : horse stance, carry, Copenhagen et tuck hang L-sit gardent leurs séries fixes, week-end compris ; 1 série en décharge.
+  - **20** : week-end des paliers 2 à 4 à 45, 60 et 75 min.
+  - **21** : palier 4, contenu du palier 3 avec les 10 min signalées, en attendant José.
+  - **22** : le document Claude Docs du programme est abandonné ; `docs/PROGRAMME.md` fait foi.

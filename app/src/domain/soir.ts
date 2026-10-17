@@ -9,6 +9,8 @@ import { estEnAncrage, type Niveau } from './niveau';
 export interface BlocCle {
   version: 'standard' | 'recuperation' | 'boxe' | 'minimum';
   suspension_series: number;
+  /** Durée fixe de la suspension ; null : à la cible du moment. */
+  suspension_s: number | null;
   knee_raises: boolean;
   /** One arm hang inclus une fois ajouté par José (suspension à 80 s). */
   one_arm_hang_si_ajoute: boolean;
@@ -70,10 +72,11 @@ export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
     const apres = programme.etirements.soir_boxe;
     return {
       duree_min: boxe.duree_min,
-      // Suspension seule, sans knee raises ; one arm hang une fois ajouté (décision du 14/10/2026).
+      // 1 min de suspension seule, sans knee raises ; one arm hang une fois ajouté (14 et 17/10/2026).
       bloc_cle: {
         version: 'boxe',
         suspension_series: boxe.suspension_series,
+        suspension_s: boxe.suspension_s,
         knee_raises: false,
         one_arm_hang_si_ajoute: true,
         deep_squat_series: boxe.deep_squat_series,
@@ -97,11 +100,12 @@ export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
     const minimum = ctx.version === 'minimum';
     return {
       duree_min: minimum ? soir.version_minimum.duree_min : soir.duree_min,
-      // Version minimum : suspension seule, comme le soir de boxe. One arm hang une fois ajouté,
-      // comme le soir de boxe [Interprétation].
+      // Version minimum, qui est aussi le soir de boxe : 1 min de suspension seule, 2 min de deep squat ;
+      // one arm hang une fois ajouté (décisions des 14 et 17/10/2026).
       bloc_cle: {
         version: minimum ? 'minimum' : 'standard',
         suspension_series: soir.suspension_series,
+        suspension_s: minimum ? soir.version_minimum.suspension_s : null,
         knee_raises: !minimum,
         one_arm_hang_si_ajoute: true,
         deep_squat_series: soir.deep_squat_series,
@@ -127,6 +131,7 @@ export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
     bloc_cle: {
       version: recuperation ? 'recuperation' : 'standard',
       suspension_series: suspension,
+      suspension_s: null,
       knee_raises: !recuperation,
       one_arm_hang_si_ajoute: !recuperation,
       deep_squat_series: deepSquat,

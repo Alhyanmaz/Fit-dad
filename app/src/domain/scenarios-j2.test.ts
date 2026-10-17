@@ -224,11 +224,19 @@ describe('scénario 6 : palier 2, samedi (provisoire)', () => {
 
   it('routine de mobilité A complète, séance complète A en 3 séries avec les ajouts', () => {
     expect(samedi.seance?.mobilite.map((m) => m.exercice)).toEqual(programme.mobilite.routines.A);
-    expect(samedi.seance?.musculation).toEqual(
-      ['kt_press', 'pistol_box', 'rings_row', 'kt_sldl', 'horse_stance', 'carry'].map(
-        (exercice) => ({ exercice, series: 3 }),
-      ),
-    );
+    expect(samedi.seance?.mobilite.find((m) => m.exercice === 'cossack_squat')).toEqual({
+      exercice: 'cossack_squat',
+      a_la_cible: true,
+    });
+    // Horse stance et carry gardent leurs séries fixes, week-end compris (décision du 17/10/2026).
+    expect(samedi.seance?.musculation).toEqual([
+      { exercice: 'kt_press', series: 3 },
+      { exercice: 'pistol_box', series: 3 },
+      { exercice: 'rings_row', series: 3 },
+      { exercice: 'kt_sldl', series: 3 },
+      { exercice: 'horse_stance', series: 1 },
+      { exercice: 'carry', series: 2 },
+    ]);
   });
 
   it('étirements de hanche 2 × 30 s, boxe en 3 rounds', () => {
@@ -381,6 +389,7 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
     expect(soir.bloc_cle).toMatchObject({
       version: 'standard',
       suspension_series: 1,
+      suspension_s: null,
       knee_raises: true,
       one_arm_hang_si_ajoute: true,
       deep_squat_series: 1,
@@ -400,6 +409,7 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
     expect(soir.bloc_cle).toEqual({
       version: 'boxe',
       suspension_series: 1,
+      suspension_s: 60,
       knee_raises: false,
       one_arm_hang_si_ajoute: true,
       deep_squat_series: 1,
@@ -444,8 +454,9 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
       { exercice: 'traction_assistee', series: 3 },
       { exercice: 'swing_emom', series: 3, reps: 10 },
     ]);
+    // Les 3 étirements de hanche, pigeon compris (décision du 17/10/2026).
     expect(dimanche.seance?.etirements).toEqual(
-      ['couch_stretch', 'pancake'].map((exercice) => ({ exercice, series: 2 })),
+      ['couch_stretch', 'pigeon', 'pancake'].map((exercice) => ({ exercice, series: 2 })),
     );
   });
 
@@ -494,6 +505,7 @@ describe('scénario 16 : ancrage, jour tenu', () => {
     expect(soir.bloc_cle).toMatchObject({
       version: 'minimum',
       suspension_series: 1,
+      suspension_s: 60,
       knee_raises: false,
       deep_squat_series: 1,
     });
@@ -515,24 +527,47 @@ describe('paliers : soir de boxe', () => {
   });
 });
 
-describe('paliers : contenus provisoires du matin', () => {
-  it('palier 1, matin B : séance sans les éléments du palier 2, swing en fin de séance', () => {
+describe('paliers : matin', () => {
+  it('palier 1, matin B : 1 série sans les éléments du palier 2, swing en EMOM de 6 min', () => {
     const b = matinDuJour(programme, {
       niveau: { palier: 1 },
       type: 'normal',
       lettre: 'B',
       lettreDeLaVeille: 'A',
     });
-    expect(b.musculation.map((e) => e.exercice)).toEqual([
-      'pompes',
-      'goblet_squat',
-      'traction_assistee',
-      'swing_emom',
+    expect(b.musculation).toEqual([
+      { exercice: 'pompes', series: 1 },
+      { exercice: 'goblet_squat', series: 1 },
+      { exercice: 'traction_assistee', series: 1 },
+      { exercice: 'swing_emom', series: 6, reps: 10 },
     ]);
+    expect(b.mobilite.find((m) => m.exercice === 'reverse_table_top')).toEqual({
+      exercice: 'reverse_table_top',
+      a_la_cible: true,
+    });
     expect(b.etirements.map((e) => e.series)).toEqual([2, 2, 2]);
   });
 
-  it('palier 4 : 10 min encore à définir ; version courte sans étirements ; version minimum', () => {
+  it('palier 3 : 60 s par mouvement, cossack squat en 1 série à la cible', () => {
+    const a = matinDuJour(programme, {
+      niveau: { palier: 3 },
+      type: 'normal',
+      lettre: 'A',
+      lettreDeLaVeille: 'B',
+    });
+    expect(a.mobilite[0]).toEqual({ exercice: 'spinal_wave', duree_s: 60 });
+    expect(a.mobilite.find((m) => m.exercice === 'cossack_squat')).toEqual({
+      exercice: 'cossack_squat',
+      a_la_cible: true,
+    });
+    // Séries fixes en semaine aussi : horse stance 1, carry 2 (palier à 2 séries).
+    expect(a.musculation.slice(-2)).toEqual([
+      { exercice: 'horse_stance', series: 1 },
+      { exercice: 'carry', series: 2 },
+    ]);
+  });
+
+  it('palier 4 : 10 min encore à définir ; version courte avec 1 série d’étirements ; version minimum', () => {
     const contexte = {
       niveau: { palier: 4 },
       type: 'normal' as const,
@@ -542,8 +577,16 @@ describe('paliers : contenus provisoires du matin', () => {
     const normale = matinDuJour(programme, contexte);
     expect([normale.travail_min, normale.a_definir_min]).toEqual([50, 10]);
     const courte = matinDuJour(programme, { ...contexte, version: 'courte' });
-    expect([courte.etirements, courte.travail_min]).toEqual([[], null]);
+    expect(courte.travail_min).toBeNull();
     expect(courte.musculation.every((e) => e.series === 1)).toBe(true);
+    // Étirements gardés, à 1 série : hanches puis pied et mollet (décision du 17/10/2026).
+    expect(courte.etirements.map((e) => e.exercice)).toEqual([
+      ...programme.etirements.zones.hanches,
+      ...programme.etirements.zones.pied_mollet,
+    ]);
+    expect(courte.etirements.every((e) => e.series === 1)).toBe(true);
+    const courteB = matinDuJour(programme, { ...contexte, lettre: 'B', version: 'courte' });
+    expect(courteB.musculation.at(-1)).toEqual({ exercice: 'swing_emom', series: 3, reps: 10 });
     const minimum = matinDuJour(programme, { ...contexte, version: 'minimum' });
     expect(minimum.mobilite).toHaveLength(1);
     expect(minimum.musculation).toEqual([]);

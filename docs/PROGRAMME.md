@@ -9,7 +9,7 @@
 Le programme repose sur une journée type répétée 7 jours sur 7 : musculation le matin, cardio le midi en semaine, pied et mobilité le soir, boxe le week-end.
 
 - **Pour commencer** : deux cycles d'ancrage de 5 semaines au minimum, en deux niveaux (N1, puis N2), avec un socle réduit chaque jour ; ensuite, le programme complet en 4 paliers, quand l'habitude tient (section « Cycles d'ancrage »).
-- **Matin** : respiration, café, mobilité, musculation (push, pull, squat, hinge) et étirements. Il s'installe par paliers, au rythme de « Lever tôt ».
+- **Matin** : respiration, café, mobilité, musculation (push, pull, squat, hinge) et étirements. Il s'installe par paliers, un par cycle.
 - **Midi, en semaine** : bouger ; objectif de 3 séances de corde et flow rope, marche les autres midis.
 - **Soir** : bloc clé (suspension, deep squat), puis une routine pied de 2 exercices et 4 étirements ; 10 min pendant l'ancrage, puis 15 et 20 min.
 - **Chaque jour** : single leg balance pendant le brossage des dents.
@@ -119,30 +119,30 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 
 - Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s.
 - Le swing reste à 1 série pendant l'ancrage ; il passe à la séance du palier 1 ensuite.
-- Couch stretch de chaque côté. Le pigeon ne fait pas partie de l'ancrage.
+- Couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il revient au « au mieux » du week-end (décision du 17/10/2026).
 - À N2, les 10 min sont un créneau : le contenu prend 5 à 7 min, le reste sert de marge \[Interprétation\].
 - Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
-- Pas de version courte : la version normale, ou la version minimum (décision du 14/10/2026).
+- Pas de version courte : la version normale, ou la version minimum (décision du 14/10/2026). « Alléger » propose la version minimum (décision du 17/10/2026).
 - N1 travaille le tirage et le squat ; N2, les quatre patrons. La base du week-end porte les quatre exercices dès N1.
 
 **Midi** : bouger, ce que tu peux : marche ou corde, sans durée imposée. C'est un bonus.
 
 **Soir : ≈ 10 min**
 
-- Suspension + knee raises : 1 série, à ta cible ; le one arm hang une fois ajouté (suspension à 80 s) \[Interprétation\].
+- Suspension + knee raises : 1 série, à ta cible ; le one arm hang une fois ajouté (suspension à 80 s), 1 tenue par bras (décision du 17/10/2026).
 - Deep squat : 1 × 2 min, à ton contrepoids.
 - Routine pied, 1 tour, A et B en alternance : 1 série de chaque exercice au lieu de 2, puis les 4 étirements, 1 × 30 s.
-- Version minimum : suspension seule, sans knee raises (one arm hang une fois ajouté), et deep squat, ≈ 4 min.
+- Version minimum : 1 min de suspension seule, sans knee raises (one arm hang une fois ajouté), puis 2 min de deep squat, ≈ 4 min (décision du 17/10/2026).
 - Soir de boxe en club : la version minimum ; les 4 étirements du pied si possible.
 
 **Chaque jour** : single leg balance pendant le brossage des dents, 1 min sur chaque jambe, matin et soir.
 
 **Week-end**
 
-|          | Contenu                                                                                                                                                                                                                                                         | Durée                  |
-|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| Base     | 2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake) ; puis le soir                                                                              | ≈ 20 min, plus le soir |
-| Au mieux | Routine Mob. matin complète (A le samedi, B le dimanche, 30 s par mouvement) → séance complète en 3 séries (A le samedi, B le dimanche, sans les exercices du palier 2 ; swing 3 × 10) → étirements de hanche, 2 × 30 s → boxe en 3 rounds ; puis le soir | ≈ 45 min, plus le soir |
+|          | Contenu                                                                                                                                                                                                                                                                                          | Durée                  |
+|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| Base     | 2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake) ; puis le soir                                                                                                               | ≈ 20 min, plus le soir |
+| Au mieux | Routine Mob. matin complète (A le samedi, B le dimanche, 30 s par mouvement) → séance complète en 3 séries (A le samedi, B le dimanche, sans les exercices du palier 2 ; swing 3 × 10) → les 3 étirements de hanche (couch stretch, pigeon, pancake), 2 × 30 s → boxe en 3 rounds ; puis le soir | ≈ 45 min, plus le soir |
 
 - Échauffement de la base : les deux mouvements du matin N2 du jour, même à N1 \[Interprétation\].
 - Boxe en 3 rounds : rounds 1 (corde), 3 (technique seule) et 5 (libre) du bloc boxe, 1 min de repos entre deux rounds, ≈ 11 min \[Interprétation\].
@@ -156,7 +156,7 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 
 ## Le matin par paliers
 
-Après l'ancrage, le matin s'installe en 4 paliers, au rythme de « Lever tôt ». Décision du 14/10/2026 : tu as fixé les heures et les minutes de travail ; les contenus sont provisoires, repris des anciens paliers 3 à 5, à confirmer avant la semaine 11.
+Après l'ancrage, le matin s'installe en 4 paliers, un par cycle (décision du 17/10/2026). Décision du 14/10/2026 : tu as fixé les heures et les minutes de travail ; les contenus sont repris des anciens paliers 3 à 5. Le palier 1 est confirmé (17/10/2026) ; les paliers 2 à 4 restent provisoires.
 
 **Minutes de chaque bloc du matin, par palier**
 
@@ -167,16 +167,16 @@ Après l'ancrage, le matin s'installe en 4 paliers, au rythme de « Lever tôt �
 | 3 | 6h10 / 22h10 | 10 | 10 | 10 | 20 | 10 | 40 | 60 |
 | 4 | 6h00 / 22h00 | 10 | 10 | 10 | 20 | 10 | 50 | 70 |
 
-- Palier 4 : 10 min de travail de plus qu'au palier 3, contenu encore à définir.
-- Respiration et café : ceux des anciens paliers 3 à 5 \[Interprétation, provisoire\].
+- Palier 4 : 10 min de travail de plus qu'au palier 3, contenu encore à définir ; d'ici là, l'appli affiche le contenu du palier 3 et signale les 10 min.
+- Respiration et café : ceux des anciens paliers 3 à 5 \[Interprétation\] ; confirmés pour le palier 1 le 17/10/2026.
 - Avant le 14/10/2026, le programme comptait 5 paliers, de 7h00 à 6h00 : les anciens paliers 1 et 2 sont devenus les niveaux N1 et N2 de l'ancrage ; les anciens paliers 3, 4 et 5, les paliers 1, 2 et 3.
 
 **Règles**
 
-- Passage d'un palier au suivant : 5 matins réussis sur les 7 derniers jours, dont le samedi et le dimanche, au moins 7 jours au palier \[provisoire\]. En semaine, le travail impose déjà le lever : c'est le week-end qui montre que l'habitude est prise.
+- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 5 matins sont réussis sur les 7 derniers jours, dont le samedi et le dimanche ; sinon, de nouveau la semaine suivante ; tu valides. Le critère des matins réussis est celui du 14/10 \[Interprétation\]. En semaine, le travail impose déjà le lever : c'est le week-end qui montre que l'habitude est prise.
 - Chaque palier avance aussi le coucher de 10 min, de 22h30 à 22h00 : c'est lui le levier.
 - Ordre fixe : respiration → café → mobilité → musculation → étirements → douche.
-- Le café sert de marge : en cas de retard, il raccourcit d'abord. Au-delà, version courte : 1 série par exercice, pas d'étirements.
+- Le café sert de marge : en cas de retard, il raccourcit d'abord. Au-delà, version courte : 1 série par exercice, swing en EMOM de 3 min, et 1 série de chaque étirement (décision du 17/10/2026).
 - Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
 - Le jour de récupération, la musculation est remplacée par l'autre routine Mob. matin et des neck CARs.
 - Dans « Lever tôt », le « plancher » correspond à cette séance.
@@ -201,9 +201,11 @@ Deux séances, A et B, en alternance un matin sur deux, 6 jours sur 7 à partir 
 - Exercices en binômes haut du corps + bas du corps, 60 s de repos entre deux tours.
 - Arrêt à 2 ou 3 répétitions de l'échec (C).
 - Ancrage (niveaux N1 et N2) : section « Cycles d'ancrage ». Pompes, pistol, single leg deadlift et traction arrivent au palier 1 ; d'ici là, le « au mieux » du week-end les porte.
-- Palier 1 : 1 série par exercice, sans les ajouts (A ≈ 6 min, B ≈ 10 min). Paliers 2 à 4 : 2 séries + ajouts (A ≈ 16 min, B ≈ 18 min) \[provisoire\].
+- Palier 1 : 1 série par exercice, sans les ajouts (A ≈ 6 min, B ≈ 10 min), confirmé le 17/10/2026. Paliers 2 à 4 : 2 séries + ajouts (A ≈ 16 min, B ≈ 18 min) \[provisoire\].
+- Swing : EMOM de 6 min (6 × 10) en fin de séance B, à partir du palier 1, week-end compris ; 3 min en version courte et en décharge (décision du 17/10/2026). Pendant l'ancrage : 1 × 10 à N2, 3 × 10 au « au mieux » du week-end.
+- Horse stance, carry, Copenhagen et tuck hang L-sit gardent leurs séries fixes (1 ou 2), week-end compris ; 1 série en décharge (décision du 17/10/2026).
 - Week-end : section « Week-end ».
-- Version courte : 1 série par exercice.
+- Version courte : 1 série par exercice ; swing en EMOM de 3 min.
 
 **Pousser plus loin, en option.** La dernière semaine de chaque cycle, avant la décharge, la dernière série peut aller à 0 ou 1 répétition de l'échec sur pompes, rings row, traction assistée et goblet squat. Jamais sur pistol, KT press, single leg deadlift ni swing : la technique y lâche avant le muscle \[Interprétation\]. Les tests de décharge vont déjà au maximum sur pompes, rangées et tractions. Aller jusqu'à l'échec n'apporte au mieux qu'un gain trivial de masse musculaire (B, méta-analyse de 15 études, [Refalo 2023](https://dro.deakin.edu.au/articles/journal_contribution/Influence_of_Resistance_Training_Proximity-to-Failure_on_Skeletal_Muscle_Hypertrophy_A_Systematic_Review_with_Meta-analysis/22030796)). Pour la force, ton objectif principal, s'arrêter avant l'échec donne les mêmes gains (A, [Grgic 2022](https://doaj.org/article/dc36ba7ccd994798964f66b93bd8f662) ; [Robinson 2024](https://rke.abertay.ac.uk/en/publications/exploring-the-dose-response-relationship-between-estimated-resist/)).
 
@@ -268,12 +270,14 @@ Deux séances, A et B, en alternance un matin sur deux, 6 jours sur 7 à partir 
 
 **Durée selon le palier**
 
-| Palier               | Contenu                                                                                                      | Durée                   |
-|----------------------|--------------------------------------------------------------------------------------------------------------|-------------------------|
-| Ancrage (N1, N2)     | 1 mouvement par matin à N1, 2 à N2 (section « Cycles d'ancrage »)                                            | ≈ 1 min                 |
-| 1 et 2               | Toute la routine, 30 s par mouvement ; cossack et reverse table top en une série courte                      | ≈ 5 min                 |
-| 3 et 4               | Toute la routine, 60 s par mouvement                                                                         | ≈ 10 min                |
-| Jour de récupération | L'autre routine, au ralenti, puis neck CARs (3 par sens)                                                     | Remplace la musculation |
+| Palier               | Contenu                                                                                   | Durée                   |
+|----------------------|-------------------------------------------------------------------------------------------|-------------------------|
+| Ancrage (N1, N2)     | 1 mouvement par matin à N1, 2 à N2 (section « Cycles d'ancrage »)                         | ≈ 1 min                 |
+| 1 et 2               | Toute la routine, 30 s par mouvement ; cossack et reverse table top en 1 série à ta cible | ≈ 5 min                 |
+| 3 et 4               | Toute la routine, 60 s par mouvement ; cossack et reverse table top en 1 série à ta cible | ≈ 10 min                |
+| Jour de récupération | L'autre routine, au ralenti, puis neck CARs (3 par sens)                                  | Remplace la musculation |
+
+Cossack squat et reverse table top : toujours 1 série à ta cible, jamais au temps, à tous les niveaux, week-end compris (décision du 17/10/2026).
 
 **Pourquoi.** Shoulder dislocate et scapula pull-up préparent la poussée et le tirage ; le hip hinge prépare le single leg deadlift et le swing (C). Les deux routines sont celles que tu as construites : seule la durée par mouvement change \[Interprétation\].
 
@@ -296,16 +300,17 @@ Au démarrage, chaque étirement reçoit 2 à 3 min par semaine ; à terme, envi
 
 **Règle** : tenues de 30 s, jamais plus ; on progresse en nombre de séries.
 
-| Moment                              | Contenu                                                                       | Séries                                                             |
-|-------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| Ancrage : matin N2, base du week-end | Couch stretch ou pancake, à tour de rôle                                     | 1 × 30 s                                                           |
-| Matin, paliers 1 et 2 (5 min)       | Hanches : couch stretch, pigeon, pancake                                      | 2 × 30 s                                                           |
-| Matin, paliers 3 et 4 (10 min)      | Hanches, puis pied et mollet : étirement mollet, seiza, kiza, ATG split squat | Hanches 3 × 30 s ; pied et mollet 1 × 30 s                         |
-| Week-end, à partir du palier 2      | Hanches, après la séance complète                                             | 2 × 30 s \[provisoire\]                                          |
-| Routine pied, chaque soir sans boxe | Étirement mollet, kiza, seiza, ATG split squat                                | 1 série au 1er cycle, 1 et 2 en alternance au 2e, 2 à partir du 3e |
-| Soir de boxe en club, si possible   | Les 4 mêmes, après la boxe                                                    | 1 série                                                            |
+| Moment                               | Contenu                                                                       | Séries                                                                                            |
+|--------------------------------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| Ancrage : matin N2, base du week-end | Couch stretch ou pancake, à tour de rôle                                      | 1 × 30 s                                                                                          |
+| Matin, paliers 1 et 2 (5 min)        | Hanches : couch stretch, pigeon, pancake                                      | 2 × 30 s                                                                                          |
+| Matin, paliers 3 et 4 (10 min)       | Hanches, puis pied et mollet : étirement mollet, seiza, kiza, ATG split squat | Hanches 3 × 30 s ; pied et mollet 1 × 30 s                                                        |
+| Week-end, à partir du palier 2       | Hanches, après la séance complète                                             | 2 × 30 s \[provisoire\]                                                                           |
+| Routine pied, chaque soir sans boxe  | Étirement mollet, kiza, seiza, ATG split squat                                | 1 série au 1er cycle, 1 et 2 en alternance au 2e (d'une routine pied à l'autre), 2 à partir du 3e |
+| Soir de boxe en club, si possible    | Les 4 mêmes, après la boxe                                                    | 1 série                                                                                           |
 
 - Couch stretch, pigeon et ATG split squat se font de chaque côté.
+- Version courte du matin : 1 série de chaque étirement du palier (décision du 17/10/2026).
 - Le deep squat du bloc clé étire aussi la cheville et les hanches ; il n'est pas compté ici.
 - Les étirements ne préviennent pas les blessures (A, Lauersen 2014) : ils servent ici l'amplitude des hanches et de la cheville. La musculation avec charge améliore l'amplitude autant qu'eux (A, Alizadeh 2023).
 - Prayer stretch et shoulder extension ne font plus partie du programme : les blocs ciblés sont réservés aux hanches.
@@ -314,21 +319,21 @@ Au démarrage, chaque étirement reçoit 2 à 3 min par semaine ; à terme, envi
 
 Chaque soir, suspension et deep squat, avant la routine pied : environ 8 min. Ce sont des positions de mobilité, pas des étirements : la règle des 30 s ne s'y applique pas.
 
-| Exercice                 | Contenu                                                             | Progression                                                                                                |
-|--------------------------|---------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| Suspension + knee raises | 2 séries : suspension passive de 50 à 80 s, avec 5 à 20 knee raises | +5 s quand la cible est tenue 2 séances de suite ; à 20 knee raises, passage au hanging leg raise (8 → 18) |
-| One arm hang             | Chaque bras, 10 → 20 s                                              | Ajouté quand la suspension atteint 80 s                                                                    |
-| Deep squat               | 2 × 2 min                                                           | Le contrepoids diminue : 16 → 10 → 5 kg, puis poids du corps                                               |
+| Exercice                 | Contenu                                                                   | Progression                                                                                                |
+|--------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| Suspension + knee raises | 2 séries : suspension passive de 50 à 80 s, avec 5 à 20 knee raises       | +5 s quand la cible est tenue 2 séances de suite ; à 20 knee raises, passage au hanging leg raise (8 → 18) |
+| One arm hang             | 1 tenue par bras, 10 → 20 s ; tous les soirs sauf le jour de récupération | Ajouté quand la suspension atteint 80 s                                                                    |
+| Deep squat               | 2 × 2 min                                                                 | Le contrepoids diminue : 16 → 10 → 5 kg, puis poids du corps                                               |
 
 L'appli propose +5 s de suspension, +2 knee raises et, une fois le one arm hang ajouté, +5 s. Le passage au hanging leg raise, l'ajout du one arm hang et le retrait du contrepoids du deep squat se font à ta main (« Ajuster »).
 
 **Trois versions**
 
-| Soir         | Contenu                                                                                                                                | Durée                                |
-|--------------|----------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| Sans boxe    | Bloc complet                                                                                                                           | ≈ 8 min                              |
-| Récupération | Suspension passive, sans knee raises ni one arm hang ; deep squat à ta charge habituelle                                               | ≈ 6 min                              |
-| Boxe en club | 1 suspension seule, sans knee raises (one arm hang une fois ajouté), et 1 × 2 min de deep squat ; les 4 étirements du pied si possible | ≈ 4 min, ≈ 7 min avec les étirements |
+| Soir         | Contenu                                                                                                                                       | Durée                                |
+|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| Sans boxe    | Bloc complet                                                                                                                                  | ≈ 8 min                              |
+| Récupération | Suspension passive, sans knee raises ni one arm hang ; deep squat à ta charge habituelle                                                      | ≈ 6 min                              |
+| Boxe en club | 1 min de suspension seule, sans knee raises (one arm hang une fois ajouté), et 1 × 2 min de deep squat ; les 4 étirements du pied si possible | ≈ 4 min, ≈ 7 min avec les étirements |
 
 Le jour de récupération, le deep squat garde sa charge : dans ta progression, la charge sert de contrepoids et facilite la position. Sans charge, il serait plus difficile.
 
@@ -339,7 +344,7 @@ Le jour de récupération, le deep squat garde sa charge : dans ta progression, 
 | Niveau ou palier | Contenu | Durée |
 | --- | --- | --- |
 | Ancrage (N1, N2) | 1 série du bloc clé, routine pied en 1 tour (section « Cycles d'ancrage ») | ≈ 10 min |
-| Paliers 1 et 2 | Bloc clé complet, routine pied à 1 série par exercice \[provisoire\] | ≈ 15 min |
+| Paliers 1 et 2 | Bloc clé complet, routine pied à 1 série par exercice | ≈ 15 min |
 | Paliers 3 et 4 | Bloc clé complet, routine pied complète | ≈ 20 min |
 
 Niveau de preuve : pratique (C).
@@ -355,7 +360,7 @@ Deux routines de 2 exercices et 4 étirements communs, en alternance chaque soir
 | Étirements 1 et 2 | Étirement mollet, kiza               | Étirement mollet, kiza               |
 | Étirements 3 et 4 | Seiza, ATG split squat (chaque côté) | Seiza, ATG split squat (chaque côté) |
 
-**Exercices : 2 séries** (1 série pendant l'ancrage et aux paliers 1 et 2 \[provisoire\])
+**Exercices : 2 séries** (1 série pendant l'ancrage et aux paliers 1 et 2)
 
 | Exercice                          | Fourchette                      | Progression                                                                                                                     |
 |-----------------------------------|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
@@ -368,7 +373,7 @@ Deux routines de 2 exercices et 4 étirements communs, en alternance chaque soir
 
 **Tib bar, le jour de l'achat.** Le tibialis raise passe sur un pied, à 5 kg, puis +2,5 kg par palier, 10 à 15 répétitions. Aucun protocole publié (D).
 
-**Étirements.** Les 4 chaque soir sans boxe, tenues de 30 s : 1 série au premier cycle, 1 et 2 en alternance au deuxième, 2 à partir du troisième. Le volume par semaine reste celui de l'ancienne alternance A/B \[Interprétation\]. Les soirs de boxe en club, si possible : les 4, 1 série, après la boxe.
+**Étirements.** Les 4 chaque soir sans boxe, tenues de 30 s : 1 série au premier cycle, 1 et 2 en alternance au deuxième (d'une routine pied à l'autre, en commençant par 1 ; décision du 17/10/2026), 2 à partir du troisième. Le volume par semaine reste celui de l'ancienne alternance A/B \[Interprétation\]. Les soirs de boxe en club, si possible : les 4, 1 série, après la boxe.
 
 **Single leg balance, pendant le brossage des dents.** 1 min sur chaque jambe, matin et soir. Niveaux : yeux ouverts → yeux fermés → serviette pliée sous le pied → yeux fermés sur la serviette. On passe au niveau suivant après 1 min propre sur chaque jambe, deux fois de suite (C).
 
@@ -455,7 +460,7 @@ Samedi et dimanche : une base qui grandit d'un bloc à chaque palier, jusqu'à l
 | 3 | Comme au palier 2, avec la boxe en 5 rounds | ≈ 60 min, plus le soir |
 | 4 | Journée type, matin et soir → bloc boxe | ≈ 75 min |
 
-- Progression proposée par Claude le 13/10, provisoire (décision du 14/10/2026) : à confirmer avant la semaine 11.
+- Progression proposée par Claude le 13/10 (décision du 14/10/2026) ; palier 1 et durées des paliers 2 à 4 confirmés le 17/10/2026.
 - La séance du week-end remplace le matin de la semaine.
 - Le bloc boxe se place où tu veux dans la journée, idéalement pas juste après la musculation, pour travailler la technique en étant frais (C).
 - Boxe le vendredi : pas de jour de récupération. Samedi et dimanche gardent leur contenu, musculation complète comprise ; le bloc boxe ne se fait que le dimanche, technique du club en priorité.
@@ -486,7 +491,7 @@ Pas de règle automatique de reprise après une absence : tu règles tes exercic
 
 **Décharge.** Une semaine toutes les 4 à 6 semaines, ou plus tôt si tout stagne (C, consensus d'experts, Bell 2023). Un cycle = environ 4 semaines de travail + 1 semaine de décharge, comme dans ton appli actuelle. Pendant cette semaine :
 
-- musculation et exercices du pied à 1 série, mêmes charges ;
+- musculation et exercices du pied à 1 série, mêmes charges ; swing en EMOM de 3 min ;
 - corde réduite de moitié, sac remplacé par du shadow ;
 - mobilité, étirements, bloc clé et équilibre inchangés ;
 - tests de fin de cycle (section suivante).
@@ -573,7 +578,7 @@ Deux semaines à suivre le programme sur une simple liste cochée, pour confirme
 
 L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes tests. S'y ajoute la phase 4 du document de passation : PWA installable, zoom corrigé, progression pilotée par les critères.
 
-- **« Lever tôt »** : palier en cours, heures de lever et de coucher, critère de passage, contenu du matin selon le palier. L'historique de l'artefact actuel est récupérable.
+- **« Lever tôt »** : palier en cours, heures de lever et de coucher, critère de passage, contenu du matin selon le palier. L'historique de l'artefact n'est pas repris (décision du 17/10/2026).
 - **Semaines de tests** : tu saisis tes résultats, puis tu fixes toi-même les cibles du cycle suivant, comme dans l'appli actuelle.
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.

@@ -3,9 +3,11 @@ import { suivantDansLaRotation, type Lettre } from './alternances';
 import type { DateIso } from './dates';
 import { aUnBlocBoxe, techniqueDuClubEnPriorite } from './jour';
 import {
+  exerciceDeSeance,
   exercicesDeLaSeance,
   matinDuJour,
   mobiliteDeLaRoutine,
+  mouvementDeMobilite,
   type Etirement,
   type ExerciceDeSeance,
   type Matin,
@@ -63,9 +65,7 @@ function baseDAncrage(programme: Programme, ctx: ContexteDuWeekEnd): BaseDAncrag
   const n2 = niveauDAncrage(programme, 'N2');
   return {
     echauffement: n2.matin.seances[ctx.lettre].mobilite.map((exercice) =>
-      regles.mobilite_a_la_cible.includes(exercice)
-        ? { exercice, a_la_cible: true }
-        : { exercice, duree_s: regles.mobilite_duree_mouvement_s },
+      mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s),
     ),
     exercices: minimum.exercices.map((exercice) =>
       exercice === 'swing_emom'
@@ -97,18 +97,8 @@ export function weekEndDuJour(programme: Programme, ctx: ContexteDuWeekEnd): Wee
     return {
       base: baseDAncrage(programme, ctx),
       seance: {
-        // Cossack et reverse table top : 1 série à la cible, comme les matins de l'ancrage [Interprétation].
-        mobilite: mobiliteDeLaRoutine(
-          programme,
-          ctx.lettre,
-          regles.mobilite_duree_mouvement_s,
-          [],
-        ).map((m) =>
-          regles.mobilite_a_la_cible.includes(m.exercice)
-            ? { exercice: m.exercice, a_la_cible: true as const }
-            : m,
-        ),
-        // « Sans les ajouts du palier 2 » : la séance telle qu'au palier 1.
+        mobilite: mobiliteDeLaRoutine(programme, ctx.lettre, regles.mobilite_duree_mouvement_s),
+        // Sans les exercices du palier 2 : la séance telle qu'au palier 1.
         musculation: exercicesDeLaSeance(programme, ctx.lettre, 1, 'seance_sans_ajouts').map(
           (exercice) =>
             exercice === 'swing_emom'
@@ -119,8 +109,8 @@ export function weekEndDuJour(programme: Programme, ctx: ContexteDuWeekEnd): Wee
                 }
               : { exercice, series },
         ),
-        // Étirements de hanche de l'ancrage : couch stretch et pancake [Interprétation].
-        etirements: regles.etirement.rotation.map((exercice) => ({
+        // Les 3 étirements de hanche, pigeon compris (décision du 17/10/2026).
+        etirements: programme.etirements.zones.hanches.map((exercice) => ({
           exercice,
           series: au_mieux.etirements_hanches_series,
         })),
@@ -143,7 +133,6 @@ export function weekEndDuJour(programme: Programme, ctx: ContexteDuWeekEnd): Wee
               programme,
               ctx.lettre,
               palierDuMatin?.mobilite.duree_mouvement_s ?? 30,
-              palierDuMatin?.mobilite.serie_courte ?? [],
             )
           : [],
         musculation: exercicesDeLaSeance(
@@ -151,7 +140,7 @@ export function weekEndDuJour(programme: Programme, ctx: ContexteDuWeekEnd): Wee
           ctx.lettre,
           palier,
           s.seance.avec_ajouts ? 'seance_complete' : 'seance_sans_ajouts',
-        ).map((exercice) => ({ exercice, series: s.seance?.series ?? 3 })),
+        ).map((exercice) => exerciceDeSeance(programme, exercice, s.seance?.series ?? 3)),
         etirements: programme.etirements.zones.hanches.map((exercice) => ({
           exercice,
           series: s.etirements_hanches_series ?? 2,
