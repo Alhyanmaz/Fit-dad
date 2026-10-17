@@ -335,6 +335,8 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 
 Une session Claude Code et une PR par jalon. José relit sur son téléphone, puis fusionne.
 
+**Deux tranches** (décision du 17/10/2026, `docs/decisions.md`) : une seule appli, livrée en deux tranches. Tranche 1 : l'ancrage (N1, N2) et le premier cycle du palier 1 ; tranche 2 : la suite. Les jalons J3 à J5 livrent d'abord la tranche 1, dans cet ordre : le jour 1 de l'ancrage (écran du jour, saisie, « Ajuster », jour tenu, « Lever tôt », export), les propositions de progression, le passage à N2, puis le palier 1 avec ses tests et sa décharge. Le découpage précis des jalons attend les réponses de José (`docs/reprise.md`, questions 1 à 4).
+
 | Jalon | Contenu | Fini quand |
 | --- | --- | --- |
 | J0 Socle | `app/` (Vite, React, TS, lint, Vitest), build commité dans `v2/`, page d'accueil qui lit `data/programme.json` | La v1 marche comme avant ; `/Fit-dad/v2/` affiche la page d'accueil ; tests verts |

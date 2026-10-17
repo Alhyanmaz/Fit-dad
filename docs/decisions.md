@@ -120,3 +120,9 @@ Réponses de José, le 14/10, à la liste de la PR #3. Détail : `docs/PROGRAMME
 - **En attente** : José a demandé des explications sur deux points ; les choix de Claude restent en place d'ici là :
   - « au mieux » du week-end : cossack squat et reverse table top en 1 série à la cible, étirements de hanche sans le pigeon ;
   - étirements du pied au cycle 2 du programme : 1 série, puis 2, d'une routine pied à l'autre.
+
+## 17/10/2026 — décision de José (une appli, deux tranches)
+
+- **Une seule appli, livrée en deux tranches** (proposition de Claude ; José demandait d'abord deux applis séparées) : même adresse, mêmes données ; la tranche 2 arrive comme une mise à jour.
+- **Tranche 1** : les deux cycles d'ancrage (N1, N2), puis le premier cycle du palier 1 (« niveau 1 », lu par Claude comme le palier 1). **Tranche 2** : la suite du programme.
+- **Ordre de livraison de la tranche 1** (proposition de Claude, non contestée) : pour le jour 1 de l'ancrage, l'écran du jour, la saisie avec « Ajuster », le jour tenu, « Lever tôt » et l'export ; dans les premières semaines, les propositions de progression ; avant la semaine 6, le passage à N2 ; avant la semaine 11, le palier 1, ses tests et sa décharge.
