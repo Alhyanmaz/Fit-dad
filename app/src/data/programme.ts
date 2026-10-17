@@ -1,13 +1,27 @@
 import programmeJson from '../../../data/programme.json';
+import { programmeSchema, type Programme } from './schema';
 
 /**
  * Lecture du programme (data/programme.json), intégré à l'appli au moment du build :
- * aucune requête réseau à l'ouverture.
- *
- * Jalon J0 : contrôle minimal (version et nombre d'exercices).
- * La validation complète par un schéma zod arrive au jalon J1 (docs/SPEC.md §7.1).
+ * aucune requête réseau à l'ouverture. Le fichier est validé au chargement (docs/SPEC.md §7.1).
  */
 export const programmeBrut: unknown = programmeJson;
+
+export type LectureProgramme =
+  { ok: true; programme: Programme } | { ok: false; erreurs: string[] };
+
+/** Valide des données de programme ; en cas d'échec, une erreur lisible par ligne. */
+export function lireProgramme(donnees: unknown): LectureProgramme {
+  const resultat = programmeSchema.safeParse(donnees);
+  if (resultat.success) return { ok: true, programme: resultat.data };
+  return {
+    ok: false,
+    erreurs: resultat.error.issues.map((issue) => {
+      const chemin = issue.path.map(String).join(' › ');
+      return chemin ? `${chemin} : ${issue.message}` : issue.message;
+    }),
+  };
+}
 
 export interface ResumeProgramme {
   /** Date de version du programme, au format AAAA-MM-JJ. */
@@ -15,26 +29,11 @@ export interface ResumeProgramme {
   nombreExercices: number;
 }
 
-function estObjet(valeur: unknown): valeur is Record<string, unknown> {
-  return typeof valeur === 'object' && valeur !== null && !Array.isArray(valeur);
-}
-
-export function resumerProgramme(donnees: unknown): ResumeProgramme {
-  if (!estObjet(donnees)) {
-    throw new Error("le fichier n'est pas un objet JSON");
-  }
-  const { meta, exercices } = donnees;
-  if (
-    !estObjet(meta) ||
-    typeof meta.version !== 'string' ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(meta.version)
-  ) {
-    throw new Error('version du programme absente ou mal formée (attendu : AAAA-MM-JJ)');
-  }
-  if (!estObjet(exercices) || Object.keys(exercices).length === 0) {
-    throw new Error("liste d'exercices absente ou vide");
-  }
-  return { version: meta.version, nombreExercices: Object.keys(exercices).length };
+export function resumerProgramme(programme: Programme): ResumeProgramme {
+  return {
+    version: programme.meta.version,
+    nombreExercices: Object.keys(programme.exercices).length,
+  };
 }
 
 /** « 2026-10-07 » → « 07/10/2026 », sans passer par un fuseau horaire. */

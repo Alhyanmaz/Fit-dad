@@ -1,24 +1,24 @@
-# Reprise de la session (08/10/2026)
+# Reprise de la session (14/10/2026)
 
 ## État
 
-- **J0 terminé** sur la branche `kit-v2` : socle de la v2 dans `app/` (Vite 8, React 19, TypeScript 6.0 strict, ESLint, Prettier, Vitest ; versions figées), build commité dans `v2/`. La page d'accueil lit `data/programme.json` et affiche « Programme chargé : 41 exercices ».
-- PR `kit-v2` → `main` ouverte : elle contient le kit, les décisions du 07/10 et le socle. **À fusionner par José**, puis vérifier sur le téléphone :
-  - `https://alhyanmaz.github.io/Fit-dad/` : la v1, inchangée ;
-  - `https://alhyanmaz.github.io/Fit-dad/v2/` : la page d'accueil de la v2.
-- Vérifié dans la session : 7 tests verts, types, lint et mise en forme OK ; build reproductible ; rendu à 360, 412 et 430 px dans Chromium ; aucune requête réseau extérieure dans la v2 ; fichiers de la v1 identiques à `main` ; installation automatique des dépendances (`scripts/install_pkgs.sh`) testée.
-- Revue du kit faite avec José le 07/10 : décisions dans `docs/decisions.md` (entrée du 07/10).
-- `data/programme.json` reste un brouillon : il sera relu contre `docs/PROGRAMME.md` au jalon J1.
+- **J0 terminé et fusionné** (PR #1, le 08/10) : la v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/`, la v1 est intacte à la racine.
+- **J1 terminé** sur la branche `j1-programme`, PR #2 prête à fusionner vers `main` : schéma zod de `data/programme.json`, relecture du programme, 25 tests verts, build à jour.
+- **Programme restructuré** (décisions des 13 et 14/10, `docs/decisions.md`) :
+  - ancrage en deux niveaux, un par cycle de 5 semaines : N1 (lever 6h50), puis N2 (lever 6h40) ;
+  - passages au plus tôt en semaines 6 et 11, seulement si 5 jours sur 7 ont tenu, samedi et dimanche compris ; José valide ;
+  - puis 4 paliers, de 6h30 à 6h00, avec 20, 30, 40 et 50 min de travail le matin ;
+  - contenus des paliers 1 à 4 **provisoires** (anciens paliers 3 à 5), à confirmer avant la semaine 11.
+- **GitHub** : compte suspendu du 09/10 au 13/10, rétabli le 13/10 au soir ; tout est poussé. Les fichiers de passation vers un projet Claude (13/10) ne servent plus, sauf si José préfère y travailler.
 
-## Prochaine étape : jalon J1, le programme
+## Prochaine étape
 
-Après la fusion de la PR du J0, nouvelle session, partir de `main` à jour :
+1. José fusionne la PR #2 (base `main`).
+2. Jalon J2 (moteur de règles, ancrage compris), dans une session partie de `main` à jour :
 
 ```
-Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J1 de docs/SPEC.md §10. Propose le plan avant de coder.
+Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J2 de docs/SPEC.md §10. Propose le plan avant de coder.
 ```
-
-Contenu du J1 (`docs/SPEC.md` §10) : schéma zod de `data/programme.json`, relecture ligne à ligne contre `docs/PROGRAMME.md`, écarts signalés à José et tranchés avec lui.
 
 ## À fournir au démarrage
 
@@ -26,6 +26,16 @@ Rien : tout est dans le dépôt. L'export de « Lever tôt » ne servira qu'au j
 
 ## Questions ouvertes
 
-- **Branche par défaut** : `Mainold`, figée sur l'ancienne version. Le 08/10, GitHub a refusé de la passer sur `main` (« Could not change default branch »), cause inconnue. À retenter après la fusion du J0 ; si ça marche, supprimer `Mainold`. En attendant, toujours viser `main` explicitement.
+- **Avant la semaine 11** (fin décembre au plus tôt), à confirmer par José :
+  - les contenus des paliers 1 à 4, dont les 10 min de plus du palier 4 ;
+  - le soir à 15 min (proposition : bloc clé complet, routine pied à 1 série) ;
+  - la progression du week-end (proposition : 30, 45, 60, puis 75 min) ;
+  - le passage entre paliers (5 matins sur 7, week-end compris, au moins 7 jours) ;
+  - la version courte et la décharge (règles actuelles par défaut).
+- **J1, Q1 à Q4** (`docs/relecture-programme.md`), avec les nouveaux numéros de paliers.
+- **Ancrage** : date de début choisie par José (jour 1 de N1).
+- **Import de « Lever tôt »** (J4) : les paliers de l'artefact ne correspondent plus aux niveaux de la v2 (`docs/MIGRATION.md`).
+- **Poids de l'appli** : zod ajoute environ 31 Ko compressés (111 Ko au total). Acceptable pour une appli mise en cache ; allègement possible plus tard avec `zod/mini`, au prix d'une réécriture du schéma.
+- **Branche par défaut** : `Mainold`, figée sur l'ancienne version (commit `d861224`). GitHub a refusé de la passer sur `main` le 08/10 (« Could not change default branch »), peut-être à cause du problème de compte : à retenter.
 - À confirmer au J5 : la proposition « redescendre de 2 répétitions », gardée par défaut (`docs/decisions.md`, fin de l'entrée du 07/10).
-- Le document Claude Docs du programme (révision 44) ne contient pas les décisions du 07/10 ; `docs/PROGRAMME.md` fait foi. À mettre à jour par José, ou à demander à Claude.
+- Le document Claude Docs du programme (révision 44) ne contient ni les décisions du 07/10 ni celles des 13 et 14/10 ; `docs/PROGRAMME.md` fait foi.

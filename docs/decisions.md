@@ -56,3 +56,49 @@ Revue des 10 choix « à valider » du 06/10 et des 10 questions ouvertes de `do
 
 - La proposition « redescendre d'un cran » (−2 répétitions après une cible manquée 2 séances de suite) reste dans le programme : José ne l'a pas annulée explicitement.
 
+## 13/10/2026 — décisions de José (cycles d'ancrage)
+
+Le 12/10, José a du mal à tenir le programme et demande une version minimale pour ancrer l'habitude. Il propose le squelette du cycle 1 ; Claude l'étoffe à partir du programme ; José valide le 13/10. Détail : `docs/PROGRAMME.md`, section « Cycles d'ancrage ».
+
+- **Cycles d'ancrage** : avant le programme complet, 2 cycles de 5 semaines au minimum, avec un socle réduit : matin ≈ 10 min, soir ≈ 10 min, midi libre, week-end au minimum comme un matin de semaine ; au mieux, séance complète en 3 séries et boxe en 3 rounds.
+- **Sortie** : pas de date de fin (règle n° 1). Après 10 semaines, quand le socle tient 5 jours sur les 7 derniers, samedi et dimanche compris, l'appli propose de sortir ; José valide. Puis tests et réglage de la suite.
+- **Jour tenu** : matin et soir faits, au moins en version minimum (matin : un mouvement de mobilité ; soir : suspension et deep squat). Midi et « au mieux » du week-end : bonus.
+- **Swing** : 1 série de 10 pendant l'ancrage ; les 2 séries du palier 2 (décision du 07/10) reprennent après.
+- **Single leg balance** : gardé, au brossage des dents (absent du squelette, gardé par défaut).
+- **« Lever tôt »** : continue (heures, passage de palier) ; le contenu du matin reste celui de l'ancrage, et le plancher devient le matin d'ancrage.
+- **Cycles** : pas de décharge pendant l'ancrage ; les cycles d'ancrage ne comptent pas dans la numérotation des cycles (étirements du pied à 1 série) ; tests à la sortie.
+- **Report** : `data/programme.json` (clé `ancrage`), son schéma et `docs/SPEC.md` (§6.11, scénarios 15 à 17), par Claude le 13/10, dans la PR du J1.
+
+
+**→ 14/10 : matin d'ancrage unique, sortie et « Lever tôt » remplacés par l'entrée suivante.**
+
+## 14/10/2026 — décisions de José (ancrage en deux niveaux, quatre paliers)
+
+Retour de José du 13/10 sur les paliers et les phases (document Word, lecture de Claude confirmée le 13/10), puis précisions des 13 et 14/10. Détail : `docs/PROGRAMME.md`, sections « Cycles d'ancrage », « Le matin par paliers » et « Week-end ».
+
+- **Structure** : les anciens paliers 1 et 2 deviennent les deux niveaux de l'ancrage, N1 puis N2 (un par cycle de 5 semaines) ; le programme complet compte ensuite 4 paliers, par pas de 10 min. Anciens paliers 3, 4 et 5 = nouveaux paliers 1, 2 et 3 ; le palier 4 est nouveau.
+
+| Niveau ou palier | Lever / coucher | Travail du matin |
+| --- | --- | --- |
+| N1 | 6h50 / 22h50 | 1 mouvement de mobilité, 1 série d'un exercice |
+| N2 | 6h40 / 22h40 | 10 min de marge, puis un créneau de 10 min |
+| Palier 1 | 6h30 / 22h30 | 20 min |
+| Palier 2 | 6h20 / 22h20 | 30 min |
+| Palier 3 | 6h10 / 22h10 | 40 min |
+| Palier 4 | 6h00 / 22h00 | 50 min |
+
+- **Couchers de N1 et N2** : 8 h avant le lever (proposition de Claude, non contestée).
+- **N1** : matin A, reverse table top puis 1 série de rings row ; matin B, cossack squat puis 1 série de goblet squat. À N1, le lever seul valide le matin de « Lever tôt » (comme l'ancien palier 1, décision du 07/10).
+- **N2** : matin A, bear walk (« bear crawl ») et hip hinge au bâton, puis 1 série de KT press et 1 × 10 swings, puis 1 étirement ; matin B, reverse table top et cossack squat, puis 1 série de rings row et de goblet squat, puis l'autre étirement. Le SL good morning, d'abord proposé par José, est remplacé par le hip hinge au bâton.
+- **Étirements de l'ancrage** : couch stretch et pancake, à tour de rôle ; le pigeon sort de l'ancrage et reste dans le programme complet.
+- **Cossack et reverse table top dans l'ancrage** : 1 série à la cible du moment (proposition de Claude, non contestée).
+- **Passages** : N2 au plus tôt en semaine 6, palier 1 au plus tôt en semaine 11. L'appli ne propose le passage que si les 7 derniers jours ont tenu 5 jours, samedi et dimanche compris ; sinon, elle le propose de nouveau la semaine suivante ; José valide. José proposait des dates fixes ; il a retenu la proposition de Claude, qui garde la règle n° 1.
+- **Soir** : ancrage ≈ 10 min (1 série du bloc pied, 1 série du bloc clé) ; paliers 1 et 2, 15 min ; paliers 3 et 4, 20 min.
+- **Week-end de l'ancrage** : base ≈ 20 min : 2 mouvements d'échauffement, 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement ; au mieux ≈ 45 min, sans changement.
+- **Provisoire**, accepté par José le 14/10, à confirmer avant la semaine 11 :
+  - contenus des paliers 1 à 3 = ceux des anciens paliers 3 à 5 ; palier 4 = ancien palier 5, plus 10 min à définir ; respiration et café des anciens paliers 3 à 5 ;
+  - soir à 15 min : bloc clé complet et routine pied à 1 série par exercice ; à 20 min : soir complet (proposition de Claude) ;
+  - week-end : base + boxe en 3 rounds au palier 1 (≈ 30 min) ; séance complète en 3 séries, mobilité complète, étirements de hanche et boxe en 3 rounds au palier 2 (≈ 45 min) ; boxe en 5 rounds au palier 3 (≈ 60 min) ; journée type et bloc boxe au palier 4 (≈ 75 min) (proposition de Claude) ;
+  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier ;
+  - version courte et décharge : règles actuelles.
+- **Q1 à Q4 du J1** : toujours ouvertes, avec les nouveaux numéros (ancien palier 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3). Le J1 se termine avec ces points provisoires (accord de José du 14/10).
