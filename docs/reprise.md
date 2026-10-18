@@ -47,7 +47,7 @@ Numérotation à la suite de celle du 17/10 (questions 1 à 22, tranchées).
 30. « Alléger » aux paliers : après 2 nuits difficiles de suite, l'appli propose la version courte du matin ; José accepte ou non. Défaut : oui [Interprétation]. À trancher avant le palier 1 (28/12 au plus tôt).
 31. Snooze : noté pour l'historique, sans effet sur le verdict du matin. Défaut : oui [Interprétation].
 32. Cossack squat : José a écrit « 8-10 rep / side » ; le programme dit 8 à 14. Défaut : 8-14, la fourchette du programme [Interprétation].
-33. Le lever à l'heure (à 5 min près) entre-t-il dans le jour tenu, donc dans les passages ? Défaut : non ; le jour tenu reste le matin et le soir faits, et « Lever tôt » reste le journal du sommeil [Interprétation]. À trancher avant le 23/11.
+33. Le lever à l'heure (à 5 min près) entre-t-il dans le jour tenu, donc dans les passages ? Proposition de Claude : oui. Sinon, plus rien ne vérifie le lever avant de l'avancer, alors que c'est le but des paliers ; et les week-ends, où le travail n'impose pas le lever, ne le vérifient plus non plus. D'ici la réponse de José, rien ne change : le jour tenu reste le matin et le soir faits. À trancher avant le 23/11.
 34. Week-end complet = base + bonus : le samedi, 6 exercices de musculation au lieu des 4 du « au mieux » seul, car le swing et le goblet squat de la base restent. Défaut : oui.
 
 **À faire par José (pas des décisions)**
