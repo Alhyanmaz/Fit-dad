@@ -9,6 +9,7 @@ import {
   type Tenue,
 } from './matin';
 import { estEnAncrage, type Niveau } from './niveau';
+import type { Element } from './validation';
 import type { WeekEnd } from './weekEnd';
 
 /**
@@ -183,4 +184,24 @@ export function couchesDuWeekEnd(programme: Programme, niveau: Niveau, we: WeekE
     tenues: [{ ...regles.tenue }],
   };
   return empiler(minimum, principale, we.bonus ? seance : contenuVide());
+}
+
+/**
+ * Les éléments à cocher d'un bloc en couches, avec leur clé : l'exercice, « exercice+ » pour des
+ * séries en plus, « respiration », « neck_cars », « boxe ». Le café, une marge, ne se coche pas
+ * [Interprétation].
+ */
+export function elementsDesCouches(couches: Couches): Element[] {
+  const elements: Element[] = [];
+  for (const couche of COUCHES) {
+    const c = couches[couche];
+    if (c.respiration_min > 0) elements.push({ cle: 'respiration', couche });
+    for (const m of c.mobilite) elements.push({ cle: m.exercice, couche });
+    for (const t of c.tenues) elements.push({ cle: t.exercice, couche });
+    if (c.neck_cars_par_sens !== null) elements.push({ cle: 'neck_cars', couche });
+    for (const e of [...c.musculation, ...c.etirements])
+      elements.push({ cle: e.en_plus ? `${e.exercice}+` : e.exercice, couche });
+    if (c.boxe_rounds.length > 0) elements.push({ cle: 'boxe', couche });
+  }
+  return elements;
 }

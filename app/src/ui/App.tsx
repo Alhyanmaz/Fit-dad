@@ -4,7 +4,6 @@ import type { DateIso } from '../domain/dates';
 import { journalVide, type JournalDuJour } from '../domain/journal';
 import { estEnAncrage, type Niveau } from '../domain/niveau';
 import { Aujourdhui } from './Aujourdhui';
-import { SaisieContexte, type Saisie } from './composants';
 import { LeverTot } from './LeverTot';
 import { NavBas, type Ecran } from './NavBas';
 
@@ -48,20 +47,11 @@ export function App() {
     );
   }
   const date = aujourdhui();
-  const saisie: Saisie = {
-    valeur: (cle, serie, depart) => journal.repetitions[cle]?.[serie] ?? depart,
-    changer: (cle, serie, valeur) =>
-      setJournal((j) => {
-        const valeurs = [...(j.repetitions[cle] ?? [])];
-        valeurs[serie] = valeur;
-        return { ...j, repetitions: { ...j.repetitions, [cle]: valeurs } };
-      }),
-  };
   const { niveau, depuis } = enCours;
   // Passage confirmé par José, proposé ou forcé : le nouveau niveau commence aujourd'hui.
   const surPassage = (suivant: Niveau) => setEnCours({ niveau: suivant, depuis: date });
   return (
-    <SaisieContexte.Provider value={saisie}>
+    <>
       {ecran === 'lever' ? (
         <LeverTot
           programme={lecture.programme}
@@ -89,7 +79,7 @@ export function App() {
         </main>
       )}
       <NavBas ecran={ecran} surEcran={setEcran} />
-    </SaisieContexte.Provider>
+    </>
   );
 }
 

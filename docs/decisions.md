@@ -195,7 +195,7 @@ Réponses de José aux captures du soir et à la question 29 de `docs/reprise.md
   - le verdict de « Lever tôt » n'entre plus dans les passages (question 33) (**→ 18/10, plus tard : le lever à l'heure entre dans le jour tenu**) ;
   - le moment ne change pas : un niveau par cycle, N2 au plus tôt le lundi 23/11.
 - **Forcer le passage** : un bouton, à tout moment, avec confirmation. Le cycle du nouveau niveau commence le jour du passage [Interprétation].
-- **Aucun compteur dans les échauffements du matin** : aucun mouvement de mobilité n'a de compteur. Conséquence, signalée par Claude avant de coder : l'appli ne propose plus +2 répétitions au reverse table top ni au cossack squat ; José les règle avec « Ajuster ».
+- **Aucun compteur dans les échauffements du matin** (**→ 18/10, plus tard : compteurs rétablis pour tous les mouvements à répétitions**) : aucun mouvement de mobilité n'a de compteur. Conséquence, signalée par Claude avant de coder : l'appli ne propose plus +2 répétitions au reverse table top ni au cossack squat ; José les règle avec « Ajuster ».
 - **Légende du cossack squat et des mouvements du même type** : « 8-14 rep / side » ; pour le reverse table top, « 5-10 rep + tenue 10-30 s ». José a écrit « 8-10 rep / side » ; Claude garde la fourchette du programme, 8 à 14 [Interprétation, question 32].
 
 ## 18/10/2026 — décisions de José (lever dans le jour tenu, présentation par type)
@@ -206,3 +206,12 @@ Réponses de José aux captures du soir et à la question 29 de `docs/reprise.md
   - dans chaque groupe, le minimum d'abord, puis la principale, puis le bonus, avec un peu d'espace entre deux couches ;
   - la légende en tête d'écran, et un point de couleur sur chaque bouton de validation ;
   - le rouge passe de #DC2626 à #F43F5E pour rester lisible en texte (5,0:1 sur la carte au lieu de 3,8:1). L'écart rouge-orange reste sous le seuil de l'outil de contrôle des palettes en vision normale (14 pour 15) : l'ordre des couches et l'espace entre elles servent de second repère.
+
+## 18/10/2026 — décisions de José (validation par mouvement, durées, types visibles)
+
+- **Types plus visibles** : chaque type (mobilité, musculation…) est un bandeau sur toute la largeur de la carte, en blanc.
+- **Valider chaque mouvement**, au cas où José ne fait pas toute une routine : une case à cocher par mouvement. La couche atteinte du bloc s'en déduit : la plus haute dont tous les mouvements sont cochés, avec ceux des couches d'avant. Les boutons de couche deviennent des raccourcis : un bouton rempli est la couche atteinte (réponse à la question de José) ; un appui coche tout jusqu'à cette couche ; un second appui revient à la couche d'avant (choix de Claude). Le café ne se coche pas [Interprétation].
+- **Compteurs pour tous les mouvements à répétitions** : échauffements compris, ce qui annule la décision prise plus tôt le même jour (Claude l'a signalé avant de coder). Le reverse table top et le cossack squat retrouvent leur compteur, et donc les propositions de +2 répétitions.
+- **Durées réglables** pour les mouvements au temps : pas de 5 s, de 15 s à partir de 2 min, de 1 min à partir de 5 min [Interprétation]. Les étirements restent à 30 s au plus (règle n° 2 du programme), signalé par Claude avant de coder.
+- **Single leg balance du soir** : un bonus ; celui du matin reste dans la principale.
+- **En attente** : la structure du week-end (« un mouvement d'échauffement pour un exo de musculation, muscle concerné » ; pourquoi 6 exercices) et la respiration à N1 (questions 35 et 36 de `docs/reprise.md`).

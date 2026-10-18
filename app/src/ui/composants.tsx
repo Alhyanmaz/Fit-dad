@@ -1,20 +1,21 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import type { Programme } from '../data/schema';
 import { COUCHES, type Couche, type Couches } from '../domain/couches';
-import { compteurDeRepetitions } from '../domain/saisie';
+import { compteurDeRepetitions, reglageDeDuree, regler } from '../domain/saisie';
 import {
-  detailEtirement,
-  detailExercice,
-  detailMouvement,
-  dureeTexte,
-  nomExercice,
-  parCote,
-} from './libelles';
+  coucheAtteinte,
+  couchePrecedente,
+  couchesPresentes,
+  jusqua,
+  type Element,
+} from '../domain/validation';
+import { detailExercice, detailMouvement, dureeTexte, nomExercice, parCote } from './libelles';
 
 /**
  * Briques communes aux écrans (décisions de José du 18/10/2026). Chaque bloc dit d'abord ce qu'il
- * est (mobilité, musculation, étirements, cardio…) ; la couche de chaque exercice se lit à sa
- * couleur, expliquée par la légende : minimum en vert, principale en orange, bonus en rouge.
+ * est (mobilité, musculation, étirements, cardio…) ; la couche de chaque mouvement se lit à sa
+ * couleur, expliquée par la légende : minimum en vert, principale en orange, bonus en rouge. Chaque
+ * mouvement se coche ; les boutons de couche sont des raccourcis.
  */
 export const LIBELLES_DE_COUCHE: Record<Couche, string> = {
   minimum: 'Minimum',
@@ -41,7 +42,10 @@ export interface Option<T extends string> {
   couche?: Couche;
 }
 
-/** Boutons à choix unique ; un second appui annule. Le point de couleur rappelle la couche, s'il y en a une. */
+/**
+ * Boutons à choix unique ; un second appui annule. Le point de couleur rappelle la couche, s'il y
+ * en a une ; un bouton rempli est le choix fait.
+ */
 export function Choix<T extends string>({
   options,
   valeur,
@@ -90,6 +94,7 @@ export function Carte({
   );
 }
 
+/** Un groupe de type (« Mobilité »…), en bandeau sur toute la largeur de la carte. */
 export function Groupe({ titre, children }: { titre: string; children: ReactNode }) {
   return (
     <div className="groupe">
@@ -99,61 +104,82 @@ export function Groupe({ titre, children }: { titre: string; children: ReactNode
   );
 }
 
-/** Une ligne d'exercice ; `couche` colore son nom, `changement` marque le début d'une autre couche. */
-export function Ligne({
-  nom,
-  detail,
-  couche,
-  changement = false,
-  children,
-}: {
-  nom: string;
-  detail: ReactNode;
-  couche?: Couche;
-  changement?: boolean;
-  children?: ReactNode;
-}) {
-  const classes = ['ligne', couche ? `couche-${couche}` : '', changement ? 'changement' : '']
-    .filter(Boolean)
-    .join(' ');
-  return (
-    <li className={classes} {...(couche ? { 'data-couche': couche } : {})}>
-      <div className="ligne-tete">
-        <span className="nom">{nom}</span>
-        {detail !== '' && <span className="detail">{detail}</span>}
-      </div>
-      {children}
-    </li>
-  );
-}
-
-/** Répétitions saisies : valeur d'une série (ou celle de départ) et modification. */
+/** Saisie du jour : répétitions, durées et mouvements cochés, par clé « bloc:mouvement ». */
 export interface Saisie {
   valeur: (cle: string, serie: number, depart: number) => number;
   changer: (cle: string, serie: number, valeur: number) => void;
+  duree: (cle: string, serie: number, depart: number) => number;
+  changerDuree: (cle: string, serie: number, valeur: number) => void;
+  fait: (cle: string) => boolean;
+  /** Coche ou décoche plusieurs mouvements d'un coup. */
+  marquer: (faits: Record<string, boolean>) => void;
 }
 
 export const SaisieContexte = createContext<Saisie>({
   valeur: (_cle, _serie, depart) => depart,
   changer: () => {},
+  duree: (_cle, _serie, depart) => depart,
+  changerDuree: () => {},
+  fait: () => false,
+  marquer: () => {},
 });
+
+/** Durée réglable d'un pas, en ligne : « − 30 s + ». Les étirements restent à 30 s au plus. */
+export function Duree({
+  programme,
+  cle,
+  exercice,
+  nom,
+  prevu,
+  serie = 0,
+}: {
+  programme: Programme;
+  cle: string;
+  exercice: string | null;
+  nom: string;
+  prevu: number;
+  serie?: number;
+}) {
+  const saisie = useContext(SaisieContexte);
+  const reglage = reglageDeDuree(programme, exercice, prevu);
+  const valeur = saisie.duree(cle, serie, reglage.depart);
+  return (
+    <span className="duree">
+      <button
+        type="button"
+        aria-label={`${nom}, durée : ${reglage.pas} s de moins`}
+        onClick={() => saisie.changerDuree(cle, serie, regler(reglage, valeur, -1))}
+      >
+        −
+      </button>
+      <output aria-label={`${nom}, durée`}>{dureeTexte(valeur)}</output>
+      <button
+        type="button"
+        aria-label={`${nom}, durée : ${reglage.pas} s de plus`}
+        disabled={reglage.max !== null && valeur >= reglage.max}
+        onClick={() => saisie.changerDuree(cle, serie, regler(reglage, valeur, 1))}
+      >
+        +
+      </button>
+    </span>
+  );
+}
 
 /** Un compteur de répétitions par série, pour l'historique (décision du 18/10/2026). */
 export function Compteurs({
   programme,
-  bloc,
+  cle,
   exercice,
   series,
 }: {
   programme: Programme;
-  bloc: string;
+  cle: string;
   exercice: string;
   series: number;
 }) {
   const saisie = useContext(SaisieContexte);
   const compteur = compteurDeRepetitions(programme, exercice, series);
   if (!compteur) return null;
-  const cle = `${bloc}:${exercice}`;
   const nom = nomExercice(programme, exercice);
   const unite =
     compteur.quoi ?? (compteur.cote ? `répétitions ${parCote(compteur.cote)}` : 'répétitions');
@@ -192,19 +218,109 @@ export function Compteurs({
   );
 }
 
-/** Une ligne à afficher : sa couche, et les séries qu'une couche suivante y ajoute. */
+/** Une ligne à afficher, et ce qui se saisit dessus. */
 export interface LigneDeCouche {
+  /** Clé du mouvement dans son bloc (`Element.cle`). */
   cle: string;
   couche: Couche;
   nom: string;
-  detail: string;
-  /** Séries en plus, dans une couche suivante (« +1 × 30 s » en rouge). */
-  enPlus?: { couche: Couche; detail: string }[];
-  enfant?: ReactNode;
+  /** Texte à droite (cible) ; à côté de la durée réglable s'il y en a une. */
+  detail?: string;
+  /** Durée réglable, en secondes, par série. */
+  duree?: { exercice: string | null; prevu: number };
+  /** Compteurs de répétitions, une ligne par série. */
+  repetitions?: { exercice: string; series: number };
+  /** Tenue réglable sous les répétitions (reverse table top). */
+  tenue?: { exercice: string; prevu: number };
+  /** Ligne à lire seulement, sans case à cocher (le café, une marge). */
+  sansCase?: boolean;
 }
 
-/** Un groupe de type (« Mobilité »…) : ses lignes rangées par couche, minimum d'abord. */
-export function GroupeDeLignes({ titre, lignes }: { titre: string; lignes: LigneDeCouche[] }) {
+/** Une ligne : case à cocher, nom dans la couleur de sa couche, cible ou durée, compteurs. */
+export function Ligne({
+  programme,
+  bloc,
+  ligne,
+  changement = false,
+}: {
+  programme: Programme;
+  bloc: string;
+  ligne: LigneDeCouche;
+  changement?: boolean;
+}) {
+  const saisie = useContext(SaisieContexte);
+  const cle = `${bloc}:${ligne.cle}`;
+  const fait = saisie.fait(cle);
+  const classes = [
+    'ligne',
+    `couche-${ligne.couche}`,
+    changement ? 'changement' : '',
+    fait ? 'faite' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  return (
+    <li className={classes} data-couche={ligne.couche}>
+      <div className="ligne-tete">
+        {ligne.sansCase ? (
+          <span className="case-vide" aria-hidden="true" />
+        ) : (
+          <button
+            type="button"
+            className="case"
+            aria-pressed={fait}
+            aria-label={`${ligne.nom} : fait`}
+            onClick={() => saisie.marquer({ [cle]: !fait })}
+          />
+        )}
+        <span className="nom">{ligne.nom}</span>
+        {ligne.detail && <span className="detail">{ligne.detail}</span>}
+        {ligne.duree && (
+          <Duree
+            programme={programme}
+            cle={cle}
+            exercice={ligne.duree.exercice}
+            nom={ligne.nom}
+            prevu={ligne.duree.prevu}
+          />
+        )}
+      </div>
+      {ligne.repetitions && (
+        <Compteurs
+          programme={programme}
+          cle={cle}
+          exercice={ligne.repetitions.exercice}
+          series={ligne.repetitions.series}
+        />
+      )}
+      {ligne.tenue && (
+        <div className="compteur">
+          <span className="compteur-nom">Tenue</span>
+          <Duree
+            programme={programme}
+            cle={`${cle}:tenue`}
+            exercice={ligne.tenue.exercice}
+            nom={`${ligne.nom}, tenue`}
+            prevu={ligne.tenue.prevu}
+          />
+        </div>
+      )}
+    </li>
+  );
+}
+
+/** Un groupe de type et ses lignes, rangées par couche (minimum d'abord). */
+export function GroupeDeLignes({
+  programme,
+  bloc,
+  titre,
+  lignes,
+}: {
+  programme: Programme;
+  bloc: string;
+  titre: string;
+  lignes: readonly LigneDeCouche[];
+}) {
   if (lignes.length === 0) return null;
   return (
     <Groupe titre={titre}>
@@ -212,64 +328,31 @@ export function GroupeDeLignes({ titre, lignes }: { titre: string; lignes: Ligne
         {lignes.map((l, i) => (
           <Ligne
             key={l.cle}
-            nom={l.nom}
-            couche={l.couche}
+            programme={programme}
+            bloc={bloc}
+            ligne={l}
             changement={i > 0 && lignes[i - 1]?.couche !== l.couche}
-            detail={
-              l.enPlus && l.enPlus.length > 0 ? (
-                <>
-                  {l.detail}
-                  {l.enPlus.map((p) => (
-                    <span key={p.couche} className={`en-plus couche-${p.couche}`}>
-                      {' '}
-                      {p.detail}
-                    </span>
-                  ))}
-                </>
-              ) : (
-                l.detail
-              )
-            }
-          >
-            {l.enfant}
-          </Ligne>
+          />
         ))}
       </ul>
     </Groupe>
   );
 }
 
-/** Ajoute une ligne, ou fusionne des séries en plus dans la ligne du même exercice. */
-function ajouter(lignes: LigneDeCouche[], ligne: LigneDeCouche, enPlus: boolean) {
-  const existante = enPlus ? lignes.find((l) => l.cle === ligne.cle) : undefined;
-  if (existante) {
-    existante.enPlus = [
-      ...(existante.enPlus ?? []),
-      { couche: ligne.couche, detail: ligne.detail },
-    ];
-  } else {
-    lignes.push(ligne);
-  }
-}
-
 /**
- * Un bloc en couches, présenté par type : respiration et café, mobilité, musculation, étirements,
- * boxe. Dans chaque type, le minimum d'abord, puis la principale, puis le bonus.
+ * Les lignes d'un bloc en couches, par type : respiration et café, mobilité, musculation,
+ * étirements, boxe. Les clés sont celles de `elementsDesCouches`.
  */
-export function ParType({
-  programme,
-  bloc,
-  couches,
-}: {
-  programme: Programme;
-  bloc: string;
-  couches: Couches;
-}) {
+export function lignesParType(
+  programme: Programme,
+  couches: Couches,
+): { titre: string; lignes: LigneDeCouche[] }[] {
   const respiration: LigneDeCouche[] = [];
   const mobilite: LigneDeCouche[] = [];
   const musculation: LigneDeCouche[] = [];
   const etirements: LigneDeCouche[] = [];
   const boxe: LigneDeCouche[] = [];
+  const tenueDesEtirements = programme.regles_generales.etirements.tenue_s;
   for (const couche of COUCHES) {
     const c = couches[couche];
     if (c.respiration_min > 0)
@@ -277,25 +360,43 @@ export function ParType({
         cle: 'respiration',
         couche,
         nom: 'Respiration',
-        detail: `${c.respiration_min} min`,
+        duree: { exercice: null, prevu: c.respiration_min * 60 },
       });
     if (c.cafe_min > 0)
-      respiration.push({ cle: 'cafe', couche, nom: 'Café', detail: `${c.cafe_min} min, la marge` });
-    for (const m of c.mobilite)
-      mobilite.push({
-        cle: m.exercice,
+      respiration.push({
+        cle: 'cafe',
         couche,
-        nom: nomExercice(programme, m.exercice),
-        detail: c.mobilite_au_ralenti
-          ? `${detailMouvement(programme, m)}, au ralenti`
-          : detailMouvement(programme, m),
+        nom: 'Café',
+        detail: `${c.cafe_min} min, la marge`,
+        sansCase: true,
       });
+    for (const m of c.mobilite) {
+      const nom = nomExercice(programme, m.exercice);
+      const tenue = programme.exercices[m.exercice]?.fourchette_tenue_s;
+      mobilite.push(
+        m.a_la_cible
+          ? {
+              cle: m.exercice,
+              couche,
+              nom,
+              detail: detailMouvement(programme, m),
+              repetitions: { exercice: m.exercice, series: 1 },
+              ...(tenue ? { tenue: { exercice: m.exercice, prevu: tenue[0] } } : {}),
+            }
+          : {
+              cle: m.exercice,
+              couche,
+              nom: c.mobilite_au_ralenti ? `${nom}, au ralenti` : nom,
+              duree: { exercice: m.exercice, prevu: m.duree_s ?? 30 },
+            },
+      );
+    }
     for (const t of c.tenues)
       mobilite.push({
         cle: t.exercice,
         couche,
         nom: nomExercice(programme, t.exercice),
-        detail: dureeTexte(t.duree_s),
+        duree: { exercice: t.exercice, prevu: t.duree_s },
       });
     if (c.neck_cars_par_sens !== null)
       mobilite.push({
@@ -305,39 +406,25 @@ export function ParType({
         detail: `${c.neck_cars_par_sens} par sens`,
       });
     for (const e of c.musculation)
-      ajouter(
-        musculation,
-        {
-          cle: e.exercice,
-          couche,
-          nom: nomExercice(programme, e.exercice),
-          detail: detailExercice(programme, e),
-          ...(e.en_plus
-            ? {}
-            : {
-                enfant: (
-                  <Compteurs
-                    programme={programme}
-                    bloc={bloc}
-                    exercice={e.exercice}
-                    series={e.series}
-                  />
-                ),
-              }),
-        },
-        e.en_plus === true,
-      );
+      musculation.push({
+        cle: e.en_plus ? `${e.exercice}+` : e.exercice,
+        couche,
+        nom: e.en_plus
+          ? `${nomExercice(programme, e.exercice)}, en plus`
+          : nomExercice(programme, e.exercice),
+        detail: detailExercice(programme, e),
+        repetitions: { exercice: e.exercice, series: e.series },
+      });
     for (const e of c.etirements)
-      ajouter(
-        etirements,
-        {
-          cle: e.exercice,
-          couche,
-          nom: nomExercice(programme, e.exercice),
-          detail: detailEtirement(programme, e),
-        },
-        e.en_plus === true,
-      );
+      etirements.push({
+        cle: e.en_plus ? `${e.exercice}+` : e.exercice,
+        couche,
+        nom: e.en_plus
+          ? `${nomExercice(programme, e.exercice)}, en plus`
+          : nomExercice(programme, e.exercice),
+        detail: `${e.en_plus ? '+' : ''}${e.series} ×`,
+        duree: { exercice: e.exercice, prevu: tenueDesEtirements },
+      });
     if (c.boxe_rounds.length > 0)
       boxe.push({
         cle: 'boxe',
@@ -346,35 +433,88 @@ export function ParType({
         detail: `rounds ${c.boxe_rounds.join(', ')}`,
       });
   }
+  return [
+    { titre: 'Respiration et café', lignes: respiration },
+    { titre: 'Mobilité', lignes: mobilite },
+    { titre: 'Musculation', lignes: musculation },
+    { titre: 'Étirements', lignes: etirements },
+    { titre: 'Boxe', lignes: boxe },
+  ];
+}
+
+/** Un bloc en couches, par type. */
+export function ParType({
+  programme,
+  bloc,
+  couches,
+}: {
+  programme: Programme;
+  bloc: string;
+  couches: Couches;
+}) {
   return (
     <>
-      <GroupeDeLignes titre="Respiration et café" lignes={respiration} />
-      <GroupeDeLignes titre="Mobilité" lignes={mobilite} />
-      <GroupeDeLignes titre="Musculation" lignes={musculation} />
-      <GroupeDeLignes titre="Étirements" lignes={etirements} />
-      <GroupeDeLignes titre="Boxe" lignes={boxe} />
+      {lignesParType(programme, couches).map((g) => (
+        <GroupeDeLignes
+          key={g.titre}
+          programme={programme}
+          bloc={bloc}
+          titre={g.titre}
+          lignes={g.lignes}
+        />
+      ))}
     </>
   );
 }
 
-/** Validation d'un bloc en couches : la couche atteinte, parmi celles qui ont un contenu. */
-export function ChoixDeCouche({
-  couches,
+/** Ne garde que les mouvements d'un bloc, sans le préfixe « bloc: ». */
+export function faitsDuBloc(faits: Readonly<Record<string, boolean>>, bloc: string) {
+  const prefixe = `${bloc}:`;
+  return Object.fromEntries(
+    Object.entries(faits)
+      .filter(([cle]) => cle.startsWith(prefixe))
+      .map(([cle, fait]) => [cle.slice(prefixe.length), fait]),
+  );
+}
+
+/**
+ * Raccourcis d'un bloc : un bouton par couche. Rempli : la couche atteinte, déduite des mouvements
+ * cochés. Un appui coche tout jusqu'à cette couche ; un second appui revient à la couche d'avant.
+ */
+export function BoutonsDeCouche({
+  bloc,
+  elements,
   libelle,
-  valeur,
-  surChoix,
 }: {
-  couches: readonly Couche[];
+  bloc: string;
+  elements: readonly Element[];
   libelle: string;
-  valeur: Couche | null;
-  surChoix: (valeur: Couche | null) => void;
 }) {
+  const saisie = useContext(SaisieContexte);
+  const faits = Object.fromEntries(elements.map((e) => [e.cle, saisie.fait(`${bloc}:${e.cle}`)]));
+  const atteinte = coucheAtteinte(elements, faits);
+  const choisir = (couche: Couche | null) => {
+    const cible = couche === atteinte && couche ? couchePrecedente(elements, couche) : couche;
+    const changements = jusqua(elements, cible);
+    saisie.marquer(
+      Object.fromEntries(
+        Object.entries(changements).map(([cle, fait]) => [`${bloc}:${cle}`, fait]),
+      ),
+    );
+  };
   return (
-    <Choix
-      libelle={libelle}
-      valeur={valeur}
-      surChoix={surChoix}
-      options={couches.map((c) => ({ valeur: c, libelle: LIBELLES_DE_COUCHE[c], couche: c }))}
-    />
+    <div className="choix" role="group" aria-label={libelle}>
+      {couchesPresentes(elements).map((c) => (
+        <button
+          key={c}
+          type="button"
+          data-couche={c}
+          aria-pressed={atteinte === c}
+          onClick={() => choisir(c)}
+        >
+          {LIBELLES_DE_COUCHE[c]}
+        </button>
+      ))}
+    </div>
   );
 }

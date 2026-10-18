@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { lireProgramme, programmeBrut } from '../data/programme';
 import { lettreDuMatin, lettreDuPied, suivantDansLaRotation, type Lettre } from './alternances';
-import { jourTenu, soirFait } from './ancrage';
+import { jourTenu } from './ancrage';
 import { ajouterJours, jourDeLaSemaine, joursEntre, type DateIso } from './dates';
 import { aUnBlocBoxe, techniqueDuClubEnPriorite, typeDeJour } from './jour';
 import { matinDuJour, versionsDuMatin } from './matin';
 import { midiDuJour } from './midi';
 import { estEnAncrage, type Niveau } from './niveau';
-import { seriesEtirementsPied, soirDuJour } from './soir';
+import { elementsDuSoir, seriesEtirementsPied, soirDuJour } from './soir';
+import { coucheAtteinte } from './validation';
 import { weekEndDuJour } from './weekEnd';
 
 /** Scénarios de recette du jalon J2 (docs/SPEC.md §9). Semaine du lundi 19/10/2026. */
@@ -479,7 +480,7 @@ describe('scénario 16 : ancrage, jour tenu', () => {
     expect(jourTenu({ lever: false, matin: 'principale', soir: 'principale' })).toBe(false);
     expect(jourTenu({ lever: true, matin: 'minimum', soir: 'minimum' })).toBe(true);
     expect(jourTenu({ lever: true, matin: 'principale', soir: null })).toBe(false);
-    expect(jourTenu({ lever: true, matin: null, soir: 'boxe' })).toBe(false);
+    expect(jourTenu({ lever: true, matin: null, soir: 'minimum' })).toBe(false);
     expect(jourTenu({ lever: true, matin: 'principale', soir: 'principale', midi: false })).toBe(
       true,
     );
@@ -489,16 +490,32 @@ describe('scénario 16 : ancrage, jour tenu', () => {
     expect(jourTenu({ lever: true, matin: 'bonus', soir: 'minimum' })).toBe(true);
   });
 
-  it('soir validé en deux parts : le bloc clé compte, la routine pied seule ne suffit pas', () => {
-    expect(soirFait('principale', true)).toBe('principale');
-    expect(soirFait('principale', false)).toBe('minimum');
-    expect(soirFait('minimum', true)).toBe('minimum');
-    expect(soirFait('boxe', false)).toBe('boxe');
-    expect(soirFait(null, true)).toBeNull();
-    expect(jourTenu({ lever: true, matin: 'principale', soir: soirFait(null, true) })).toBe(false);
-    expect(jourTenu({ lever: true, matin: 'minimum', soir: soirFait('principale', false) })).toBe(
-      true,
+  it('soir coché mouvement par mouvement : le minimum du bloc clé compte, la routine pied seule non', () => {
+    const contexte = {
+      niveau: { ancrage: 'N1' as const },
+      lettrePied: 'A' as const,
+      cycle: 1,
+      piedsFaitsDansLeCycle: 0,
+    };
+    const soir = elementsDuSoir(soirDuJour(programme, { ...contexte, type: 'normal' }));
+    const faits = (...cles: string[]) => Object.fromEntries(cles.map((c) => [c, true]));
+    expect(coucheAtteinte(soir, faits('suspension_seule', 'deep_squat'))).toBe('minimum');
+    const pied = soir.filter((e) => e.couche === 'principale' && e.cle !== 'knee_raises');
+    expect(coucheAtteinte(soir, faits(...pied.map((e) => e.cle)))).toBeNull();
+    expect(coucheAtteinte(soir, faits(...soir.map((e) => e.cle)))).toBe('principale');
+    // Soir de boxe : le minimum, puis les étirements du pied en bonus.
+    const boxe = elementsDuSoir(
+      soirDuJour(programme, { ...contexte, type: 'boxe', lettrePied: null }),
     );
+    expect(coucheAtteinte(boxe, faits('suspension_seule', 'deep_squat'))).toBe('minimum');
+    expect(coucheAtteinte(boxe, faits(...boxe.map((e) => e.cle)))).toBe('bonus');
+    expect(
+      jourTenu({
+        lever: true,
+        matin: 'principale',
+        soir: coucheAtteinte(soir, faits(...pied.map((e) => e.cle))),
+      }),
+    ).toBe(false);
   });
 
   it('versions minimum : un mouvement de mobilité et 2 min de deep squat le matin ; suspension seule et deep squat le soir', () => {

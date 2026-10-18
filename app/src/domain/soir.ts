@@ -3,6 +3,7 @@ import type { Lettre } from './alternances';
 import type { TypeDeJour } from './jour';
 import type { Etirement } from './matin';
 import { estEnAncrage, type Niveau } from './niveau';
+import type { Element } from './validation';
 
 /** Soir (docs/SPEC.md §6.5 ; pendant l'ancrage, §6.11). */
 
@@ -146,4 +147,25 @@ export function soirDuJour(programme: Programme, ctx: ContexteDuSoir): Soir {
     },
     etirements_apres_boxe: null,
   };
+}
+
+/**
+ * Les éléments du soir à cocher (décisions du 18/10/2026) : le bloc clé (minimum, la suspension
+ * seule et le deep squat ; principale, les knee raises), la routine pied (principale), les
+ * étirements après la boxe (bonus).
+ */
+export function elementsDuSoir(soir: Soir): Element[] {
+  const elements: Element[] = [
+    { cle: 'suspension_seule', couche: 'minimum' },
+    { cle: 'deep_squat', couche: 'minimum' },
+  ];
+  if (soir.bloc_cle.knee_raises) elements.push({ cle: 'knee_raises', couche: 'principale' });
+  if (soir.pied) {
+    for (const exercice of soir.pied.exercices)
+      elements.push({ cle: exercice, couche: 'principale' });
+    for (const e of soir.pied.etirements) elements.push({ cle: e.exercice, couche: 'principale' });
+  }
+  for (const e of soir.etirements_apres_boxe?.etirements ?? [])
+    elements.push({ cle: e.exercice, couche: 'bonus' });
+  return elements;
 }

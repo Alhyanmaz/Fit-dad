@@ -117,7 +117,7 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 | N2, musculation, 1 série | KT press (chaque bras), swing (10)       | Rings row, goblet squat (20)     |
 | N2, étirement, 1 × 30 s  | Couch stretch ou pancake, à tour de rôle | L'autre                          |
 
-- Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s. Dans l'appli, aucun mouvement de mobilité n'a de compteur : la cible s'affiche (« 8-14 rep / side »), et tu montes ces deux mouvements avec « Ajuster » (décision du 18/10/2026).
+- Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s. Dans l'appli, chacun a son compteur de répétitions et sa cible écrite (« 8-14 rep / side ») (décisions du 18/10/2026).
 - Le swing reste à 1 série pendant l'ancrage ; il passe à la séance du palier 1 ensuite.
 - Couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il revient au « au mieux » du week-end (décision du 17/10/2026).
 - À N2, les 10 min sont un créneau : le contenu prend 5 à 7 min, le reste sert de marge \[Interprétation\].
@@ -135,7 +135,7 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 - Version minimum : 1 min de suspension seule, sans knee raises (one arm hang une fois ajouté), puis 2 min de deep squat, ≈ 4 min (décision du 17/10/2026).
 - Soir de boxe en club : la version minimum ; les 4 étirements du pied si possible.
 
-**Chaque jour** : single leg balance pendant le brossage des dents, 1 min sur chaque jambe, matin et soir.
+**Chaque jour** : single leg balance pendant le brossage des dents, 1 min sur chaque jambe, matin et soir ; celui du soir est un bonus (décision du 18/10/2026).
 
 **Week-end**
 
@@ -584,7 +584,7 @@ L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes t
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.
 - **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (lever à l'heure, matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 12 jours sur 14 ont tenu, dont les deux week-ends, à valider par toi, avec un bouton pour forcer le passage ; ni jour de récupération ni version courte.
-- **Couches** : minimum (vert), principale (orange), bonus (rouge), qui s'additionnent ; chaque exercice une fois ; aucun compteur dans les échauffements. Chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…), puis la couleur du nom de chaque exercice donne sa couche, avec une légende (décisions du 18/10/2026).
+- **Couches** : minimum (vert), principale (orange), bonus (rouge), qui s'additionnent ; chaque exercice une fois. Chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…), puis la couleur du nom de chaque exercice donne sa couche, avec une légende. Chaque mouvement se coche ; un compteur pour chaque mouvement à répétitions, une durée réglable pour chaque mouvement au temps (étirements : 30 s au plus) (décisions du 18/10/2026).
 
 ## Sources
 

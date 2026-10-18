@@ -1,4 +1,4 @@
-import type { BlocCleFait, MatinFait } from './ancrage';
+import type { Couche } from './couches';
 import type { MidiFait } from './midi';
 
 /**
@@ -7,14 +7,16 @@ import type { MidiFait } from './midi';
  */
 export interface JournalDuJour {
   boxe: boolean;
-  /** Couche atteinte le matin, ou au week-end : minimum, principale ou bonus. */
-  matin: MatinFait;
+  /** Couches atteintes le matin (ou au week-end) et le soir, déduites de `faits`. */
+  matin: Couche | null;
+  soir: Couche | null;
   midi: MidiFait;
-  blocCle: BlocCleFait;
-  pied: boolean;
-  equilibre: { matin: boolean; soir: boolean };
+  /** Mouvements cochés, par bloc : « matin:rings_row », « soir:knee_raises », « equilibre:soir ». */
+  faits: Record<string, boolean>;
   /** Répétitions par série, par bloc et par exercice (« matin:rings_row » → une valeur par série). */
   repetitions: Record<string, number[]>;
+  /** Durées faites, en secondes, par série (« matin:bear_walk » → [30]). */
+  durees: Record<string, number[]>;
   lever: {
     /** Heure du coucher de la veille, « HH:MM ». */
     couche: string | null;
@@ -30,10 +32,10 @@ export interface JournalDuJour {
 export const journalVide = (): JournalDuJour => ({
   boxe: false,
   matin: null,
+  soir: null,
   midi: null,
-  blocCle: null,
-  pied: false,
-  equilibre: { matin: false, soir: false },
+  faits: {},
   repetitions: {},
+  durees: {},
   lever: { couche: null, leve: null, reveil: null, nuit: null, lumiere: null, note: '' },
 });

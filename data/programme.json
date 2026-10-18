@@ -219,7 +219,7 @@
     },
     "chaque_jour": {
       "exercice": "single_leg_balance",
-      "moment": "pendant le brossage des dents, matin et soir"
+      "moment": "pendant le brossage des dents, matin et soir ; celui du soir est un bonus (décision du 18/10/2026)"
     },
     "week_end": {
       "base": {
@@ -1056,7 +1056,7 @@
           "charge_kg": 10
         }
       ],
-      "note": "1 série à la cible du moment. Pas de compteur, comme pour tous les mouvements de mobilité : l'appli affiche la cible (décision du 18/10/2026) ; répétitions et charge se règlent avec « Ajuster »."
+      "note": "1 série à la cible du moment, avec son compteur par côté ; la légende rappelle la cible (« 8-14 rep / side ») (décisions du 18/10/2026)."
     },
     "spinal_rotation": {
       "nom": "Spinal rotation",
@@ -1083,7 +1083,7 @@
           "label": "10 répétitions + 30 s de tenue"
         }
       ],
-      "note": "Pas de compteur, comme pour tous les mouvements de mobilité (décision du 18/10/2026) : répétitions (5 → 10) et tenue (10 → 30 s) se règlent avec « Ajuster ».",
+      "note": "Compteur de répétitions et tenue réglable (décisions du 18/10/2026). Propositions : +2 répétitions (5 → 10) ; la tenue (10 → 30 s) se règle avec « Ajuster ».",
       "fourchette": [
         5,
         10
@@ -1736,9 +1736,9 @@
       }
     ],
     "par_mesure": {
-      "reps": "+2 répétitions dans l'échelon ; le dernier pas s'arrête au haut de la fourchette (pistol 5 → 7 → 8). Au haut de la fourchette : « plafond atteint ». Le changement d'échelon (charge ou variante) n'est jamais proposé : José le fait avec « Ajuster » ou en semaine de test. Mouvements de mobilité (cossack squat, reverse table top) : pas de compteur, donc pas de proposition ; José les règle avec « Ajuster » (décision du 18/10/2026).",
+      "reps": "+2 répétitions dans l'échelon ; le dernier pas s'arrête au haut de la fourchette (pistol 5 → 7 → 8). Au haut de la fourchette : « plafond atteint ». Le changement d'échelon (charge ou variante) n'est jamais proposé : José le fait avec « Ajuster » ou en semaine de test.",
       "tenue": "+pas_s quand la cible est tenue 2 séances de suite, plafonné au haut de la fourchette ; la variante plus difficile se règle avec « Ajuster ».",
-      "reps_tenue": "Reverse table top : pas de compteur en mobilité, donc pas de proposition ; répétitions et tenue se règlent avec « Ajuster » (décision du 18/10/2026).",
+      "reps_tenue": "Reverse table top : seules les répétitions sont proposées (+2) ; la tenue se règle avec « Ajuster ».",
       "etirement": "30 s, jamais plus ; on ajoute des séries, pas de la durée.",
       "bas_de_jambe": "Une seule hausse par semaine, en rotation corde → mollets → tibialis ; le sac est hors de la règle."
     },
