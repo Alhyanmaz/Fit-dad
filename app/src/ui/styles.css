@@ -1,5 +1,9 @@
 /* Thème de la v2 : fond noir, accent orange (décision du 18/10/2026). Contrastes vérifiés :
-   orange sur noir 8,0:1, orange sur carte 7,1:1, gris discret sur carte 7,3:1. */
+   orange sur noir 8,0:1, orange sur carte 7,1:1, gris discret sur carte 7,3:1.
+   Versions (décision du 18/10/2026) : minimum vert, normal orange, « au mieux » rouge ; texte noir
+   sur vert 12:1 et sur orange 8:1, texte blanc sur rouge 4,8:1 ; le rouge ne sert jamais de couleur
+   de texte (3,8:1 sur carte). Les trois couleurs restent distinctes pour un daltonisme rouge-vert
+   (écart ΔE ≥ 9,7, outil de contrôle des palettes) ; chaque couleur porte aussi son libellé. */
 :root {
   color-scheme: dark;
   --fond: #000000;
@@ -11,6 +15,10 @@
   --orange: #ff7a1a;
   --orange-piste: #4a2508;
   --sur-orange: #000000;
+  --vert: #4ade80;
+  --sur-vert: #000000;
+  --rouge: #dc2626;
+  --sur-rouge: #ffffff;
   --erreur: #ff8a80;
   --rayon: 16px;
   --hauteur-nav: 64px;
@@ -228,6 +236,8 @@ p {
   color: var(--discret);
   text-align: right;
   flex: none;
+  /* Un détail long (cible du cossack) passe à la ligne au lieu de sortir de la carte. */
+  max-width: 60%;
 }
 
 .groupe {
@@ -256,12 +266,114 @@ button {
   color: var(--texte);
 }
 
+.choix {
+  flex-wrap: wrap;
+}
+
 .choix button[aria-pressed='true'],
 .interrupteur[aria-pressed='true'] {
   background: var(--orange);
   border-color: var(--orange);
   color: var(--sur-orange);
   font-weight: 650;
+}
+
+.choix button[data-version='minimum'][aria-pressed='true'] {
+  background: var(--vert);
+  border-color: var(--vert);
+  color: var(--sur-vert);
+}
+
+.choix button[data-version='au-mieux'][aria-pressed='true'] {
+  background: var(--rouge);
+  border-color: var(--rouge);
+  color: var(--sur-rouge);
+}
+
+/* Versions : étiquette et bordure de la couleur de la version */
+.etiquette {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  margin: 0.25rem 0 0.375rem;
+}
+
+.etiquette.normal {
+  background: var(--orange);
+  color: var(--sur-orange);
+}
+
+.etiquette.minimum {
+  background: var(--vert);
+  color: var(--sur-vert);
+}
+
+.etiquette.au-mieux {
+  background: var(--rouge);
+  color: var(--sur-rouge);
+}
+
+.bloc-version {
+  border-left: 3px solid var(--orange);
+  padding-left: 0.75rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.bloc-version.minimum {
+  border-left-color: var(--vert);
+}
+
+.bloc-version.au-mieux {
+  border-left-color: var(--rouge);
+}
+
+.carte-au-mieux {
+  box-shadow: inset 0 3px 0 var(--rouge);
+}
+
+/* Lever tôt : champs de saisie et verdict */
+.champ-ligne {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.champ-heure,
+.champ-note {
+  font: inherit;
+  color: var(--texte);
+  background: var(--carte-2);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  color-scheme: dark;
+}
+
+.champ-note {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.verdict {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.regles {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.regles li {
+  margin-bottom: 0.5rem;
 }
 
 .interrupteur {
@@ -306,6 +418,10 @@ a {
 }
 
 .nav-item {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

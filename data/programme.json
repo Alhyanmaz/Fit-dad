@@ -2,8 +2,8 @@
   "version_schema": 1,
   "meta": {
     "titre": "Programme d'entraînement — refonte 2026",
-    "version": "2026-10-17",
-    "source": "docs/PROGRAMME.md (fait foi ; issu du document Claude Docs, révision 44, abandonné le 17/10/2026 ; mis à jour le 07/10, les 13 et 14/10, puis le 17/10/2026)",
+    "version": "2026-10-18",
+    "source": "docs/PROGRAMME.md (fait foi ; issu du document Claude Docs, révision 44, abandonné le 17/10/2026 ; mis à jour le 07/10, les 13 et 14/10, le 17/10, puis le 18/10/2026)",
     "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; cycles d'ancrage ajoutés le 13/10/2026, en deux niveaux le 14/10/2026, avec quatre paliers ensuite ; réponses de José du 17/10/2026 intégrées (palier 1 confirmé, contenus des paliers 2 à 4 provisoires) ; validé au chargement par app/src/data/schema.ts. En cas d'écart, PROGRAMME.md fait foi.",
     "conventions": {
       "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… », « pas_min » et « swing_minutes » ; « cycle_minimum » est un numéro de cycle",
@@ -184,7 +184,7 @@
         "declencheur": "nuit très hachée",
         "contenu": "un seul mouvement de mobilité"
       },
-      "version_courte": "Aucune : version normale ou version minimum (décision du 14/10/2026). « Alléger » propose la version minimum (décision du 17/10/2026).",
+      "version_courte": "Aucune : version normale ou version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : José choisit lui-même la version minimum (décision du 18/10/2026).",
       "note": "N1 travaille le tirage et le squat ; N2, les quatre patrons. Le swing reste à 1 série pendant l'ancrage."
     },
     "midi": {
@@ -257,10 +257,10 @@
     }
   },
   "lever_tot": {
-    "tolerance_lever_min": 10,
-    "fenetre_jours": 7,
-    "matins_reussis_requis": 5,
-    "dont_matins_week_end": 2,
+    "tolerance_lever_min": 5,
+    "fenetre_jours": 14,
+    "matins_reussis_requis": 12,
+    "dont_matins_week_end": 4,
     "niveau_depart": "N1",
     "qualites_nuit": [
       {
@@ -296,6 +296,16 @@
       {
         "id": "aucune",
         "label": "Aucune"
+      }
+    ],
+    "reveils": [
+      {
+        "id": "premier",
+        "label": "Premier réveil"
+      },
+      {
+        "id": "snooze",
+        "label": "Snooze"
       }
     ],
     "paliers": [
@@ -347,7 +357,7 @@
       ],
       "interpretation": true
     },
-    "passage_de_palier": "Pendant l'ancrage : ancrage.passage. Ensuite, un palier par cycle : passage proposé au plus tôt au début du cycle suivant, et seulement si au moins 5 matins sont réussis sur les 7 derniers jours, dont le samedi et le dimanche ; sinon, de nouveau la semaine suivante. Appliqué après confirmation de José (décision du 17/10/2026)."
+    "passage_de_palier": "Pendant l'ancrage : ancrage.passage. Ensuite, un palier par cycle : passage proposé au plus tôt au début du cycle suivant, et seulement si au moins 12 matins sont réussis sur les 14 derniers jours, dont les deux samedis et les deux dimanches ; sinon, de nouveau la semaine suivante. Appliqué après confirmation de José (décisions des 17 et 18/10/2026)."
   },
   "matin": {
     "ordre": [
@@ -1013,6 +1023,7 @@
       "bloc": "mobilite",
       "cote": "chaque côté",
       "mesure": "reps",
+      "compter": false,
       "fourchette": [
         8,
         14
@@ -1030,7 +1041,8 @@
           "label": "10 kg",
           "charge_kg": 10
         }
-      ]
+      ],
+      "note": "1 série à la cible du moment : l'appli affiche la cible, sans compteur (décision du 18/10/2026)."
     },
     "spinal_rotation": {
       "nom": "Spinal rotation",
@@ -1704,7 +1716,7 @@
         "id": "alleger",
         "critere": "plusieurs nuits hachées de suite, ou fréquence cardiaque au repos nettement au-dessus de la moyenne",
         "application": {
-          "valeur": "2 nuits difficiles de suite dans « Lever tôt » ; la version courte est proposée, la version minimum pendant l'ancrage (décision du 17/10/2026)",
+          "valeur": "2 nuits difficiles de suite dans « Lever tôt » ; la version courte est proposée aux paliers ; rien n'est proposé pendant l'ancrage (décision du 18/10/2026)",
           "interpretation": true
         }
       }

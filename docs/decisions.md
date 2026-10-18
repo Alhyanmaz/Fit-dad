@@ -48,7 +48,7 @@ Revue des 10 choix « à valider » du 06/10 et des 10 questions ouvertes de `do
 - **Absence** : pas de règle automatique ; José gère avec « Ajuster ».
 - **Bas de jambe** : corde, mollets, tibialis. La marche ne compte pas ; le sac est hors de la règle. Règle stricte : une hausse demandée quand celle de la semaine est prise est reportée au lundi suivant ; après les tests, les hausses s'étalent, une par semaine, dans l'ordre corde → mollets → tibialis.
 - **Corde du midi** : la durée (+2 min) se règle par José avec un bouton, jamais proposée. Les 3 séances de corde sont un objectif ; la marche est toujours valable ; bouton « Corde ↔ Marche » pour le jour même.
-- **Lever tôt** : au palier 1, le lever seul valide le matin. Passage de palier : 5 matins réussis sur 7, **dont le samedi et le dimanche** (en semaine, le travail impose déjà le lever).
+- **Lever tôt** : au palier 1, le lever seul valide le matin. Passage de palier : 5 matins réussis sur 7, **dont le samedi et le dimanche** (en semaine, le travail impose déjà le lever). (**→ 18/10 : 12 matins sur 14, dont les deux week-ends**)
 - **Boxe le vendredi** : pas de jour de récupération ; musculation complète samedi et dimanche ; bloc boxe le dimanche seulement (exception à la règle « lendemain de boxe = récupération »).
 - **Nom** : Fit-dad.
 
@@ -99,7 +99,7 @@ Retour de José du 13/10 sur les paliers et les phases (document Word, lecture d
   - contenus des paliers 1 à 3 = ceux des anciens paliers 3 à 5 ; palier 4 = ancien palier 5, plus 10 min à définir ; respiration et café des anciens paliers 3 à 5 ;
   - soir à 15 min : bloc clé complet et routine pied à 1 série par exercice ; à 20 min : soir complet (proposition de Claude) ;
   - week-end : base + boxe en 3 rounds au palier 1 (≈ 30 min) ; séance complète en 3 séries, mobilité complète, étirements de hanche et boxe en 3 rounds au palier 2 (≈ 45 min) ; boxe en 5 rounds au palier 3 (≈ 60 min) ; journée type et bloc boxe au palier 4 (≈ 75 min) (proposition de Claude) ;
-  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier (**→ 17/10 : un palier par cycle**) ;
+  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier (**→ 17/10 : un palier par cycle ; → 18/10 : 12 matins sur 14, dont les deux week-ends**) ;
   - version courte et décharge : règles actuelles (**→ 17/10 : version courte avec 1 série d'étirements**).
 - **Q1 à Q4 du J1** : toujours ouvertes, avec les nouveaux numéros (ancien palier 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3). Le J1 se termine avec ces points provisoires (accord de José du 14/10).
 
@@ -136,7 +136,7 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - **4, palier 2 dans la tranche 1** : oui. Sans objet avec la réponse 16 : le palier 2 arrive au plus tôt en semaine 16, en tranche 2.
   - **6, « au mieux » du week-end** : les 3 étirements de hanche (couch stretch, pigeon, pancake), 2 × 30 s.
   - **7, version minimum du soir de l'ancrage**, qui est aussi son soir de boxe : 1 min de suspension, 2 min de deep squat. Claude l'applique aussi au soir de boxe des paliers, qui avait le même contenu [Interprétation].
-  - **16, passage entre paliers** : un palier par cycle de 5 semaines, comme pendant l'ancrage. Le passage se propose au plus tôt au début du cycle suivant ; le critère des 5 matins réussis sur 7, samedi et dimanche compris, est gardé [Interprétation].
+  - **16, passage entre paliers** : un palier par cycle de 5 semaines, comme pendant l'ancrage. Le passage se propose au plus tôt au début du cycle suivant ; le critère des 5 matins réussis sur 7, samedi et dimanche compris, est gardé [Interprétation] (**→ 18/10 : 12 matins sur 14, dont les deux week-ends**).
   - **17, version courte** : une série d'étirements gardée, soit 1 série de chaque étirement du palier [Interprétation] ; décharge : règles actuelles.
 - **Défauts acceptés** :
   - **1** : l'ancrage commence le lundi qui suit la livraison du jour 1, soit la fin du J4.
@@ -144,7 +144,7 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - **5** : cossack squat et reverse table top, toujours 1 série à la cible, à tous les niveaux, week-end compris.
   - **8** : one arm hang, 1 tenue par bras une fois ajouté, tous les soirs sauf le jour de récupération.
   - **9** : la base du week-end compte pour sa lettre (dimanche fait → lundi A ; seul le samedi fait → lundi B).
-  - **10** : « Alléger » propose la version minimum pendant l'ancrage.
+  - **10** : « Alléger » propose la version minimum pendant l'ancrage (**→ 18/10 : rien n'est proposé pendant l'ancrage**).
   - **11** : « redescendre d'un cran » (−2 répétitions après 2 séances manquées) est gardé.
   - **12, 14, 15** : palier 1 confirmé : matin (ancien palier 3), soir à 15 min, week-end à 30 min.
   - **13** : swing en EMOM de 6 min à partir du palier 1, week-end compris ; 3 min en version courte et en décharge.
@@ -166,3 +166,15 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - pour un exercice « chaque côté » (bras, jambe), il vaut pour un côté ;
   - les knee raises de la suspension ont leur compteur ; les tenues en secondes viendront avec le minuteur.
 - **Week-end** : la base et le « au mieux » (bonus) se valident chacun de leur côté, comme le soir (choix de Claude, à valider).
+
+## 18/10/2026 — décisions de José (« Lever tôt », code couleur, cossack)
+
+Réponses de José à l'explication de l'onglet « Lever tôt » et à la question 27 de `docs/reprise.md`.
+
+- **Tolérance du lever : 5 min** (au lieu de 10). À N2 (6h40), lever à 6h45 : tenu ; à 6h46 : manqué.
+- **Pas de proposition de version minimum** : pendant l'ancrage, « Alléger » ne propose rien ; José choisit lui-même la version minimum, avec le bouton « Minimum ». Aux paliers, Claude garde la version courte proposée après 2 nuits difficiles de suite [Interprétation, question 30].
+- **Réveil** : « Premier réveil » ou « Snooze », dans le journal du matin. Noté pour l'historique, sans effet sur le verdict [Interprétation, question 31].
+- **Passage au palier suivant** : 12 matins réussis sur les 14 derniers jours, dont les deux week-ends (les deux samedis et les deux dimanches), au lieu de 5 sur 7 dont le samedi et le dimanche ; toujours un palier par cycle (décision du 17/10). Claude l'applique entre les paliers seulement : les passages de l'ancrage (vers N2, puis vers le palier 1) restent sur les jours tenus, 5 sur 7 [Interprétation, question 29].
+- **Cossack squat** : pas de compteur de répétitions ; l'appli affiche la cible (« 1 série · cible 8 à 14 rép. par côté »).
+- **Code couleur des versions, sans rien masquer** : minimum en vert, normale en orange, « au mieux » en rouge. Chaque version garde son étiquette écrite (choix de Claude) : la couleur n'est jamais le seul repère, car environ 1 homme sur 12 voit mal les couleurs, surtout le rouge et le vert ([Colour Blind Awareness](https://www.colourblindawareness.org/colour-blindness/)).
+- **Saisie du matin dans l'onglet « Lever tôt »** (question 27) : coucher, lever, réveil, nuit, lumière, note. Claude a lu « Ok pour la saisie des horaires de lever dans l'onglet lever tôt » comme le refus de son défaut, qui mettait cette saisie dans la carte du matin [Interprétation].

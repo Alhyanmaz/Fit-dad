@@ -1,6 +1,6 @@
 # Programme d'entraînement — refonte 2026
 
-> Copie du document Claude Docs « Programme d'entraînement — refonte 2026 », exportée le 06/10/2026 (révision 44), mise à jour le 07/10/2026, le 13/10/2026 (cycles d'ancrage) et le 14/10/2026 (ancrage en deux niveaux, quatre paliers) avec les décisions de José (`docs/decisions.md`).
+> Copie du document Claude Docs « Programme d'entraînement — refonte 2026 », exportée le 06/10/2026 (révision 44), mise à jour le 07/10/2026, le 13/10/2026 (cycles d'ancrage), le 14/10/2026 (ancrage en deux niveaux, quatre paliers), puis les 17 et 18/10/2026, avec les décisions de José (`docs/decisions.md`).
 > Depuis le 07/10/2026, ce fichier contient des décisions absentes du document Claude Docs : en cas d'écart, ce fichier fait foi. Le dépôt étant public, le profil familial en a été retiré.
 > Les deux graphiques du document sont remplacés ici par leurs tableaux de valeurs.
 
@@ -122,7 +122,7 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 - Couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il revient au « au mieux » du week-end (décision du 17/10/2026).
 - À N2, les 10 min sont un créneau : le contenu prend 5 à 7 min, le reste sert de marge \[Interprétation\].
 - Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
-- Pas de version courte : la version normale, ou la version minimum (décision du 14/10/2026). « Alléger » propose la version minimum (décision du 17/10/2026).
+- Pas de version courte : la version normale, ou la version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : tu choisis toi-même la version minimum (décision du 18/10/2026).
 - N1 travaille le tirage et le squat ; N2, les quatre patrons. La base du week-end porte les quatre exercices dès N1.
 
 **Midi** : bouger, ce que tu peux : marche ou corde, sans durée imposée. C'est un bonus.
@@ -173,7 +173,7 @@ Après l'ancrage, le matin s'installe en 4 paliers, un par cycle (décision du 1
 
 **Règles**
 
-- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 5 matins sont réussis sur les 7 derniers jours, dont le samedi et le dimanche ; sinon, de nouveau la semaine suivante ; tu valides. Le critère des matins réussis est celui du 14/10 \[Interprétation\]. En semaine, le travail impose déjà le lever : c'est le week-end qui montre que l'habitude est prise.
+- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 12 matins sont réussis sur les 14 derniers jours, dont les deux samedis et les deux dimanches (décision du 18/10/2026) ; sinon, de nouveau la semaine suivante ; tu valides. En semaine, le travail impose déjà le lever : ce sont les week-ends qui montrent que l'habitude est prise.
 - Chaque palier avance aussi le coucher de 10 min, de 22h30 à 22h00 : c'est lui le levier.
 - Ordre fixe : respiration → café → mobilité → musculation → étirements → douche.
 - Le café sert de marge : en cas de retard, il raccourcit d'abord. Au-delà, version courte : 1 série par exercice, swing en EMOM de 3 min, et 1 série de chaque étirement (décision du 17/10/2026).
@@ -578,7 +578,7 @@ Deux semaines à suivre le programme sur une simple liste cochée, pour confirme
 
 L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes tests. S'y ajoute la phase 4 du document de passation : PWA installable, zoom corrigé, progression pilotée par les critères.
 
-- **« Lever tôt »** : palier en cours, heures de lever et de coucher, critère de passage, contenu du matin selon le palier. L'historique de l'artefact n'est pas repris (décision du 17/10/2026).
+- **« Lever tôt »** : palier en cours, heures de lever (à 5 min près) et de coucher, réveil (premier réveil ou snooze), critère de passage, contenu du matin selon le palier ; le journal du matin se saisit dans cet onglet (décisions du 18/10/2026). L'historique de l'artefact n'est pas repris (décision du 17/10/2026).
 - **Semaines de tests** : tu saisis tes résultats, puis tu fixes toi-même les cibles du cycle suivant, comme dans l'appli actuelle.
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.

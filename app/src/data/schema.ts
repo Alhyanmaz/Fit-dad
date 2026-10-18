@@ -77,6 +77,8 @@ const exercice = z
     pas_s_interpretation: drapeau,
     series: entierPositif.optional(),
     series_fixes: entierPositif.optional(),
+    /** false : pas de compteur de répétitions, la cible s'affiche (décision du 18/10/2026). */
+    compter: z.boolean().optional(),
     tenue_s: entierPositif.optional(),
     duree_s: entierPositif.optional(),
     minutes: entierPositif.optional(),
@@ -161,12 +163,13 @@ const lever_tot = z.strictObject({
   tolerance_lever_min: entierPositifOuNul,
   fenetre_jours: entierPositif,
   matins_reussis_requis: entierPositif,
-  dont_matins_week_end: z.number().int().min(0).max(2),
+  dont_matins_week_end: entierPositifOuNul,
   niveau_depart: z.enum(NIVEAUX_D_ANCRAGE),
   qualites_nuit: z
     .array(z.strictObject({ id: texte, label: texte, difficile: z.boolean() }))
     .min(1),
   lumiere: z.array(z.strictObject({ id: texte, label: texte })).min(1),
+  reveils: z.array(z.strictObject({ id: texte, label: texte })).min(1),
   paliers: z
     .array(
       z.strictObject({
@@ -720,6 +723,13 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     signaler(
       ['lever_tot', 'matins_reussis_requis'],
       'plus de matins réussis exigés que de jours dans la fenêtre',
+    );
+  }
+  const joursDeWeekEnd = 2 * Math.floor(p.lever_tot.fenetre_jours / 7);
+  if (p.lever_tot.dont_matins_week_end > joursDeWeekEnd) {
+    signaler(
+      ['lever_tot', 'dont_matins_week_end'],
+      `plus de matins de week-end exigés que la fenêtre n'en compte (${joursDeWeekEnd})`,
     );
   }
 

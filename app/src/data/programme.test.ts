@@ -13,11 +13,11 @@ function erreursDe(donnees: unknown): string[] {
 }
 
 describe('lecture du programme', () => {
-  it('valide data/programme.json : 41 exercices, version du 17/10/2026', () => {
+  it('valide data/programme.json : 41 exercices, version du 18/10/2026', () => {
     const lecture = lireProgramme(programmeBrut);
     if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
     expect(resumerProgramme(lecture.programme)).toEqual({
-      version: '2026-10-17',
+      version: '2026-10-18',
       nombreExercices: 41,
     });
   });
@@ -178,6 +178,14 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
     p.ancrage.week_end.au_mieux.boxe_rounds = [1, 3, 6];
     expect(erreursDe(p).join('\n')).toMatch(
       /ancrage › week_end › au_mieux › boxe_rounds › 2 : round 6 inexistant \(le bloc boxe en compte 5\)/,
+    );
+  });
+
+  it('plus de matins de week-end exigés que la fenêtre n’en compte', () => {
+    const p = copie();
+    p.lever_tot.dont_matins_week_end = 5;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /lever_tot › dont_matins_week_end : plus de matins de week-end exigés que la fenêtre n'en compte \(4\)/,
     );
   });
 

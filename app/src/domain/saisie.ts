@@ -22,7 +22,7 @@ export function compteurDeRepetitions(
   series: number,
 ): CompteurDeRepetitions | null {
   const ex = programme.exercices[exercice];
-  if (!ex || series < 1) return null;
+  if (!ex || series < 1 || ex.compter === false) return null;
   const cote = ex.cote ? { cote: ex.cote } : {};
   if (ex.mesure === 'emom' && ex.reps_par_minute)
     return { exercice, series, depart: ex.reps_par_minute };

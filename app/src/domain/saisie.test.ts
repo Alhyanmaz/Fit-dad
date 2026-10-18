@@ -18,11 +18,11 @@ describe('saisie des répétitions', () => {
       series: 3,
       depart: 20,
     });
-    expect(compteurDeRepetitions(programme, 'cossack_squat', 1)).toEqual({
-      exercice: 'cossack_squat',
-      series: 1,
-      depart: 8,
-      cote: 'chaque côté',
+    expect(compteurDeRepetitions(programme, 'kt_press', 3)).toEqual({
+      exercice: 'kt_press',
+      series: 3,
+      depart: 6,
+      cote: 'chaque bras',
     });
     expect(compteurDeRepetitions(programme, 'reverse_table_top', 1)?.depart).toBe(5);
   });
@@ -39,6 +39,10 @@ describe('saisie des répétitions', () => {
       depart: 5,
       quoi: 'knee raises',
     });
+  });
+
+  it('cossack squat : pas de compteur, la cible suffit (décision du 18/10/2026)', () => {
+    expect(compteurDeRepetitions(programme, 'cossack_squat', 1)).toBeNull();
   });
 
   it('pas de compteur pour un mouvement au temps, une tenue ou une durée', () => {
