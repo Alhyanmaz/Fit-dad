@@ -60,17 +60,17 @@ export interface ContexteDuWeekEnd {
 }
 
 function baseDAncrage(programme: Programme, ctx: ContexteDuWeekEnd): BaseDAncrage {
-  const { minimum, au_mieux } = programme.ancrage.week_end;
+  const { base, au_mieux } = programme.ancrage.week_end;
   const regles = programme.ancrage.matin;
   const n2 = niveauDAncrage(programme, 'N2');
   return {
     echauffement: n2.matin.seances[ctx.lettre].mobilite.map((exercice) =>
       mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s),
     ),
-    exercices: minimum.exercices.map((exercice) =>
+    exercices: base.exercices.map((exercice) =>
       exercice === 'swing_emom'
-        ? { exercice, series: minimum.series, reps: au_mieux.musculation.swing.reps }
-        : { exercice, series: minimum.series },
+        ? { exercice, series: base.series, reps: au_mieux.musculation.swing.reps }
+        : { exercice, series: base.series },
     ),
     etirements: [
       {

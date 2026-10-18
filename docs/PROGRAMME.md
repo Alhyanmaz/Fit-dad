@@ -91,16 +91,16 @@ Pendant l'ancrage, cette section remplace le contenu des sections « Le matin pa
 
 | Niveau | Semaines, au plus tôt | Lever / coucher | Matin |
 | --- | --- | --- | --- |
-| N1 | 1 à 5 | 6h50 / 22h50 | 1 mouvement de mobilité, puis 1 série d'un exercice (≈ 3 min) |
+| N1 | 1 à 5 | 6h50 / 22h50 | 1 mouvement de mobilité et 2 min de deep squat, puis 1 série d'un exercice (≈ 5 min) |
 | N2 | 6 à 10 | 6h40 / 22h40 | 10 min de marge (respiration 5 min, puis café), puis un créneau de 10 min : 2 mouvements de mobilité, 2 exercices à 1 série, 1 étirement |
 
 Les couchers sont fixés 8 h avant le lever \[Interprétation\].
 
 **Règles**
 
-- Passage à N2 au plus tôt en semaine 6, puis au palier 1 au plus tôt en semaine 11. L'appli ne propose le passage que si les 7 derniers jours ont tenu 5 jours, samedi et dimanche compris ; sinon, elle le propose de nouveau la semaine suivante. Tu valides.
+- Passage à N2 au plus tôt en semaine 6, puis au palier 1 au plus tôt en semaine 11. L'appli ne propose le passage que si 12 jours sont tenus sur les 14 derniers, dont les deux week-ends, comme pour tous les passages (décision du 18/10/2026) ; sinon, elle le propose de nouveau la semaine suivante. Tu valides. Tu peux aussi forcer le passage à tout moment, avec un bouton.
 - Jour tenu : matin et soir faits, au moins en version minimum. Le midi et le « au mieux » du week-end sont des bonus, jamais comptés comme ratés.
-- « Lever tôt » : heures du niveau en cours. Le plancher est le matin du niveau, en version normale ou minimum. À N1, le lever seul valide le matin de « Lever tôt », comme l'ancien palier 1 ; le jour tenu demande, lui, la séance du matin.
+- « Lever tôt » : heures du niveau en cours. Le plancher est le matin du niveau, au moins le minimum. À N1, le lever seul valide le matin de « Lever tôt », comme l'ancien palier 1 ; le jour tenu demande, lui, la séance du matin.
 - Pas de semaine de décharge : tout est déjà à 1 série \[Interprétation\]. Les tests viennent au passage au palier 1.
 - Progression dans chaque exercice : règles habituelles (+2 répétitions ou +5 s, « Ajuster », une seule hausse par semaine sur le bas de jambe).
 - Les cycles d'ancrage ne comptent pas dans les cycles du programme : les étirements du pied restent à 1 série, et le cycle 1 commence au palier 1 \[Interprétation\].
@@ -117,12 +117,12 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 | N2, musculation, 1 série | KT press (chaque bras), swing (10)       | Rings row, goblet squat (20)     |
 | N2, étirement, 1 × 30 s  | Couch stretch ou pancake, à tour de rôle | L'autre                          |
 
-- Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s.
+- Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s. Dans l'appli, aucun mouvement de mobilité n'a de compteur : la cible s'affiche (« 8-14 rep / side »), et tu montes ces deux mouvements avec « Ajuster » (décision du 18/10/2026).
 - Le swing reste à 1 série pendant l'ancrage ; il passe à la séance du palier 1 ensuite.
 - Couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il revient au « au mieux » du week-end (décision du 17/10/2026).
 - À N2, les 10 min sont un créneau : le contenu prend 5 à 7 min, le reste sert de marge \[Interprétation\].
-- Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
-- Pas de version courte : la version normale, ou la version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : tu choisis toi-même la version minimum (décision du 18/10/2026).
+- Version minimum, après une nuit très hachée : un seul mouvement de mobilité, puis 2 min de deep squat, comme chaque matin (décision du 18/10/2026).
+- Pas de version courte : la version principale, ou la version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : tu choisis toi-même la version minimum (décision du 18/10/2026).
 - N1 travaille le tirage et le squat ; N2, les quatre patrons. La base du week-end porte les quatre exercices dès N1.
 
 **Midi** : bouger, ce que tu peux : marche ou corde, sans durée imposée. C'est un bonus.
@@ -141,10 +141,11 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 
 |          | Contenu                                                                                                                                                                                                                                                                                          | Durée                  |
 |----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| Base     | 2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake) ; puis le soir                                                                                                               | ≈ 20 min, plus le soir |
+| Base     | 2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake), et les 2 min de deep squat du minimum ; puis le soir                                                                        | ≈ 22 min, plus le soir |
 | Au mieux | Routine Mob. matin complète (A le samedi, B le dimanche, 30 s par mouvement) → séance complète en 3 séries (A le samedi, B le dimanche, sans les exercices du palier 2 ; swing 3 × 10) → les 3 étirements de hanche (couch stretch, pigeon, pancake), 2 × 30 s → boxe en 3 rounds ; puis le soir | ≈ 45 min, plus le soir |
 
 - Échauffement de la base : les deux mouvements du matin N2 du jour, même à N1 \[Interprétation\].
+- Couches (décision du 18/10/2026) : le minimum (le premier mouvement d'échauffement et 2 min de deep squat), puis la principale (la base), puis le bonus (ce que le « au mieux » ajoute à la base : le reste de la routine Mob. matin, les exercices de la séance complète absents de la base, les étirements de hanche, la boxe). Le week-end complet additionne donc la base et le « au mieux » : le samedi, KT press, swing, rings row et goblet squat, puis pistol et KT single leg deadlift \[Interprétation pour le premier mouvement\].
 - Boxe en 3 rounds : rounds 1 (corde), 3 (technique seule) et 5 (libre) du bloc boxe, 1 min de repos entre deux rounds, ≈ 11 min \[Interprétation\].
 
 **Pourquoi**
@@ -173,11 +174,11 @@ Après l'ancrage, le matin s'installe en 4 paliers, un par cycle (décision du 1
 
 **Règles**
 
-- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 12 matins sont réussis sur les 14 derniers jours, dont les deux samedis et les deux dimanches (décision du 18/10/2026) ; sinon, de nouveau la semaine suivante ; tu valides. En semaine, le travail impose déjà le lever : ce sont les week-ends qui montrent que l'habitude est prise.
+- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 12 jours sont tenus sur les 14 derniers, dont les deux week-ends, comme pour tous les passages (décision du 18/10/2026) ; sinon, de nouveau la semaine suivante ; tu valides, ou tu forces le passage. Le jour tenu garde la définition de l'ancrage : matin et soir faits, au moins le minimum \[Interprétation\]. En semaine, le travail impose déjà le lever : ce sont les week-ends qui montrent que l'habitude est prise.
 - Chaque palier avance aussi le coucher de 10 min, de 22h30 à 22h00 : c'est lui le levier.
 - Ordre fixe : respiration → café → mobilité → musculation → étirements → douche.
 - Le café sert de marge : en cas de retard, il raccourcit d'abord. Au-delà, version courte : 1 série par exercice, swing en EMOM de 3 min, et 1 série de chaque étirement (décision du 17/10/2026).
-- Version minimum, après une nuit très hachée : un seul mouvement de mobilité.
+- Version minimum, après une nuit très hachée : un seul mouvement de mobilité, puis 2 min de deep squat, comme chaque matin (décision du 18/10/2026).
 - Le jour de récupération, la musculation est remplacée par l'autre routine Mob. matin et des neck CARs.
 - Dans « Lever tôt », le « plancher » correspond à cette séance.
 
@@ -578,11 +579,12 @@ Deux semaines à suivre le programme sur une simple liste cochée, pour confirme
 
 L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes tests. S'y ajoute la phase 4 du document de passation : PWA installable, zoom corrigé, progression pilotée par les critères.
 
-- **« Lever tôt »** : palier en cours, heures de lever (à 5 min près) et de coucher, réveil (premier réveil ou snooze), critère de passage, contenu du matin selon le palier ; le journal du matin se saisit dans cet onglet (décisions du 18/10/2026). L'historique de l'artefact n'est pas repris (décision du 17/10/2026).
+- **« Lever tôt »** : palier en cours, heures de lever (à 5 min près) et de coucher, réveil (premier réveil ou snooze), contenu du matin selon le palier ; le journal du matin se saisit dans cet onglet (décisions du 18/10/2026). L'historique de l'artefact n'est pas repris (décision du 17/10/2026).
 - **Semaines de tests** : tu saisis tes résultats, puis tu fixes toi-même les cibles du cycle suivant, comme dans l'appli actuelle.
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.
-- **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 5 jours sur 7 ont tenu, à valider par toi ; ni jour de récupération ni version courte.
+- **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 12 jours sur 14 ont tenu, dont les deux week-ends, à valider par toi, avec un bouton pour forcer le passage ; ni jour de récupération ni version courte.
+- **Couches** : minimum (vert), principale (orange), bonus (rouge), qui s'additionnent ; chaque exercice une fois ; aucun compteur dans les échauffements (décisions du 18/10/2026).
 
 ## Sources
 

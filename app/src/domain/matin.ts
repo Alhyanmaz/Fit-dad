@@ -31,6 +31,12 @@ export interface Etirement {
   series: number;
 }
 
+/** Position tenue au temps : les 2 min de deep squat du minimum (décision du 18/10/2026). */
+export interface Tenue {
+  exercice: string;
+  duree_s: number;
+}
+
 export interface Matin {
   /** Séance du jour ; null le jour de récupération. */
   lettre: Lettre | null;
@@ -42,6 +48,8 @@ export interface Matin {
   neck_cars_par_sens: number | null;
   musculation: ExerciceDeSeance[];
   etirements: Etirement[];
+  /** Tenues du minimum, dans toutes les versions : le minimum fait partie de la séance complète. */
+  tenues: Tenue[];
   /**
    * Minutes de travail prévues, hors respiration et café : créneau du niveau d'ancrage,
    * travail du palier. Null quand le programme ne les fixe pas (versions courte et minimum).
@@ -110,7 +118,12 @@ function neckCars(programme: Programme): number {
   return programme.exercices[programme.mobilite.jour_recuperation.puis]?.par_sens ?? 3;
 }
 
-const matinMinimum = (lettre: Lettre | null, mouvement: Mouvement | undefined): Matin => ({
+/** Version minimum, après une nuit très hachée : un mouvement de mobilité, puis la tenue (deep squat). */
+const matinMinimum = (
+  lettre: Lettre | null,
+  mouvement: Mouvement | undefined,
+  tenues: Tenue[],
+): Matin => ({
   lettre,
   respiration_min: 0,
   cafe_min: 0,
@@ -119,9 +132,13 @@ const matinMinimum = (lettre: Lettre | null, mouvement: Mouvement | undefined): 
   neck_cars_par_sens: null,
   musculation: [],
   etirements: [],
+  tenues,
   travail_min: null,
   a_definir_min: 0,
 });
+
+/** Les 2 min de deep squat ajoutées au minimum de tous les matins (décision du 18/10/2026). */
+const tenuesDuMinimum = (minimum: { tenue: Tenue }): Tenue[] => [{ ...minimum.tenue }];
 
 function matinDAncrage(
   programme: Programme,
@@ -139,7 +156,8 @@ function matinDAncrage(
   const mobilite = seance.mobilite.map((exercice) =>
     mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s),
   );
-  if (version === 'minimum') return matinMinimum(lettre, mobilite[0]);
+  const tenues = tenuesDuMinimum(regles.version_minimum);
+  if (version === 'minimum') return matinMinimum(lettre, mobilite[0], tenues);
   const etirements: Etirement[] = niveau.matin.etirement
     ? [
         {
@@ -158,6 +176,7 @@ function matinDAncrage(
     neck_cars_par_sens: null,
     musculation: seance.musculation.map((e) => ({ ...e })),
     etirements,
+    tenues,
     travail_min: niveau.matin.creneau_min,
     a_definir_min: 0,
   };
@@ -203,7 +222,8 @@ function matinDuPalier(
     palier.mobilite.duree_mouvement_s,
   );
   const lettre = recuperation ? null : ctx.lettre;
-  if (version === 'minimum') return matinMinimum(lettre, mobilite[0]);
+  const tenues = tenuesDuMinimum(programme.matin.version_minimum);
+  if (version === 'minimum') return matinMinimum(lettre, mobilite[0], tenues);
   // Version courte : 1 série par exercice, swing réduit, étirements à 1 série (décision du 17/10/2026).
   const courte = version === 'courte' ? programme.matin.version_courte : null;
   const series = courte ? courte.musculation_series : (palier.musculation.series ?? 1);
@@ -241,6 +261,7 @@ function matinDuPalier(
     neck_cars_par_sens: recuperation ? neckCars(programme) : null,
     musculation,
     etirements,
+    tenues,
     travail_min: version === 'normale' ? palier.travail_min : null,
     a_definir_min: palier.minutes.a_definir ?? 0,
   };

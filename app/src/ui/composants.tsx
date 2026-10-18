@@ -1,45 +1,45 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import type { Programme } from '../data/schema';
-import type { Etirement, ExerciceDeSeance, Mouvement } from '../domain/matin';
+import { COUCHES, estVide, type Contenu, type Couche, type Couches } from '../domain/couches';
+import type { Etirement, ExerciceDeSeance, Mouvement, Tenue } from '../domain/matin';
 import { compteurDeRepetitions } from '../domain/saisie';
 import {
   detailEtirement,
   detailExercice,
   detailMouvement,
-  fourchetteTexte,
+  dureeTexte,
   nomExercice,
   parCote,
 } from './libelles';
 
 /**
- * Briques communes aux écrans. Code couleur des versions (décision du 18/10/2026) : minimum en
- * vert, normal en orange, « au mieux » en rouge ; chaque couleur porte aussi son libellé.
+ * Briques communes aux écrans. Couches (décisions de José du 18/10/2026) : minimum en vert,
+ * principale en orange, bonus en rouge. Elles s'additionnent, rien n'est masqué, et chaque couleur
+ * porte aussi son libellé.
  */
-export type Version = 'normal' | 'minimum' | 'au-mieux';
-
-const LIBELLES_DE_VERSION: Record<Version, string> = {
-  normal: 'Normal',
+export const LIBELLES_DE_COUCHE: Record<Couche, string> = {
   minimum: 'Minimum',
-  'au-mieux': 'Au mieux',
+  principale: 'Principale',
+  bonus: 'Bonus',
 };
 
-export function Etiquette({ version, texte }: { version: Version; texte?: string }) {
-  return <span className={`etiquette ${version}`}>{texte ?? LIBELLES_DE_VERSION[version]}</span>;
+export function Etiquette({ couche, texte }: { couche: Couche; texte?: string }) {
+  return <span className={`etiquette ${couche}`}>{texte ?? LIBELLES_DE_COUCHE[couche]}</span>;
 }
 
-/** Un bloc de contenu dans sa version : bordure et étiquette de la couleur de la version. */
-export function BlocDeVersion({
-  version,
+/** Une couche : bordure et étiquette de sa couleur. */
+export function BlocDeCouche({
+  couche,
   etiquette,
   children,
 }: {
-  version: Version;
+  couche: Couche;
   etiquette?: string;
   children: ReactNode;
 }) {
   return (
-    <div className={`bloc-version ${version}`}>
-      <Etiquette version={version} {...(etiquette ? { texte: etiquette } : {})} />
+    <div className={`bloc-couche ${couche}`}>
+      <Etiquette couche={couche} {...(etiquette ? { texte: etiquette } : {})} />
       {children}
     </div>
   );
@@ -48,10 +48,10 @@ export function BlocDeVersion({
 export interface Option<T extends string> {
   valeur: T;
   libelle: string;
-  version?: Version;
+  couche?: Couche;
 }
 
-/** Boutons à choix unique ; un second appui annule. La couleur suit la version du bouton. */
+/** Boutons à choix unique ; un second appui annule. La couleur suit la couche du bouton. */
 export function Choix<T extends string>({
   options,
   valeur,
@@ -69,7 +69,7 @@ export function Choix<T extends string>({
         <button
           key={option.valeur}
           type="button"
-          data-version={option.version ?? 'normal'}
+          data-couche={option.couche ?? 'principale'}
           aria-pressed={valeur === option.valeur}
           onClick={() => surChoix(valeur === option.valeur ? null : option.valeur)}
         >
@@ -83,16 +83,14 @@ export function Choix<T extends string>({
 export function Carte({
   titre,
   precision,
-  version,
   children,
 }: {
   titre: string;
   precision?: string;
-  version?: Version;
   children: ReactNode;
 }) {
   return (
-    <section className={`carte${version ? ` carte-${version}` : ''}`} aria-label={titre}>
+    <section className="carte" aria-label={titre}>
       <div className="carte-tete">
         <h2 className="titre-carte">{titre}</h2>
         {precision && <span className="discret">{precision}</span>}
@@ -196,41 +194,35 @@ export function Compteurs({
   );
 }
 
-/** Mouvement « à la cible » sans compteur (cossack squat) : la cible s'affiche (décision du 18/10/2026). */
-function detailAvecCible(programme: Programme, m: Mouvement): string {
-  if (!m.a_la_cible || compteurDeRepetitions(programme, m.exercice, 1)) return detailMouvement(m);
-  const fourchette = fourchetteTexte(programme, m.exercice);
-  const cote = programme.exercices[m.exercice]?.cote;
-  return fourchette
-    ? `1 série · cible ${fourchette}${cote ? ` ${parCote(cote)}` : ''}`
-    : detailMouvement(m);
-}
-
+/**
+ * Mouvements de mobilité, puis les tenues du minimum (deep squat) : aucun compteur dans les
+ * échauffements, la cible s'affiche (« 8-14 rep / side », décision du 18/10/2026).
+ */
 export function Mouvements({
   programme,
-  bloc,
   mouvements,
-  compteurs = true,
+  tenues = [],
 }: {
   programme: Programme;
-  bloc: string;
   mouvements: readonly Mouvement[];
-  /** Faux pour un rappel (version minimum) : le compteur reste dans la version normale. */
-  compteurs?: boolean;
+  tenues?: readonly Tenue[];
 }) {
-  if (mouvements.length === 0) return null;
+  if (mouvements.length === 0 && tenues.length === 0) return null;
   return (
     <ul className="liste">
       {mouvements.map((m) => (
         <Ligne
           key={m.exercice}
           nom={nomExercice(programme, m.exercice)}
-          detail={detailAvecCible(programme, m)}
-        >
-          {compteurs && m.a_la_cible && (
-            <Compteurs programme={programme} bloc={bloc} exercice={m.exercice} series={1} />
-          )}
-        </Ligne>
+          detail={detailMouvement(programme, m)}
+        />
+      ))}
+      {tenues.map((t) => (
+        <Ligne
+          key={t.exercice}
+          nom={nomExercice(programme, t.exercice)}
+          detail={dureeTexte(t.duree_s)}
+        />
       ))}
     </ul>
   );
@@ -243,7 +235,7 @@ export function Exercices({
 }: {
   programme: Programme;
   bloc: string;
-  exercices: readonly ExerciceDeSeance[];
+  exercices: readonly (ExerciceDeSeance & { en_plus?: true })[];
 }) {
   if (exercices.length === 0) return null;
   return (
@@ -254,7 +246,9 @@ export function Exercices({
           nom={nomExercice(programme, e.exercice)}
           detail={detailExercice(programme, e)}
         >
-          <Compteurs programme={programme} bloc={bloc} exercice={e.exercice} series={e.series} />
+          {!e.en_plus && (
+            <Compteurs programme={programme} bloc={bloc} exercice={e.exercice} series={e.series} />
+          )}
         </Ligne>
       ))}
     </ul>
@@ -266,7 +260,7 @@ export function Etirements({
   etirements,
 }: {
   programme: Programme;
-  etirements: readonly Etirement[];
+  etirements: readonly (Etirement & { en_plus?: true })[];
 }) {
   if (etirements.length === 0) return null;
   return (
@@ -279,5 +273,91 @@ export function Etirements({
         />
       ))}
     </ul>
+  );
+}
+
+/** Le contenu d'une couche, dans l'ordre de la séance ; titres de groupe au besoin (week-end). */
+export function ContenuDeCouche({
+  programme,
+  bloc,
+  contenu,
+  titres = false,
+}: {
+  programme: Programme;
+  bloc: string;
+  contenu: Contenu;
+  titres?: boolean;
+}) {
+  const groupe = (titre: string, enfant: ReactNode) =>
+    titres ? <Groupe titre={titre}>{enfant}</Groupe> : enfant;
+  const marge = [
+    contenu.respiration_min > 0 ? `Respiration ${contenu.respiration_min} min` : null,
+    contenu.cafe_min > 0 ? `café ${contenu.cafe_min} min` : null,
+  ].filter((t) => t !== null);
+  return (
+    <>
+      {marge.length > 0 && <p className="discret">{marge.join(', puis ')}.</p>}
+      {(contenu.mobilite.length > 0 || contenu.tenues.length > 0) &&
+        groupe(
+          contenu.mobilite_au_ralenti ? 'Mobilité, au ralenti' : 'Mobilité',
+          <Mouvements
+            programme={programme}
+            mouvements={contenu.mobilite}
+            tenues={contenu.tenues}
+          />,
+        )}
+      {contenu.neck_cars_par_sens !== null && (
+        <p className="discret">Neck CARs : {contenu.neck_cars_par_sens} par sens.</p>
+      )}
+      {contenu.musculation.length > 0 &&
+        groupe(
+          'Séance',
+          <Exercices programme={programme} bloc={bloc} exercices={contenu.musculation} />,
+        )}
+      {contenu.etirements.length > 0 &&
+        groupe('Étirements', <Etirements programme={programme} etirements={contenu.etirements} />)}
+      {contenu.boxe_rounds.length > 0 && (
+        <p className="discret">Boxe : rounds {contenu.boxe_rounds.join(', ')} du bloc.</p>
+      )}
+    </>
+  );
+}
+
+/**
+ * Un bloc en couches, puis sa validation : la couche atteinte. Seules les couches qui ont un
+ * contenu s'affichent et se valident.
+ */
+export function BlocEnCouches({
+  programme,
+  bloc,
+  couches,
+  titres = false,
+  libelle,
+  valeur,
+  surChoix,
+}: {
+  programme: Programme;
+  bloc: string;
+  couches: Couches;
+  titres?: boolean;
+  libelle: string;
+  valeur: Couche | null;
+  surChoix: (valeur: Couche | null) => void;
+}) {
+  const presentes = COUCHES.filter((c) => !estVide(couches[c]));
+  return (
+    <>
+      {presentes.map((c) => (
+        <BlocDeCouche key={c} couche={c}>
+          <ContenuDeCouche programme={programme} bloc={bloc} contenu={couches[c]} titres={titres} />
+        </BlocDeCouche>
+      ))}
+      <Choix
+        libelle={libelle}
+        valeur={valeur}
+        surChoix={surChoix}
+        options={presentes.map((c) => ({ valeur: c, libelle: LIBELLES_DE_COUCHE[c], couche: c }))}
+      />
+    </>
   );
 }

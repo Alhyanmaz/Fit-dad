@@ -2,47 +2,53 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { Programme } from '../data/schema';
 import { lettreDuMatin, lettreDuPied } from '../domain/alternances';
 import { jourTenu, soirFait } from '../domain/ancrage';
+import { couchesDuMatin, couchesDuWeekEnd } from '../domain/couches';
 import { estWeekEnd, joursEntre, type DateIso } from '../domain/dates';
 import { typeDeJour } from '../domain/jour';
 import type { JournalDuJour } from '../domain/journal';
-import { matinDuJour } from '../domain/matin';
 import { midiDuJour } from '../domain/midi';
-import { niveauDAncrage } from '../domain/niveau';
+import { niveauDAncrage, type Niveau } from '../domain/niveau';
 import { soirDuJour } from '../domain/soir';
 import { weekEndDuJour } from '../domain/weekEnd';
 import { Anneau } from './Anneau';
 import {
-  BlocDeVersion,
+  BlocDeCouche,
+  BlocEnCouches,
   Carte,
   Choix,
   Compteurs,
   Etirements,
-  Exercices,
   Groupe,
   Ligne,
-  Mouvements,
 } from './composants';
-import { dateLongue, heureCourte, nomExercice } from './libelles';
+import { dateLongue, dureeTexte, heureCourte, nomExercice } from './libelles';
+import { Passage } from './Passage';
 
 /**
- * Écran « Aujourd'hui » pendant l'ancrage (jalon J3) : le contenu du jour vient du moteur, les
- * validations vont dans le journal du jour. Code couleur des versions, rien de masqué (décision
- * du 18/10/2026). Pas encore d'enregistrement : les alternances partent de A.
+ * Écran « Aujourd'hui » pendant l'ancrage (jalon J3) : le contenu du jour vient du moteur, en
+ * couches qui s'additionnent (minimum, principale, bonus ; décision du 18/10/2026) ; les validations
+ * vont dans le journal du jour. Pas encore d'enregistrement : les alternances partent de A.
  */
 export function Aujourdhui({
   programme,
   date,
   debut,
   niveau,
+  depuis,
   journal,
   setJournal,
+  surPassage,
 }: {
   programme: Programme;
   date: DateIso;
+  /** Début de l'ancrage. */
   debut: DateIso;
   niveau: { ancrage: 'N1' | 'N2' };
+  /** Début du niveau en cours. */
+  depuis: DateIso;
   journal: JournalDuJour;
   setJournal: Dispatch<SetStateAction<JournalDuJour>>;
+  surPassage: (suivant: Niveau) => void;
 }) {
   const changer = (modif: Partial<JournalDuJour>) => setJournal((j) => ({ ...j, ...modif }));
   const { boxe } = journal;
@@ -53,11 +59,10 @@ export function Aujourdhui({
   const type = typeDeJour(jour, joursDeBoxe, niveau);
   const lettre = lettreDuMatin(jour, type, null) ?? 'A';
   const infos = niveauDAncrage(programme, niveau.ancrage);
-  const semaine = Math.floor(Math.max(0, joursEntre(debut, jour)) / 7) + 1;
+  const semaine = Math.floor(Math.max(0, joursEntre(depuis, jour)) / 7) + 1;
+  const { passages } = programme;
 
-  const contexteMatin = { niveau, type, lettre, lettreDeLaVeille: null };
-  const contenuMatin = matinDuJour(programme, contexteMatin);
-  const matinMinimum = matinDuJour(programme, { ...contexteMatin, version: 'minimum' });
+  const couchesMatin = couchesDuMatin(programme, { niveau, type, lettre, lettreDeLaVeille: null });
   const contenuWeekEnd = estWeekEnd(jour)
     ? weekEndDuJour(programme, { niveau, date: jour, lettre, joursDeBoxe })
     : null;
@@ -77,30 +82,7 @@ export function Aujourdhui({
   const contenuSoir = soirDuJour(programme, contexteSoir);
   const soirMinimum = soirDuJour(programme, { ...contexteSoir, version: 'minimum' });
   const tenu = jourTenu({ matin: journal.matin, soir: soirFait(journal.blocCle, journal.pied) });
-
-  const minimumDuMatin = (
-    <BlocDeVersion version="minimum">
-      <Mouvements
-        programme={programme}
-        bloc="matin"
-        mouvements={matinMinimum.mobilite}
-        compteurs={false}
-      />
-      <p className="discret petit">Seul, après une nuit très hachée.</p>
-    </BlocDeVersion>
-  );
-  const choixDuMatin = (
-    <Choix
-      libelle="Matin"
-      valeur={journal.matin}
-      surChoix={(matin) => changer({ matin })}
-      options={[
-        { valeur: 'normale', libelle: 'Fait', version: 'normal' },
-        { valeur: 'minimum', libelle: 'Minimum', version: 'minimum' },
-      ]}
-    />
-  );
-  const suspensionSeule = `${(soirMinimum.bloc_cle.suspension_s ?? 60) / 60} min`;
+  const deepSquat = dureeTexte(programme.exercices['deep_squat']?.duree_s ?? 120);
 
   return (
     <main className="ecran">
@@ -119,10 +101,16 @@ export function Aujourdhui({
       </header>
 
       <section className="carte resume" aria-label="Résumé du jour">
-        <Anneau valeur={tenu ? 1 : 0} total={7} libelle="Jours tenus sur les 7 derniers" />
+        <Anneau
+          valeur={tenu ? 1 : 0}
+          total={passages.fenetre_jours}
+          libelle={`Jours tenus sur les ${passages.fenetre_jours} derniers`}
+        />
         <div className="resume-texte">
           <p className="titre-carte">Jours tenus</p>
-          <p className="discret">Objectif : 5 sur 7, samedi et dimanche compris.</p>
+          <p className="discret">
+            Objectif : {passages.jours_tenus} sur {passages.fenetre_jours}, dont les deux week-ends.
+          </p>
           <p className="horaires">
             Lever <strong>{heureCourte(infos.lever)}</strong>
             <br />
@@ -131,99 +119,58 @@ export function Aujourdhui({
         </div>
       </section>
 
+      <Passage
+        programme={programme}
+        niveau={niveau}
+        depuis={depuis}
+        jour={jour}
+        joursTenus={new Set(tenu ? [jour] : [])}
+        surPassage={surPassage}
+      />
+
       {contenuWeekEnd ? (
-        <>
-          <Carte titre="Week-end · base" precision="≈ 20 min">
-            {contenuWeekEnd.base && (
-              <BlocDeVersion version="normal">
-                <Groupe titre="Échauffement">
-                  <Mouvements
-                    programme={programme}
-                    bloc="base"
-                    mouvements={contenuWeekEnd.base.echauffement}
-                  />
-                </Groupe>
-                <Groupe titre="3 séries des 4 exercices">
-                  <Exercices
-                    programme={programme}
-                    bloc="base"
-                    exercices={contenuWeekEnd.base.exercices}
-                  />
-                </Groupe>
-                <Groupe titre="Étirement">
-                  <Etirements programme={programme} etirements={contenuWeekEnd.base.etirements} />
-                </Groupe>
-              </BlocDeVersion>
-            )}
-            {minimumDuMatin}
-            {choixDuMatin}
-          </Carte>
-          {contenuWeekEnd.seance && (
-            <Carte titre="Week-end · au mieux" precision="bonus, ≈ 45 min" version="au-mieux">
-              <BlocDeVersion version="au-mieux">
-                <Groupe titre="Mobilité">
-                  <Mouvements
-                    programme={programme}
-                    bloc="au_mieux"
-                    mouvements={contenuWeekEnd.seance.mobilite}
-                  />
-                </Groupe>
-                <Groupe titre="Séance">
-                  <Exercices
-                    programme={programme}
-                    bloc="au_mieux"
-                    exercices={contenuWeekEnd.seance.musculation}
-                  />
-                </Groupe>
-                <Groupe titre="Étirements de hanche">
-                  <Etirements programme={programme} etirements={contenuWeekEnd.seance.etirements} />
-                </Groupe>
-                {contenuWeekEnd.boxe && (
-                  <p className="discret">
-                    Boxe : rounds {contenuWeekEnd.boxe.rounds.join(', ')} du bloc.
-                  </p>
-                )}
-              </BlocDeVersion>
-              <Choix
-                libelle="Au mieux"
-                valeur={journal.auMieux ? 'fait' : null}
-                surChoix={(v) => changer({ auMieux: v === 'fait' })}
-                options={[{ valeur: 'fait', libelle: 'Fait', version: 'au-mieux' }]}
-              />
-            </Carte>
-          )}
-        </>
+        <Carte
+          titre="Week-end"
+          precision={`≈ ${programme.ancrage.week_end.base.duree_min} min, plus le bonus`}
+        >
+          <BlocEnCouches
+            programme={programme}
+            bloc="week_end"
+            couches={couchesDuWeekEnd(programme, niveau, contenuWeekEnd)}
+            titres
+            libelle="Week-end"
+            valeur={journal.matin}
+            surChoix={(matin) => changer({ matin })}
+          />
+        </Carte>
       ) : (
         <Carte
           titre={`Matin ${lettre}`}
           precision={`${heureCourte(infos.lever)} · ≈ ${infos.matin.creneau_min} min`}
         >
-          <BlocDeVersion version="normal">
-            {contenuMatin.respiration_min > 0 && (
-              <p className="discret">
-                Respiration {contenuMatin.respiration_min} min, puis café {contenuMatin.cafe_min}{' '}
-                min.
-              </p>
-            )}
-            <Mouvements programme={programme} bloc="matin" mouvements={contenuMatin.mobilite} />
-            <Exercices programme={programme} bloc="matin" exercices={contenuMatin.musculation} />
-            <Etirements programme={programme} etirements={contenuMatin.etirements} />
-          </BlocDeVersion>
-          {minimumDuMatin}
-          {choixDuMatin}
+          <BlocEnCouches
+            programme={programme}
+            bloc="matin"
+            couches={couchesMatin}
+            libelle="Matin"
+            valeur={journal.matin}
+            surChoix={(matin) => changer({ matin })}
+          />
         </Carte>
       )}
 
       {contenuMidi && (
-        <Carte titre="Midi" precision="bonus">
-          <p className="discret">Bouger, ce que tu peux : marche ou corde, sans durée imposée.</p>
+        <Carte titre="Midi">
+          <BlocDeCouche couche="bonus">
+            <p className="discret">Bouger, ce que tu peux : marche ou corde, sans durée imposée.</p>
+          </BlocDeCouche>
           <Choix
             libelle="Midi"
             valeur={journal.midi}
             surChoix={(midi) => changer({ midi })}
             options={[
-              { valeur: 'corde', libelle: 'Corde' },
-              { valeur: 'marche', libelle: 'Marche' },
+              { valeur: 'corde', libelle: 'Corde', couche: 'bonus' },
+              { valeur: 'marche', libelle: 'Marche', couche: 'bonus' },
             ]}
           />
         </Carte>
@@ -238,41 +185,28 @@ export function Aujourdhui({
         >
           Boxe ce soir
         </button>
-        {boxe ? (
-          <BlocDeVersion version="minimum" etiquette="Minimum · soir de boxe">
+        <BlocDeCouche couche="minimum" {...(boxe ? { etiquette: 'Minimum · soir de boxe' } : {})}>
+          <ul className="liste">
+            <Ligne
+              nom="Suspension seule"
+              detail={dureeTexte(soirMinimum.bloc_cle.suspension_s ?? 60)}
+            />
+            <Ligne nom={nomExercice(programme, 'deep_squat')} detail={deepSquat} />
+          </ul>
+        </BlocDeCouche>
+        {!boxe && contenuSoir.bloc_cle.knee_raises && (
+          <BlocDeCouche couche="principale">
             <ul className="liste">
-              <Ligne nom="Suspension seule" detail={suspensionSeule} />
-              <Ligne nom={nomExercice(programme, 'deep_squat')} detail="2 min" />
-            </ul>
-          </BlocDeVersion>
-        ) : (
-          <>
-            <BlocDeVersion version="normal">
-              <ul className="liste">
-                <Ligne
-                  nom={nomExercice(programme, 'suspension')}
-                  detail={`${contenuSoir.bloc_cle.suspension_series} série à ta cible`}
-                >
-                  <Compteurs
-                    programme={programme}
-                    bloc="bloc_cle"
-                    exercice="suspension"
-                    series={contenuSoir.bloc_cle.suspension_series}
-                  />
-                </Ligne>
-                <Ligne
-                  nom={nomExercice(programme, 'deep_squat')}
-                  detail={`${contenuSoir.bloc_cle.deep_squat_series} × 2 min`}
+              <Ligne nom="Knee raises" detail="pendant la suspension, à ta cible">
+                <Compteurs
+                  programme={programme}
+                  bloc="bloc_cle"
+                  exercice="suspension"
+                  series={contenuSoir.bloc_cle.suspension_series}
                 />
-              </ul>
-            </BlocDeVersion>
-            <BlocDeVersion version="minimum">
-              <ul className="liste">
-                <Ligne nom="Suspension seule" detail={suspensionSeule} />
-                <Ligne nom={nomExercice(programme, 'deep_squat')} detail="2 min" />
-              </ul>
-            </BlocDeVersion>
-          </>
+              </Ligne>
+            </ul>
+          </BlocDeCouche>
         )}
         <Choix
           libelle="Bloc clé"
@@ -280,10 +214,10 @@ export function Aujourdhui({
           surChoix={(blocCle) => changer({ blocCle })}
           options={
             boxe
-              ? [{ valeur: 'boxe', libelle: 'Fait', version: 'minimum' }]
+              ? [{ valeur: 'boxe', libelle: 'Fait', couche: 'minimum' }]
               : [
-                  { valeur: 'normal', libelle: 'Fait', version: 'normal' },
-                  { valeur: 'minimum', libelle: 'Minimum', version: 'minimum' },
+                  { valeur: 'minimum', libelle: 'Minimum', couche: 'minimum' },
+                  { valeur: 'principale', libelle: 'Principale', couche: 'principale' },
                 ]
           }
         />
@@ -294,60 +228,67 @@ export function Aujourdhui({
           titre={`Soir · routine pied ${contenuSoir.pied.lettre}`}
           precision={`≈ ${contenuSoir.duree_min - soirMinimum.duree_min} min`}
         >
-          <p className="discret">{programme.pied.routines[contenuSoir.pied.lettre].nom}</p>
-          <ul className="liste">
-            {contenuSoir.pied.exercices.map((exercice) => (
-              <Ligne
-                key={exercice}
-                nom={nomExercice(programme, exercice)}
-                detail={contenuSoir.pied?.series_par_exercice === 1 ? '1 série' : '2 séries'}
-              >
-                <Compteurs
-                  programme={programme}
-                  bloc="pied"
-                  exercice={exercice}
-                  series={contenuSoir.pied?.series_par_exercice ?? 1}
-                />
-              </Ligne>
-            ))}
-          </ul>
-          <Groupe titre="Étirements du pied">
-            <Etirements programme={programme} etirements={contenuSoir.pied.etirements} />
-          </Groupe>
+          <BlocDeCouche couche="principale">
+            <p className="discret">{programme.pied.routines[contenuSoir.pied.lettre].nom}</p>
+            <ul className="liste">
+              {contenuSoir.pied.exercices.map((exercice) => (
+                <Ligne
+                  key={exercice}
+                  nom={nomExercice(programme, exercice)}
+                  detail={contenuSoir.pied?.series_par_exercice === 1 ? '1 série' : '2 séries'}
+                >
+                  <Compteurs
+                    programme={programme}
+                    bloc="pied"
+                    exercice={exercice}
+                    series={contenuSoir.pied?.series_par_exercice ?? 1}
+                  />
+                </Ligne>
+              ))}
+            </ul>
+            <Groupe titre="Étirements du pied">
+              <Etirements programme={programme} etirements={contenuSoir.pied.etirements} />
+            </Groupe>
+          </BlocDeCouche>
           <Choix
             libelle="Routine pied"
             valeur={journal.pied ? 'fait' : null}
             surChoix={(v) => changer({ pied: v === 'fait' })}
-            options={[{ valeur: 'fait', libelle: 'Fait' }]}
+            options={[{ valeur: 'fait', libelle: 'Fait', couche: 'principale' }]}
           />
         </Carte>
       )}
 
       {contenuSoir.etirements_apres_boxe && (
-        <Carte titre="Après la boxe" precision="si possible, en bonus">
-          <Etirements
-            programme={programme}
-            etirements={contenuSoir.etirements_apres_boxe.etirements}
-          />
+        <Carte titre="Après la boxe" precision="si possible">
+          <BlocDeCouche couche="bonus">
+            <Etirements
+              programme={programme}
+              etirements={contenuSoir.etirements_apres_boxe.etirements}
+            />
+          </BlocDeCouche>
           <Choix
             libelle="Après la boxe"
             valeur={journal.pied ? 'fait' : null}
             surChoix={(v) => changer({ pied: v === 'fait' })}
-            options={[{ valeur: 'fait', libelle: 'Fait' }]}
+            options={[{ valeur: 'fait', libelle: 'Fait', couche: 'bonus' }]}
           />
         </Carte>
       )}
 
       <Carte titre="Chaque jour">
-        <ul className="liste">
-          <Ligne nom={nomExercice(programme, 'single_leg_balance')} detail="1 min par jambe" />
-        </ul>
-        <p className="discret">Pendant le brossage des dents, matin et soir.</p>
+        <BlocDeCouche couche="principale">
+          <ul className="liste">
+            <Ligne nom={nomExercice(programme, 'single_leg_balance')} detail="1 min par jambe" />
+          </ul>
+          <p className="discret">Pendant le brossage des dents, matin et soir.</p>
+        </BlocDeCouche>
         <div className="choix" role="group" aria-label="Single leg balance">
           {(['matin', 'soir'] as const).map((moment) => (
             <button
               key={moment}
               type="button"
+              data-couche="principale"
               aria-pressed={journal.equilibre[moment]}
               onClick={() =>
                 changer({

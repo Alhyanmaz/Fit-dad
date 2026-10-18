@@ -24,7 +24,6 @@ describe('saisie des répétitions', () => {
       depart: 6,
       cote: 'chaque bras',
     });
-    expect(compteurDeRepetitions(programme, 'reverse_table_top', 1)?.depart).toBe(5);
   });
 
   it('le swing compte ses répétitions par minute, la suspension ses knee raises', () => {
@@ -41,8 +40,9 @@ describe('saisie des répétitions', () => {
     });
   });
 
-  it('cossack squat : pas de compteur, la cible suffit (décision du 18/10/2026)', () => {
+  it('aucun compteur en mobilité : cossack squat et reverse table top affichent leur cible (18/10/2026)', () => {
     expect(compteurDeRepetitions(programme, 'cossack_squat', 1)).toBeNull();
+    expect(compteurDeRepetitions(programme, 'reverse_table_top', 1)).toBeNull();
   });
 
   it('pas de compteur pour un mouvement au temps, une tenue ou une durée', () => {

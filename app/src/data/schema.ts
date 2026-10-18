@@ -77,8 +77,6 @@ const exercice = z
     pas_s_interpretation: drapeau,
     series: entierPositif.optional(),
     series_fixes: entierPositif.optional(),
-    /** false : pas de compteur de répétitions, la cible s'affiche (décision du 18/10/2026). */
-    compter: z.boolean().optional(),
     tenue_s: entierPositif.optional(),
     duree_s: entierPositif.optional(),
     minutes: entierPositif.optional(),
@@ -161,9 +159,6 @@ const exercice = z
 
 const lever_tot = z.strictObject({
   tolerance_lever_min: entierPositifOuNul,
-  fenetre_jours: entierPositif,
-  matins_reussis_requis: entierPositif,
-  dont_matins_week_end: entierPositifOuNul,
   niveau_depart: z.enum(NIVEAUX_D_ANCRAGE),
   qualites_nuit: z
     .array(z.strictObject({ id: texte, label: texte, difficile: z.boolean() }))
@@ -191,7 +186,29 @@ const lever_tot = z.strictObject({
   passage_de_palier: texte,
 });
 
+// ---------- Passages (décision du 18/10/2026) ----------
+
+const passages = z.strictObject({
+  decision: dateIso,
+  regle: texte,
+  jours_tenus: entierPositif,
+  fenetre_jours: entierPositif,
+  dont_jours_de_week_end: entierPositifOuNul,
+  fenetre_et_week_end_interpretation: drapeau,
+  jour_tenu_aux_paliers: texte,
+  jour_tenu_aux_paliers_interpretation: drapeau,
+  forcer: texte,
+  forcer_cycle_interpretation: drapeau,
+});
+
 // ---------- Matin ----------
+
+/** Version minimum du matin : un mouvement de mobilité, puis une tenue (2 min de deep squat, 18/10/2026). */
+const versionMinimumDuMatin = z.strictObject({
+  declencheur: texte,
+  contenu: texte,
+  tenue: z.strictObject({ exercice: idExercice, duree_s: entierPositif }),
+});
 
 const BLOCS_DU_MATIN = ['respiration', 'cafe', 'mobilite', 'musculation', 'etirements'] as const;
 
@@ -251,7 +268,7 @@ const matin = z.strictObject({
     etirements_series: entierPositif,
     swing_minutes: entierPositif,
   }),
-  version_minimum: z.strictObject({ declencheur: texte, contenu: texte }),
+  version_minimum: versionMinimumDuMatin,
   jour_recuperation: z.strictObject({ regle: texte }),
 });
 
@@ -296,9 +313,6 @@ const ancrage = z.strictObject({
   jour_recuperation: texte,
   passage: z.strictObject({
     regle: texte,
-    jours_tenus: entierPositif,
-    fenetre_jours: entierPositif,
-    samedi_et_dimanche: z.boolean(),
     vers_palier_1_des_semaine: entierPositif,
     puis: texte,
   }),
@@ -314,7 +328,7 @@ const ancrage = z.strictObject({
       series: entierPositif,
       regle: texte,
     }),
-    version_minimum: z.strictObject({ declencheur: texte, contenu: texte }),
+    version_minimum: versionMinimumDuMatin,
     version_courte: texte,
     note: texte.optional(),
   }),
@@ -342,7 +356,7 @@ const ancrage = z.strictObject({
   }),
   chaque_jour: z.strictObject({ exercice: idExercice, moment: texte }),
   week_end: z.strictObject({
-    minimum: z.strictObject({
+    base: z.strictObject({
       contenu: texte,
       duree_min: entierPositif,
       exercices: z.array(idExercice).min(1),
@@ -646,6 +660,7 @@ const programmeBrutSchema = z.strictObject({
   }),
   ancrage,
   lever_tot,
+  passages,
   matin,
   seances,
   exercices: z.record(idExercice, exercice),
@@ -713,27 +728,35 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
         `paliers attendus dans l'ordre 1 à ${NOMBRE_DE_PALIERS} (trouvé ${pal.num} en position ${i + 1})`,
       );
   });
-  if (p.lever_tot.dont_matins_week_end > p.lever_tot.matins_reussis_requis) {
+
+  // Passages
+  const pa = p.passages;
+  if (pa.jours_tenus > pa.fenetre_jours) {
     signaler(
-      ['lever_tot', 'dont_matins_week_end'],
-      'plus de matins de week-end exigés que de matins réussis',
+      ['passages', 'jours_tenus'],
+      'plus de jours tenus exigés que de jours dans la fenêtre',
     );
   }
-  if (p.lever_tot.matins_reussis_requis > p.lever_tot.fenetre_jours) {
+  if (pa.dont_jours_de_week_end > pa.jours_tenus) {
     signaler(
-      ['lever_tot', 'matins_reussis_requis'],
-      'plus de matins réussis exigés que de jours dans la fenêtre',
+      ['passages', 'dont_jours_de_week_end'],
+      'plus de jours de week-end exigés que de jours tenus',
     );
   }
-  const joursDeWeekEnd = 2 * Math.floor(p.lever_tot.fenetre_jours / 7);
-  if (p.lever_tot.dont_matins_week_end > joursDeWeekEnd) {
+  const joursDeWeekEnd = 2 * Math.floor(pa.fenetre_jours / 7);
+  if (pa.dont_jours_de_week_end > joursDeWeekEnd) {
     signaler(
-      ['lever_tot', 'dont_matins_week_end'],
-      `plus de matins de week-end exigés que la fenêtre n'en compte (${joursDeWeekEnd})`,
+      ['passages', 'dont_jours_de_week_end'],
+      `plus de jours de week-end exigés que la fenêtre n'en compte (${joursDeWeekEnd})`,
     );
   }
 
   // Matin
+  verifier(
+    ['matin', 'version_minimum', 'tenue', 'exercice'],
+    p.matin.version_minimum.tenue.exercice,
+    'bloc_cle',
+  );
   p.matin.paliers.forEach((pal, i) => {
     const ici = ['matin', 'paliers', i];
     if (pal.palier !== i + 1)
@@ -935,12 +958,11 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
       `passage au palier 1 attendu à partir de la semaine ${semaineDuPalier1} (${an.cycles_minimum} cycles de ${an.semaines_par_cycle} semaines)`,
     );
   }
-  if (an.passage.jours_tenus > an.passage.fenetre_jours) {
-    signaler(
-      ['ancrage', 'passage', 'jours_tenus'],
-      'plus de jours tenus exigés que de jours dans la fenêtre',
-    );
-  }
+  verifier(
+    ['ancrage', 'matin', 'version_minimum', 'tenue', 'exercice'],
+    an.matin.version_minimum.tenue.exercice,
+    'bloc_cle',
+  );
   an.matin.etirement.rotation.forEach((id, j) =>
     verifier(['ancrage', 'matin', 'etirement', 'rotation', j], id, 'etirement', 'hanches'),
   );
@@ -948,8 +970,8 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     verifier(['ancrage', 'soir', 'version_minimum', 'exercices', j], id, 'bloc_cle'),
   );
   verifier(['ancrage', 'chaque_jour', 'exercice'], an.chaque_jour.exercice, 'equilibre');
-  an.week_end.minimum.exercices.forEach((id, j) =>
-    verifier(['ancrage', 'week_end', 'minimum', 'exercices', j], id, 'musculation'),
+  an.week_end.base.exercices.forEach((id, j) =>
+    verifier(['ancrage', 'week_end', 'base', 'exercices', j], id, 'musculation'),
   );
   verifierRounds(
     ['ancrage', 'week_end', 'au_mieux', 'boxe_rounds'],

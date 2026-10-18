@@ -7,8 +7,8 @@ import type { MidiFait } from './midi';
  */
 export interface JournalDuJour {
   boxe: boolean;
+  /** Couche atteinte le matin, ou au week-end : minimum, principale ou bonus. */
   matin: MatinFait;
-  auMieux: boolean;
   midi: MidiFait;
   blocCle: BlocCleFait;
   pied: boolean;
@@ -30,7 +30,6 @@ export interface JournalDuJour {
 export const journalVide = (): JournalDuJour => ({
   boxe: false,
   matin: null,
-  auMieux: false,
   midi: null,
   blocCle: null,
   pied: false,

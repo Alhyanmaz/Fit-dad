@@ -1,8 +1,9 @@
 import type { Programme } from '../data/schema';
 
 /**
- * Saisie des répétitions (décision de José du 18/10/2026) : chaque exercice qui se compte en
- * répétitions reçoit un compteur par série, dont la valeur servira à l'historique.
+ * Saisie des répétitions (décisions de José du 18/10/2026) : chaque exercice qui se compte en
+ * répétitions reçoit un compteur par série, dont la valeur servira à l'historique ; jamais les
+ * mouvements de mobilité (échauffements du matin), qui affichent leur cible.
  */
 export interface CompteurDeRepetitions {
   exercice: string;
@@ -15,14 +16,14 @@ export interface CompteurDeRepetitions {
   quoi?: string;
 }
 
-/** Le compteur d'un exercice, ou null s'il ne se compte pas en répétitions (tenue, durée, mouvement au temps). */
+/** Le compteur d'un exercice, ou null : mobilité, tenue, durée. */
 export function compteurDeRepetitions(
   programme: Programme,
   exercice: string,
   series: number,
 ): CompteurDeRepetitions | null {
   const ex = programme.exercices[exercice];
-  if (!ex || series < 1 || ex.compter === false) return null;
+  if (!ex || series < 1 || ex.bloc === 'mobilite') return null;
   const cote = ex.cote ? { cote: ex.cote } : {};
   if (ex.mesure === 'emom' && ex.reps_par_minute)
     return { exercice, series, depart: ex.reps_par_minute };

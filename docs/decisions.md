@@ -174,7 +174,26 @@ Réponses de José à l'explication de l'onglet « Lever tôt » et à la questi
 - **Tolérance du lever : 5 min** (au lieu de 10). À N2 (6h40), lever à 6h45 : tenu ; à 6h46 : manqué.
 - **Pas de proposition de version minimum** : pendant l'ancrage, « Alléger » ne propose rien ; José choisit lui-même la version minimum, avec le bouton « Minimum ». Aux paliers, Claude garde la version courte proposée après 2 nuits difficiles de suite [Interprétation, question 30].
 - **Réveil** : « Premier réveil » ou « Snooze », dans le journal du matin. Noté pour l'historique, sans effet sur le verdict [Interprétation, question 31].
-- **Passage au palier suivant** : 12 matins réussis sur les 14 derniers jours, dont les deux week-ends (les deux samedis et les deux dimanches), au lieu de 5 sur 7 dont le samedi et le dimanche ; toujours un palier par cycle (décision du 17/10). Claude l'applique entre les paliers seulement : les passages de l'ancrage (vers N2, puis vers le palier 1) restent sur les jours tenus, 5 sur 7 [Interprétation, question 29].
-- **Cossack squat** : pas de compteur de répétitions ; l'appli affiche la cible (« 1 série · cible 8 à 14 rép. par côté »).
-- **Code couleur des versions, sans rien masquer** : minimum en vert, normale en orange, « au mieux » en rouge. Chaque version garde son étiquette écrite (choix de Claude) : la couleur n'est jamais le seul repère, car environ 1 homme sur 12 voit mal les couleurs, surtout le rouge et le vert ([Colour Blind Awareness](https://www.colourblindawareness.org/colour-blindness/)).
+- **Passage au palier suivant** : 12 matins réussis sur les 14 derniers jours, dont les deux week-ends (les deux samedis et les deux dimanches), au lieu de 5 sur 7 dont le samedi et le dimanche ; toujours un palier par cycle (décision du 17/10). Claude l'applique entre les paliers seulement : les passages de l'ancrage (vers N2, puis vers le palier 1) restent sur les jours tenus, 5 sur 7 [Interprétation, question 29]. (**→ 18/10, plus tard : 12 jours tenus sur 14, pour tous les passages**)
+- **Cossack squat** : pas de compteur de répétitions ; l'appli affiche la cible (« 1 série · cible 8 à 14 rép. par côté »). (**→ 18/10, plus tard : légende « 8-14 rep / side », aucun compteur en mobilité**)
+- **Code couleur des versions, sans rien masquer** : minimum en vert, normale en orange, « au mieux » en rouge. Chaque version garde son étiquette écrite (choix de Claude) : la couleur n'est jamais le seul repère, car environ 1 homme sur 12 voit mal les couleurs, surtout le rouge et le vert ([Colour Blind Awareness](https://www.colourblindawareness.org/colour-blindness/)). (**→ 18/10, plus tard : couches qui s'additionnent**)
 - **Saisie du matin dans l'onglet « Lever tôt »** (question 27) : coucher, lever, réveil, nuit, lumière, note. Claude a lu « Ok pour la saisie des horaires de lever dans l'onglet lever tôt » comme le refus de son défaut, qui mettait cette saisie dans la carte du matin [Interprétation].
+
+## 18/10/2026 — décisions de José (couches, deep squat, passages)
+
+Réponses de José aux captures du soir et à la question 29 de `docs/reprise.md`.
+
+- **Couches** (« Tu n'as pas compris l'idée des couleurs ») : le minimum (vert) s'ajoute à la principale (orange), qui s'ajoute au bonus (rouge) ; ensemble, ils forment la séance complète. Même gestion dans toute l'appli. Chaque exercice n'apparaît plus qu'une fois, dans la première couche qui le demande ; chaque bloc se valide par la couche atteinte. Lecture de Claude pour chaque bloc (`docs/SPEC.md` §5.1) :
+  - matin : minimum, le premier mouvement de mobilité et le deep squat ; principale, le reste ;
+  - week-end : minimum, le premier mouvement d'échauffement et le deep squat ; principale, la base ; bonus, ce que le « au mieux » ajoute à la base [Interprétation]. Le week-end complet additionne donc la base et le « au mieux » : le samedi, le swing et le goblet squat de la base restent, le pistol et le KT single leg deadlift s'ajoutent ;
+  - midi : bonus ; bloc clé : minimum, 1 min de suspension seule et 2 min de deep squat, principale, les knee raises ; routine pied et single leg balance : principale ; étirements après la boxe : bonus [Interprétation].
+- **« Normal » devient « principale »** : José proposait « principale » ou « courante » et demandait un meilleur nom. Claude garde « Principale », « courante » pouvant se lire « en cours ».
+- **Deep squat dans le minimum de tous les matins** : 2 min, ancrage, paliers et week-end compris ; il fait donc partie de toutes les versions du matin. N1 passe de ≈ 3 à ≈ 5 min, la base du week-end de ≈ 20 à ≈ 22 min.
+- **Passages** (question 29, « Non, tous les passages après 12 jours tenus ») : vers N2, vers le palier 1, puis d'un palier au suivant, la même règle, 12 jours tenus sur les 14 derniers. Elle remplace les 5 jours tenus sur 7 de l'ancrage et les 12 matins réussis sur 14 des paliers. Lecture de Claude [Interprétation] :
+  - « sur 14 » et « dont les deux week-ends » sont repris de la règle du matin donnée le même jour ;
+  - aux paliers, le jour tenu garde la définition de l'ancrage ;
+  - le verdict de « Lever tôt » n'entre plus dans les passages (question 33) ;
+  - le moment ne change pas : un niveau par cycle, N2 au plus tôt le lundi 23/11.
+- **Forcer le passage** : un bouton, à tout moment, avec confirmation. Le cycle du nouveau niveau commence le jour du passage [Interprétation].
+- **Aucun compteur dans les échauffements du matin** : aucun mouvement de mobilité n'a de compteur. Conséquence, signalée par Claude avant de coder : l'appli ne propose plus +2 répétitions au reverse table top ni au cossack squat ; José les règle avec « Ajuster ».
+- **Légende du cossack squat et des mouvements du même type** : « 8-14 rep / side » ; pour le reverse table top, « 5-10 rep + tenue 10-30 s ». José a écrit « 8-10 rep / side » ; Claude garde la fourchette du programme, 8 à 14 [Interprétation, question 32].

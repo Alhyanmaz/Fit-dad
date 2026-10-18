@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { lireProgramme, programmeBrut } from '../data/programme';
-import { ajouterJours, jourDeLaSemaine, type DateIso } from './dates';
-import { ciblesDuNiveau, critereDePassage, verdictDuMatin, type Verdict } from './leverTot';
+import { ciblesDuNiveau, verdictDuMatin } from './leverTot';
 
 const lecture = lireProgramme(programmeBrut);
 if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
@@ -47,40 +46,5 @@ describe('scénario 8 : « Lever tôt », verdict du matin', () => {
     expect(
       verdictDuMatin(programme, n2, { leve: null, nuit: null, plancherFait: true }),
     ).toBeNull();
-  });
-});
-
-describe('scénario 8 : passage au palier suivant, 12 matins sur 14 et les deux week-ends', () => {
-  const debutCycle2: DateIso = '2027-02-01';
-  const quinzaine = (rate: (date: DateIso) => boolean) => {
-    const verdicts = new Map<DateIso, Verdict>();
-    for (let i = 1; i <= 14; i++) {
-      const date = ajouterJours(debutCycle2, -i);
-      verdicts.set(date, rate(date) ? 'manque' : 'reussi');
-    }
-    return verdicts;
-  };
-
-  it('12 matins réussis, les deux samedis et les deux dimanches compris → rempli', () => {
-    const deuxMardis = (date: DateIso) => jourDeLaSemaine(date) === 'mardi';
-    expect(critereDePassage(programme, quinzaine(deuxMardis), debutCycle2)).toEqual({
-      reussis: 12,
-      requis: 12,
-      weekEndReussis: 4,
-      weekEndRequis: 4,
-      rempli: true,
-    });
-  });
-
-  it('13 matins réussis mais un dimanche manqué → pas rempli', () => {
-    const unDimanche = (date: DateIso) => date === '2027-01-31';
-    const critere = critereDePassage(programme, quinzaine(unDimanche), debutCycle2);
-    expect([critere.reussis, critere.weekEndReussis, critere.rempli]).toEqual([13, 3, false]);
-  });
-
-  it('11 matins réussis, week-ends tenus → pas rempli', () => {
-    const troisJours = (date: DateIso) => ['2027-01-19', '2027-01-20', '2027-01-21'].includes(date);
-    const critere = critereDePassage(programme, quinzaine(troisJours), debutCycle2);
-    expect([critere.reussis, critere.weekEndReussis, critere.rempli]).toEqual([11, 4, false]);
   });
 });

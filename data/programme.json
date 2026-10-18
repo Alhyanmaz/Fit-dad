@@ -58,10 +58,7 @@
     },
     "jour_recuperation": "Aucun : le lendemain d'une boxe en club suit le schéma des autres jours, matin et soir (décision du 14/10/2026).",
     "passage": {
-      "regle": "L'appli propose le passage au niveau suivant au plus tôt à la semaine indiquée, et seulement si les 7 derniers jours ont tenu 5 jours, samedi et dimanche compris ; sinon, elle le propose de nouveau la semaine suivante. José valide.",
-      "jours_tenus": 5,
-      "fenetre_jours": 7,
-      "samedi_et_dimanche": true,
+      "regle": "Critère commun à tous les passages : « passages ». Vers N2 au plus tôt au début de la semaine 6, vers le palier 1 au plus tôt au début de la semaine 11 : un niveau par cycle.",
       "vers_palier_1_des_semaine": 11,
       "puis": "Au passage au palier 1 : tests de la semaine 1 du programme, puis José règle la suite."
     },
@@ -76,7 +73,7 @@
         "matin": {
           "marge_min": 0,
           "respiration_min": 0,
-          "creneau_min": 3,
+          "creneau_min": 5,
           "seances": {
             "A": {
               "mobilite": [
@@ -157,7 +154,7 @@
       }
     ],
     "lever_tot": {
-      "regle": "Heures du niveau en cours ; le passage suit « ancrage.passage ».",
+      "regle": "Heures du niveau en cours ; le passage suit « passages ».",
       "plancher": "le matin du niveau, en version normale ou minimum",
       "n1": "À N1, le lever seul valide le matin de « Lever tôt », comme l'ancien palier 1 ; le jour tenu demande, lui, la séance du matin."
     },
@@ -182,7 +179,11 @@
       },
       "version_minimum": {
         "declencheur": "nuit très hachée",
-        "contenu": "un seul mouvement de mobilité"
+        "contenu": "un seul mouvement de mobilité, puis 2 min de deep squat (deep squat : décision du 18/10/2026)",
+        "tenue": {
+          "exercice": "deep_squat",
+          "duree_s": 120
+        }
       },
       "version_courte": "Aucune : version normale ou version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : José choisit lui-même la version minimum (décision du 18/10/2026).",
       "note": "N1 travaille le tirage et le squat ; N2, les quatre patrons. Le swing reste à 1 série pendant l'ancrage."
@@ -220,9 +221,9 @@
       "moment": "pendant le brossage des dents, matin et soir"
     },
     "week_end": {
-      "minimum": {
-        "contenu": "2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake) ; puis le soir.",
-        "duree_min": 20,
+      "base": {
+        "contenu": "2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake), avec les 2 min de deep squat du minimum (décision du 18/10/2026) ; puis le soir.",
+        "duree_min": 22,
         "exercices": [
           "kt_press",
           "swing_emom",
@@ -252,15 +253,12 @@
         ],
         "boxe_interpretation": true,
         "duree_min": 45,
-        "note": "Puis le soir, comme chaque jour."
+        "note": "Bonus : ce que le « au mieux » ajoute à la base, chaque exercice une fois (couches minimum, principale, bonus ; décision du 18/10/2026). Puis le soir, comme chaque jour."
       }
     }
   },
   "lever_tot": {
     "tolerance_lever_min": 5,
-    "fenetre_jours": 14,
-    "matins_reussis_requis": 12,
-    "dont_matins_week_end": 4,
     "niveau_depart": "N1",
     "qualites_nuit": [
       {
@@ -357,7 +355,19 @@
       ],
       "interpretation": true
     },
-    "passage_de_palier": "Pendant l'ancrage : ancrage.passage. Ensuite, un palier par cycle : passage proposé au plus tôt au début du cycle suivant, et seulement si au moins 12 matins sont réussis sur les 14 derniers jours, dont les deux samedis et les deux dimanches ; sinon, de nouveau la semaine suivante. Appliqué après confirmation de José (décisions des 17 et 18/10/2026)."
+    "passage_de_palier": "Un palier par cycle : passage proposé au plus tôt au début du cycle suivant, avec le critère commun « passages » (décisions des 17 et 18/10/2026) ; sinon, de nouveau la semaine suivante. Appliqué après confirmation de José."
+  },
+  "passages": {
+    "decision": "2026-10-18",
+    "regle": "Tous les passages, vers N2, vers le palier 1, puis d'un palier au suivant : au moins 12 jours tenus sur les 14 derniers, dont les deux samedis et les deux dimanches. Un niveau par cycle : passage proposé au plus tôt au début du cycle suivant, sinon de nouveau la semaine suivante ; appliqué après confirmation de José. Il peut aussi forcer le passage à tout moment.",
+    "jours_tenus": 12,
+    "fenetre_jours": 14,
+    "dont_jours_de_week_end": 4,
+    "fenetre_et_week_end_interpretation": true,
+    "jour_tenu_aux_paliers": "Comme pendant l'ancrage : matin et soir faits, au moins en minimum.",
+    "jour_tenu_aux_paliers_interpretation": true,
+    "forcer": "Bouton « Forcer le passage », à tout moment, avec confirmation ; le cycle du nouveau niveau commence ce jour-là.",
+    "forcer_cycle_interpretation": true
   },
   "matin": {
     "ordre": [
@@ -489,7 +499,11 @@
     },
     "version_minimum": {
       "declencheur": "nuit très hachée",
-      "contenu": "un seul mouvement de mobilité"
+      "contenu": "un seul mouvement de mobilité, puis 2 min de deep squat (deep squat : décision du 18/10/2026)",
+      "tenue": {
+        "exercice": "deep_squat",
+        "duree_s": 120
+      }
     },
     "jour_recuperation": {
       "regle": "La musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens). Étirements conservés."
@@ -1023,7 +1037,6 @@
       "bloc": "mobilite",
       "cote": "chaque côté",
       "mesure": "reps",
-      "compter": false,
       "fourchette": [
         8,
         14
@@ -1042,7 +1055,7 @@
           "charge_kg": 10
         }
       ],
-      "note": "1 série à la cible du moment : l'appli affiche la cible, sans compteur (décision du 18/10/2026)."
+      "note": "1 série à la cible du moment. Pas de compteur, comme pour tous les mouvements de mobilité : l'appli affiche la cible (décision du 18/10/2026) ; répétitions et charge se règlent avec « Ajuster »."
     },
     "spinal_rotation": {
       "nom": "Spinal rotation",
@@ -1069,7 +1082,7 @@
           "label": "10 répétitions + 30 s de tenue"
         }
       ],
-      "note": "Propositions : +2 répétitions (5 → 10) ; la tenue (10 → 30 s) se règle avec « Ajuster ».",
+      "note": "Pas de compteur, comme pour tous les mouvements de mobilité (décision du 18/10/2026) : répétitions (5 → 10) et tenue (10 → 30 s) se règlent avec « Ajuster ».",
       "fourchette": [
         5,
         10
@@ -1722,9 +1735,9 @@
       }
     ],
     "par_mesure": {
-      "reps": "+2 répétitions dans l'échelon ; le dernier pas s'arrête au haut de la fourchette (pistol 5 → 7 → 8). Au haut de la fourchette : « plafond atteint ». Le changement d'échelon (charge ou variante) n'est jamais proposé : José le fait avec « Ajuster » ou en semaine de test.",
+      "reps": "+2 répétitions dans l'échelon ; le dernier pas s'arrête au haut de la fourchette (pistol 5 → 7 → 8). Au haut de la fourchette : « plafond atteint ». Le changement d'échelon (charge ou variante) n'est jamais proposé : José le fait avec « Ajuster » ou en semaine de test. Mouvements de mobilité (cossack squat, reverse table top) : pas de compteur, donc pas de proposition ; José les règle avec « Ajuster » (décision du 18/10/2026).",
       "tenue": "+pas_s quand la cible est tenue 2 séances de suite, plafonné au haut de la fourchette ; la variante plus difficile se règle avec « Ajuster ».",
-      "reps_tenue": "Reverse table top : seules les répétitions sont proposées (+2) ; la tenue se règle avec « Ajuster ».",
+      "reps_tenue": "Reverse table top : pas de compteur en mobilité, donc pas de proposition ; répétitions et tenue se règlent avec « Ajuster » (décision du 18/10/2026).",
       "etirement": "30 s, jamais plus ; on ajoute des séries, pas de la durée.",
       "bas_de_jambe": "Une seule hausse par semaine, en rotation corde → mollets → tibialis ; le sac est hors de la règle."
     },

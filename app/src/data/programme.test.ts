@@ -181,11 +181,27 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
     );
   });
 
-  it('plus de matins de week-end exigés que la fenêtre n’en compte', () => {
+  it('passages : plus de jours de week-end exigés que la fenêtre n’en compte', () => {
     const p = copie();
-    p.lever_tot.dont_matins_week_end = 5;
+    p.passages.dont_jours_de_week_end = 5;
     expect(erreursDe(p).join('\n')).toMatch(
-      /lever_tot › dont_matins_week_end : plus de matins de week-end exigés que la fenêtre n'en compte \(4\)/,
+      /passages › dont_jours_de_week_end : plus de jours de week-end exigés que la fenêtre n'en compte \(4\)/,
+    );
+  });
+
+  it('passages : plus de jours tenus exigés que de jours dans la fenêtre', () => {
+    const p = copie();
+    p.passages.jours_tenus = 15;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /passages › jours_tenus : plus de jours tenus exigés que de jours dans la fenêtre/,
+    );
+  });
+
+  it('tenue du minimum du matin : un exercice du bloc clé', () => {
+    const p = copie();
+    p.ancrage.matin.version_minimum.tenue.exercice = 'bear_walk';
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › matin › version_minimum › tenue › exercice : « bear_walk » est du bloc « mobilite », attendu : « bloc_cle »/,
     );
   });
 

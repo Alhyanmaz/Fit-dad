@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { lireProgramme, programmeBrut } from '../data/programme';
 import type { DateIso } from '../domain/dates';
 import { journalVide, type JournalDuJour } from '../domain/journal';
+import { estEnAncrage, type Niveau } from '../domain/niveau';
 import { Aujourdhui } from './Aujourdhui';
 import { SaisieContexte, type Saisie } from './composants';
 import { LeverTot } from './LeverTot';
@@ -15,7 +16,12 @@ const ERREURS_AFFICHEES = 5;
  * enregistrés sur le téléphone, avec le niveau en cours, à l'étape suivante du J3.
  */
 const DEBUT_ANCRAGE: DateIso = '2026-10-19';
-const NIVEAU = { ancrage: 'N1' } as const;
+
+/** Niveau en cours et jour où il a commencé : son cycle part de là (passages, 18/10/2026). */
+interface NiveauEnCours {
+  niveau: Niveau;
+  depuis: DateIso;
+}
 
 const lecture = lireProgramme(programmeBrut);
 
@@ -29,6 +35,10 @@ function aujourdhui(): DateIso {
 export function App() {
   const [ecran, setEcran] = useState<Ecran>('aujourdhui');
   const [journal, setJournal] = useState<JournalDuJour>(journalVide);
+  const [enCours, setEnCours] = useState<NiveauEnCours>({
+    niveau: { ancrage: 'N1' },
+    depuis: DEBUT_ANCRAGE,
+  });
   if (!lecture.ok) {
     return (
       <main className="ecran">
@@ -47,25 +57,35 @@ export function App() {
         return { ...j, repetitions: { ...j.repetitions, [cle]: valeurs } };
       }),
   };
+  const { niveau, depuis } = enCours;
+  // Passage confirmé par José, proposé ou forcé : le nouveau niveau commence aujourd'hui.
+  const surPassage = (suivant: Niveau) => setEnCours({ niveau: suivant, depuis: date });
   return (
     <SaisieContexte.Provider value={saisie}>
-      {ecran === 'aujourdhui' ? (
+      {ecran === 'lever' ? (
+        <LeverTot
+          programme={lecture.programme}
+          date={date}
+          niveau={niveau}
+          journal={journal}
+          setJournal={setJournal}
+        />
+      ) : estEnAncrage(niveau) ? (
         <Aujourdhui
           programme={lecture.programme}
           date={date}
           debut={DEBUT_ANCRAGE}
-          niveau={NIVEAU}
+          niveau={niveau}
+          depuis={depuis}
           journal={journal}
           setJournal={setJournal}
+          surPassage={surPassage}
         />
       ) : (
-        <LeverTot
-          programme={lecture.programme}
-          date={date}
-          niveau={NIVEAU}
-          journal={journal}
-          setJournal={setJournal}
-        />
+        <main className="ecran">
+          <h1>Palier {niveau.palier}</h1>
+          <p className="discret">L'écran des paliers arrive avec le jalon J5.</p>
+        </main>
       )}
       <NavBas ecran={ecran} surEcran={setEcran} />
     </SaisieContexte.Provider>
