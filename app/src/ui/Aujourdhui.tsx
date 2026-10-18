@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import type { Programme } from '../data/schema';
 import { lettreDuMatin, lettreDuPied } from '../domain/alternances';
-import { jourTenu, type MatinFait, type SoirFait } from '../domain/ancrage';
+import { jourTenu, soirFait, type BlocCleFait, type MatinFait } from '../domain/ancrage';
 import { estWeekEnd, joursEntre, type DateIso } from '../domain/dates';
 import { typeDeJour } from '../domain/jour';
 import {
@@ -10,7 +10,7 @@ import {
   type ExerciceDeSeance,
   type Mouvement,
 } from '../domain/matin';
-import { midiDuJour } from '../domain/midi';
+import { midiDuJour, type MidiFait } from '../domain/midi';
 import { niveauDAncrage } from '../domain/niveau';
 import { soirDuJour } from '../domain/soir';
 import { weekEndDuJour } from '../domain/weekEnd';
@@ -42,8 +42,10 @@ export function Aujourdhui({
 }) {
   const [boxe, setBoxe] = useState(false);
   const [matin, setMatin] = useState<MatinFait>(null);
-  const [midi, setMidi] = useState(false);
-  const [soir, setSoir] = useState<SoirFait>(null);
+  const [midi, setMidi] = useState<MidiFait>(null);
+  const [blocCle, setBlocCle] = useState<BlocCleFait>(null);
+  const [pied, setPied] = useState(false);
+  const [equilibre, setEquilibre] = useState({ matin: false, soir: false });
 
   const avantLeDebut = joursEntre(debut, date) < 0;
   const jour = avantLeDebut ? debut : date;
@@ -80,7 +82,7 @@ export function Aujourdhui({
   };
   const contenuSoir = soirDuJour(programme, contexteSoir);
   const soirMinimum = soirDuJour(programme, { ...contexteSoir, version: 'minimum' });
-  const tenu = jourTenu({ matin, soir });
+  const tenu = jourTenu({ matin, soir: soirFait(blocCle, pied) });
 
   return (
     <>
@@ -186,18 +188,25 @@ export function Aujourdhui({
             </div>
             <p className="discret">Bouger, ce que tu peux : marche ou corde, sans durée imposée.</p>
             <div className="choix">
-              <button type="button" aria-pressed={midi} onClick={() => setMidi(!midi)}>
-                Fait
-              </button>
+              {(['corde', 'marche'] as const).map((choix) => (
+                <button
+                  key={choix}
+                  type="button"
+                  aria-pressed={midi === choix}
+                  onClick={() => setMidi(midi === choix ? null : choix)}
+                >
+                  {choix === 'corde' ? 'Corde' : 'Marche'}
+                </button>
+              ))}
             </div>
           </section>
         )}
 
         <Carte
-          titre="Soir"
-          precision={`≈ ${contenuSoir.duree_min} min`}
-          choix={soir}
-          surChoix={setSoir}
+          titre="Soir · bloc clé"
+          precision={`≈ ${soirMinimum.duree_min} min`}
+          choix={blocCle}
+          surChoix={setBlocCle}
           valeurFait={boxe ? 'boxe' : 'normal'}
           valeurMinimum={boxe ? null : 'minimum'}
           minimum={`Minimum : ${(soirMinimum.bloc_cle.suspension_s ?? 60) / 60} min de suspension, 2 min de deep squat`}
@@ -208,7 +217,8 @@ export function Aujourdhui({
               aria-pressed={boxe}
               onClick={() => {
                 setBoxe(!boxe);
-                setSoir(null);
+                setBlocCle(null);
+                setPied(false);
               }}
             >
               Boxe ce soir
@@ -229,35 +239,50 @@ export function Aujourdhui({
               detail={`${contenuSoir.bloc_cle.deep_squat_series} × 2 min`}
             />
           </ul>
-          {contenuSoir.pied && (
-            <Groupe
-              titre={`Routine pied ${contenuSoir.pied.lettre} · ${programme.pied.routines[contenuSoir.pied.lettre].nom}`}
-            >
-              <ul className="liste">
-                {contenuSoir.pied.exercices.map((exercice) => (
-                  <Ligne
-                    key={exercice}
-                    nom={nomExercice(programme, exercice)}
-                    detail={contenuSoir.pied?.series_par_exercice === 1 ? '1 série' : '2 séries'}
-                  />
-                ))}
-              </ul>
-            </Groupe>
-          )}
-          {contenuSoir.pied && (
+        </Carte>
+
+        {contenuSoir.pied && (
+          <Carte
+            titre={`Soir · routine pied ${contenuSoir.pied.lettre}`}
+            precision={`≈ ${contenuSoir.duree_min - soirMinimum.duree_min} min`}
+            choix={pied ? 'fait' : null}
+            surChoix={(valeur) => setPied(valeur === 'fait')}
+            valeurFait="fait"
+            valeurMinimum={null}
+            minimum=""
+          >
+            <p className="discret">{programme.pied.routines[contenuSoir.pied.lettre].nom}</p>
+            <ul className="liste">
+              {contenuSoir.pied.exercices.map((exercice) => (
+                <Ligne
+                  key={exercice}
+                  nom={nomExercice(programme, exercice)}
+                  detail={contenuSoir.pied?.series_par_exercice === 1 ? '1 série' : '2 séries'}
+                />
+              ))}
+            </ul>
             <Groupe titre="Étirements du pied">
               <Etirements programme={programme} etirements={contenuSoir.pied.etirements} />
             </Groupe>
-          )}
-          {contenuSoir.etirements_apres_boxe && (
-            <Groupe titre="Après la boxe, si possible">
-              <Etirements
-                programme={programme}
-                etirements={contenuSoir.etirements_apres_boxe.etirements}
-              />
-            </Groupe>
-          )}
-        </Carte>
+          </Carte>
+        )}
+
+        {contenuSoir.etirements_apres_boxe && (
+          <Carte
+            titre="Après la boxe"
+            precision="si possible, en bonus"
+            choix={pied ? 'fait' : null}
+            surChoix={(valeur) => setPied(valeur === 'fait')}
+            valeurFait="fait"
+            valeurMinimum={null}
+            minimum=""
+          >
+            <Etirements
+              programme={programme}
+              etirements={contenuSoir.etirements_apres_boxe.etirements}
+            />
+          </Carte>
+        )}
 
         <section className="carte" aria-label="Chaque jour">
           <h2 className="titre-carte">Chaque jour</h2>
@@ -265,6 +290,18 @@ export function Aujourdhui({
             <Ligne nom={nomExercice(programme, 'single_leg_balance')} detail="1 min par jambe" />
           </ul>
           <p className="discret">Pendant le brossage des dents, matin et soir.</p>
+          <div className="choix">
+            {(['matin', 'soir'] as const).map((moment) => (
+              <button
+                key={moment}
+                type="button"
+                aria-pressed={equilibre[moment]}
+                onClick={() => setEquilibre({ ...equilibre, [moment]: !equilibre[moment] })}
+              >
+                {moment === 'matin' ? 'Matin' : 'Soir'}
+              </button>
+            ))}
+          </div>
         </section>
 
         <p className="discret note">

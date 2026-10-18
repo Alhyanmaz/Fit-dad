@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { lireProgramme, programmeBrut } from '../data/programme';
 import { lettreDuMatin, lettreDuPied, suivantDansLaRotation, type Lettre } from './alternances';
-import { jourTenu } from './ancrage';
+import { jourTenu, soirFait } from './ancrage';
 import { ajouterJours, jourDeLaSemaine, joursEntre, type DateIso } from './dates';
 import { aUnBlocBoxe, techniqueDuClubEnPriorite, typeDeJour } from './jour';
 import { matinDuJour, versionsDuMatin } from './matin';
@@ -481,6 +481,16 @@ describe('scénario 16 : ancrage, jour tenu', () => {
     expect(jourTenu({ matin: null, soir: 'normal', midi: true })).toBe(false);
     // Samedi : la base et le soir faits, sans le « au mieux ».
     expect(jourTenu({ matin: 'normale', soir: 'normal', au_mieux: false })).toBe(true);
+  });
+
+  it('soir validé en deux parts : le bloc clé compte, la routine pied seule ne suffit pas', () => {
+    expect(soirFait('normal', true)).toBe('normal');
+    expect(soirFait('normal', false)).toBe('minimum');
+    expect(soirFait('minimum', true)).toBe('minimum');
+    expect(soirFait('boxe', false)).toBe('boxe');
+    expect(soirFait(null, true)).toBeNull();
+    expect(jourTenu({ matin: 'normale', soir: soirFait(null, true) })).toBe(false);
+    expect(jourTenu({ matin: 'minimum', soir: soirFait('normal', false) })).toBe(true);
   });
 
   it('versions minimum : un mouvement de mobilité le matin ; suspension seule et deep squat le soir', () => {

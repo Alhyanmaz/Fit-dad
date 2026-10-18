@@ -158,3 +158,6 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
 
 - **Début de l'ancrage : lundi 19/10/2026**, sans attendre l'appli (remplace le défaut de la question 1 du 17/10). Passages au plus tôt : N2 le lundi 23/11, palier 1 le lundi 28/12, palier 2 le lundi 01/02/2027 ; ce sont les dates des scénarios 8 et 17. Les premiers jours sans appli ne changent rien aux passages : seuls les 7 derniers jours comptent.
 - **Thème de l'appli** : fond noir, accent orange, d'après un exemple d'infographie d'appli fitness envoyé par José (Shutterstock, avec filigrane). Claude reprend le style (cartes arrondies, jauge circulaire, barre du bas), pas l'image, qui n'entre pas dans le dépôt.
+- **Validations de l'écran Aujourd'hui** (José, 18/10, sur la première capture) : le midi se valide en « Corde » ou « Marche » ; le soir se valide en deux, le bloc clé et la routine pied ; le single leg balance se valide aussi. Claude en déduit, à valider :
+  - le single leg balance a deux validations, matin et soir, comme le programme le prévoit ;
+  - le soir compte pour le jour tenu dès que le bloc clé est fait (seul, c'est la version minimum) ; la routine pied seule ne suffit pas.
