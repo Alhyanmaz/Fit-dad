@@ -1,4 +1,4 @@
-# Reprise de la session (17/10/2026)
+# Reprise de la session (18/10/2026)
 
 ## État
 
@@ -9,14 +9,16 @@
   - puis 4 paliers, de 6h30 à 6h00, **un par cycle** (décision du 17/10) ;
   - palier 1 confirmé le 17/10 ; contenus des paliers 2 à 4 provisoires.
 - **Une appli, deux tranches** (décision du 17/10, `docs/SPEC.md` §10) : tranche 1, l'ancrage puis le premier cycle du palier 1 (jalons J3 à J5) ; tranche 2, les paliers 2 à 4 et la bascule de la v1 (J6).
-- **Les 22 questions du 17/10 sont tranchées** (`docs/decisions.md`, dernière entrée).
+- **Les 22 questions du 17/10 sont tranchées** (`docs/decisions.md`).
+- **Ancrage commencé le lundi 19/10/2026** (décision du 18/10), sans attendre l'appli.
+- **J3 en cours** sur la branche `j3-aujourdhui` (PR en brouillon) : thème noir et orange, écran Aujourd'hui de l'ancrage branché sur le moteur (matin, midi, soir, week-end, boxe ce soir, jauge des jours tenus). Pas encore d'enregistrement : rien n'est gardé, et les alternances partent de A. Pas encore mis en ligne pour cette raison.
 
 ## Prochaine étape
 
-Jalon J3 de la tranche 1 : l'écran Aujourd'hui de l'ancrage, la saisie, « Ajuster », le minuteur, le jour tenu, le stockage, l'export et l'import, plus le test de cohabitation hors ligne avec la v1. José commence l'ancrage le lundi qui suit la fin du J4.
+Suite du J3, sur la branche `j3-aujourdhui` : l'enregistrement sur le téléphone (Dexie : réglages avec la date de début et le niveau, journal par date), les alternances tirées de l'historique, puis la mise en ligne ; ensuite la saisie des séances, « Ajuster », le minuteur, l'export et l'import, et le test de cohabitation hors ligne avec la v1.
 
 ```
-Pars de la branche main à jour. Lis CLAUDE.md et docs/reprise.md. On attaque le jalon J3 de la tranche 1 (docs/SPEC.md §10). Propose le plan avant de coder.
+Pars de la branche j3-aujourdhui. Lis CLAUDE.md et docs/reprise.md. On continue le jalon J3 de la tranche 1 (docs/SPEC.md §10) : l'enregistrement d'abord. Propose le plan avant de coder.
 ```
 
 ## À fournir au démarrage
@@ -32,7 +34,6 @@ Numérotation à la suite de celle du 17/10 (questions 1 à 22, tranchées).
 
 **À faire par José (pas des décisions)**
 
-- Choisir une autre date de début de l'ancrage, s'il ne veut pas du lundi qui suit la fin du J4.
 - Retenter de passer la branche par défaut du dépôt de `Mainold` à `main` (refus de GitHub le 08/10, cause inconnue).
 
 **Note, sans décision à prendre**

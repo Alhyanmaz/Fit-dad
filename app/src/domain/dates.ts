@@ -18,7 +18,7 @@ export type Jour = (typeof JOURS)[number];
 
 const UN_JOUR_MS = 86_400_000;
 
-function versUtc(date: DateIso): number {
+export function versUtc(date: DateIso): number {
   return Date.UTC(
     Number(date.slice(0, 4)),
     Number(date.slice(5, 7)) - 1,

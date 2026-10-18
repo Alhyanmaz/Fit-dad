@@ -59,6 +59,8 @@ Les mêmes sept règles figurent dans `CLAUDE.md`.
 
 ## 5. Écrans
 
+Thème : fond noir, accent orange (`#FF7A1A`), cartes gris très foncé ; texte à 4,5:1 de contraste au moins, jauges et boutons à 3:1 (décision du 18/10/2026, `app/src/ui/styles.css`).
+
 ### 5.1 Aujourd'hui (écran d'accueil)
 
 - En-tête : date, niveau ou palier en cours, type de jour (normal, boxe, récupération, décharge), semaine du cycle.
@@ -336,7 +338,7 @@ Décisions du 13 et du 14/10/2026 (`docs/PROGRAMME.md`, section « Cycles d'ancr
 
 Une session Claude Code et une PR par jalon. José relit sur son téléphone, puis fusionne.
 
-**Deux tranches** (décision du 17/10/2026, `docs/decisions.md`) : une seule appli, livrée en deux tranches. Tranche 1 : l'ancrage (N1, N2) et le premier cycle du palier 1 ; tranche 2 : la suite. Les jalons J3 à J5 livrent d'abord la tranche 1, dans cet ordre : le jour 1 de l'ancrage (écran du jour, saisie, « Ajuster », jour tenu, « Lever tôt », export), les propositions de progression, le passage à N2, puis le palier 1 avec ses tests et sa décharge. José commence l'ancrage le lundi qui suit la fin du J4. Pendant la tranche 1, la v2 a sa propre icône sous `/Fit-dad/v2/` et la v1 reste en place, intacte ; la bascule vient en tranche 2, sous réserve d'un test de cohabitation hors ligne au J3. Défauts acceptés le 17/10/2026.
+**Deux tranches** (décision du 17/10/2026, `docs/decisions.md`) : une seule appli, livrée en deux tranches. Tranche 1 : l'ancrage (N1, N2) et le premier cycle du palier 1 ; tranche 2 : la suite. Les jalons J3 à J5 livrent d'abord la tranche 1, dans cet ordre : le jour 1 de l'ancrage (écran du jour, saisie, « Ajuster », jour tenu, « Lever tôt », export), les propositions de progression, le passage à N2, puis le palier 1 avec ses tests et sa décharge. José commence l'ancrage le lundi 19/10/2026 sans attendre l'appli (décision du 18/10/2026) : la tranche 1 se livre en cours de route, en commençant par l'écran Aujourd'hui. Pendant la tranche 1, la v2 a sa propre icône sous `/Fit-dad/v2/` et la v1 reste en place, intacte ; la bascule vient en tranche 2, sous réserve d'un test de cohabitation hors ligne au J3. Défauts acceptés le 17/10/2026.
 
 | Jalon | Contenu | Fini quand |
 | --- | --- | --- |

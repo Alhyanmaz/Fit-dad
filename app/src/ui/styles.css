@@ -1,11 +1,19 @@
+/* Thème de la v2 : fond noir, accent orange (décision du 18/10/2026). Contrastes vérifiés :
+   orange sur noir 8,0:1, orange sur carte 7,1:1, gris discret sur carte 7,3:1. */
 :root {
   color-scheme: dark;
-  --fond: #161b19;
-  --carte: #1f2623;
-  --texte: #ede9df;
-  --discret: #a3aca7;
-  --lien: #8fa3e8;
-  --erreur: #e8a08f;
+  --fond: #000000;
+  --carte: #141414;
+  --carte-2: #1f1f1f;
+  --bordure: #2a2a2a;
+  --texte: #f5f5f5;
+  --discret: #a3a3a3;
+  --orange: #ff7a1a;
+  --orange-piste: #4a2508;
+  --sur-orange: #000000;
+  --erreur: #ff8a80;
+  --rayon: 16px;
+  --hauteur-nav: 64px;
   font-family:
     system-ui,
     -apple-system,
@@ -21,41 +29,262 @@ body {
   background: var(--fond);
   color: var(--texte);
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
-main {
+.ecran {
   max-width: 40rem;
   margin: 0 auto;
-  padding: max(1.5rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom));
+  padding: max(1.25rem, env(safe-area-inset-top)) 1rem
+    calc(var(--hauteur-nav) + max(1.5rem, env(safe-area-inset-bottom)));
 }
 
 h1 {
   font-size: 1.75rem;
-  margin: 0 0 1rem;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
 }
 
+h2,
+h3,
 p {
   margin: 0 0 0.75rem;
 }
 
-.carte {
-  background: var(--carte);
-  border-radius: 12px;
-  padding: 1rem 1rem 0.25rem;
+.entete {
   margin-bottom: 1.25rem;
 }
 
-.principal {
+.bandeau {
+  margin-top: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border-left: 3px solid var(--orange);
+  background: var(--carte);
+  border-radius: 0 var(--rayon) var(--rayon) 0;
+}
+
+.carte {
+  background: var(--carte);
+  border-radius: var(--rayon);
+  padding: 1rem 1rem 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.carte-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.titre-carte {
   font-size: 1.125rem;
+  font-weight: 650;
+}
+
+.titre-groupe {
+  font-size: 0.8125rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--discret);
+  margin: 0.75rem 0 0.25rem;
 }
 
 .discret {
   color: var(--discret);
 }
 
-.erreur .principal {
+.petit {
+  font-size: 0.875rem;
+}
+
+.pastille {
+  font-size: 0.8125rem;
+  padding: 0.125rem 0.625rem;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  color: var(--discret);
+}
+
+/* Résumé : jauge des jours tenus et horaires du niveau */
+.resume {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.resume-texte p:last-child {
+  margin-bottom: 0;
+}
+
+.horaires strong {
+  font-weight: 650;
+}
+
+.anneau {
+  position: relative;
+  flex: none;
+  width: 128px;
+  height: 128px;
+}
+
+.anneau svg {
+  display: block;
+}
+
+.anneau-centre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.anneau-valeur {
+  font-size: 3rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.anneau-total {
+  font-size: 0.875rem;
+  color: var(--discret);
+}
+
+/* Listes d'exercices */
+.liste {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+}
+
+.ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--carte-2);
+}
+
+.ligne:last-child {
+  border-bottom: 0;
+}
+
+.detail {
+  color: var(--discret);
+  text-align: right;
+  flex: none;
+}
+
+.groupe {
+  margin-bottom: 0.25rem;
+}
+
+/* Boutons « Fait », « Minimum » et interrupteur « Boxe ce soir » */
+.choix {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+button {
+  font: inherit;
+  touch-action: manipulation;
+}
+
+.choix button,
+.interrupteur {
+  min-height: 44px;
+  padding: 0 1.125rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: var(--carte-2);
+  color: var(--texte);
+}
+
+.choix button[aria-pressed='true'],
+.interrupteur[aria-pressed='true'] {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--sur-orange);
+  font-weight: 650;
+}
+
+.interrupteur {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.bonus {
+  margin: 0.75rem 0 0;
+  border-top: 1px solid var(--carte-2);
+  padding-top: 0.5rem;
+}
+
+.bonus summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.note {
+  font-size: 0.875rem;
+}
+
+a {
+  color: var(--orange);
+  touch-action: manipulation;
+}
+
+/* Barre du bas */
+.nav-bas {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  height: var(--hauteur-nav);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--fond);
+  border-top: 1px solid var(--carte-2);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 72px;
+  font-size: 0.75rem;
+  color: var(--discret);
+}
+
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-item.actif {
+  color: var(--orange);
+}
+
+.nav-item[aria-disabled='true'] {
+  opacity: 0.55;
+}
+
+/* Erreur de programme */
+.erreur .titre-carte {
   color: var(--erreur);
 }
 
@@ -67,16 +296,4 @@ p {
 
 .erreur li {
   margin-bottom: 0.5rem;
-}
-
-a {
-  color: var(--lien);
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
-
-a,
-button {
-  touch-action: manipulation;
 }

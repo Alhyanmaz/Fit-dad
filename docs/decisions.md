@@ -153,3 +153,8 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - **20** : week-end des paliers 2 à 4 à 45, 60 et 75 min.
   - **21** : palier 4, contenu du palier 3 avec les 10 min signalées, en attendant José.
   - **22** : le document Claude Docs du programme est abandonné ; `docs/PROGRAMME.md` fait foi.
+
+## 18/10/2026 — décisions de José (début de l'ancrage, thème de l'appli)
+
+- **Début de l'ancrage : lundi 19/10/2026**, sans attendre l'appli (remplace le défaut de la question 1 du 17/10). Passages au plus tôt : N2 le lundi 23/11, palier 1 le lundi 28/12, palier 2 le lundi 01/02/2027 ; ce sont les dates des scénarios 8 et 17. Les premiers jours sans appli ne changent rien aux passages : seuls les 7 derniers jours comptent.
+- **Thème de l'appli** : fond noir, accent orange, d'après un exemple d'infographie d'appli fitness envoyé par José (Shutterstock, avec filigrane). Claude reprend le style (cartes arrondies, jauge circulaire, barre du bas), pas l'image, qui n'entre pas dans le dépôt.

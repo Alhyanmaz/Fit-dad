@@ -1,32 +1,41 @@
-import { dateFrancaise, lireProgramme, programmeBrut, resumerProgramme } from '../data/programme';
+import { lireProgramme, programmeBrut } from '../data/programme';
+import type { DateIso } from '../domain/dates';
+import { Aujourdhui } from './Aujourdhui';
 
 /** Nombre d'erreurs affichées au plus ; le reste est résumé. */
 const ERREURS_AFFICHEES = 5;
 
+/**
+ * Début de l'ancrage, choisi par José (décision du 18/10/2026). Il passera dans les réglages
+ * enregistrés sur le téléphone, avec le niveau en cours, à l'étape suivante du J3.
+ */
+const DEBUT_ANCRAGE: DateIso = '2026-10-19';
+
 const lecture = lireProgramme(programmeBrut);
 
-export function App() {
-  return (
-    <main>
-      <h1>Fit-dad v2</h1>
-      {lecture.ok ? <ProgrammeValide /> : <ProgrammeInvalide erreurs={lecture.erreurs} />}
-      <p className="discret">Version en construction. Ton appli du quotidien reste la v1.</p>
-      <a href="../">Ouvrir la v1</a>
-    </main>
-  );
+/** Date du téléphone, au format du domaine (« AAAA-MM-JJ »). */
+function aujourdhui(): DateIso {
+  const maintenant = new Date();
+  const deux = (n: number) => String(n).padStart(2, '0');
+  return `${maintenant.getFullYear()}-${deux(maintenant.getMonth() + 1)}-${deux(maintenant.getDate())}`;
 }
 
-function ProgrammeValide() {
-  if (!lecture.ok) return null;
-  const resume = resumerProgramme(lecture.programme);
+export function App() {
+  if (!lecture.ok) {
+    return (
+      <main className="ecran">
+        <h1>Fit-dad</h1>
+        <ProgrammeInvalide erreurs={lecture.erreurs} />
+      </main>
+    );
+  }
   return (
-    <section className="carte" aria-label="Programme">
-      <p className="principal">Programme chargé : {resume.nombreExercices} exercices</p>
-      <p className="discret">Version du programme : {dateFrancaise(resume.version)}</p>
-      <p className="discret">
-        Vérifié au chargement : structure, valeurs et renvois entre sections.
-      </p>
-    </section>
+    <Aujourdhui
+      programme={lecture.programme}
+      date={aujourdhui()}
+      debut={DEBUT_ANCRAGE}
+      niveau={{ ancrage: 'N1' }}
+    />
   );
 }
 
@@ -34,7 +43,7 @@ function ProgrammeInvalide({ erreurs }: { erreurs: string[] }) {
   const reste = erreurs.length - ERREURS_AFFICHEES;
   return (
     <section className="carte erreur" role="alert">
-      <p className="principal">Programme illisible</p>
+      <p className="titre-carte">Programme illisible</p>
       <ul>
         {erreurs.slice(0, ERREURS_AFFICHEES).map((erreur) => (
           <li key={erreur}>{erreur}</li>
