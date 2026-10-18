@@ -7,6 +7,7 @@ import {
   detailMouvement,
   fourchetteTexte,
   heureCourte,
+  parCote,
 } from './libelles';
 
 const lecture = lireProgramme(programmeBrut);
@@ -40,5 +41,7 @@ describe('libellés de l’écran Aujourd’hui', () => {
       '6 × 10',
     );
     expect(detailEtirement(programme, { exercice: 'kiza', series: 1 })).toBe('1 × 30 s');
+    expect(parCote('chaque côté')).toBe('par côté');
+    expect(parCote('chaque bras')).toBe('par bras');
   });
 });

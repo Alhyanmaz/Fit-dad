@@ -11,7 +11,7 @@
 - **Une appli, deux tranches** (décision du 17/10, `docs/SPEC.md` §10) : tranche 1, l'ancrage puis le premier cycle du palier 1 (jalons J3 à J5) ; tranche 2, les paliers 2 à 4 et la bascule de la v1 (J6).
 - **Les 22 questions du 17/10 sont tranchées** (`docs/decisions.md`).
 - **Ancrage commencé le lundi 19/10/2026** (décision du 18/10), sans attendre l'appli.
-- **J3 en cours** sur la branche `j3-aujourdhui` (PR en brouillon) : thème noir et orange, écran Aujourd'hui de l'ancrage branché sur le moteur (matin, midi, soir, week-end, boxe ce soir, jauge des jours tenus), avec les validations demandées par José le 18/10 : midi en corde ou marche, soir en deux (bloc clé, routine pied), single leg balance matin et soir. Pas encore d'enregistrement : rien n'est gardé, et les alternances partent de A. Pas encore mis en ligne pour cette raison.
+- **J3 en cours** sur la branche `j3-aujourdhui` (PR en brouillon) : thème noir et orange, écran Aujourd'hui de l'ancrage branché sur le moteur (matin, midi, soir, week-end, boxe ce soir, jauge des jours tenus), avec les validations demandées par José le 18/10 : midi en corde ou marche, soir en deux (bloc clé, routine pied), week-end en deux (base, « au mieux »), single leg balance matin et soir, et un compteur de répétitions par série. Pas encore d'enregistrement : rien n'est gardé, et les alternances partent de A. Pas encore mis en ligne pour cette raison.
 
 ## Prochaine étape
 
@@ -31,8 +31,10 @@ Numérotation à la suite de celle du 17/10 (questions 1 à 22, tranchées).
 
 23. Le soir de boxe et la version minimum ont une suspension de durée fixe (1 min). Comptent-ils pour la progression de la suspension ? Défaut : non, une durée fixe n'est pas une cible [Interprétation]. À trancher au J5.
 24. Paliers 2 à 4 : contenus du matin repris des anciens paliers 4 et 5, et les 10 min du palier 4 ; à confirmer avant la semaine 16 (tranche 2). Défaut : les contenus actuels.
-25. Jour tenu : le soir compte dès que le bloc clé est fait, la routine pied seule ne suffit pas. Défaut : oui [Interprétation].
+25. Jour tenu : le soir compte dès que le bloc clé est fait, la routine pied seule ne suffit pas. **Tranchée : oui (José, 18/10).**
 26. Single leg balance : deux validations, matin et soir. Défaut : oui [Interprétation].
+27. « Lever tôt » : saisir le lever et la nuit dans la carte du matin, et le coucher dans celle du soir ; l'onglet ne garde que l'historique (courbe des levers, grille des 4 semaines, progression vers le niveau suivant). Défaut : oui [Interprétation].
+28. Compteurs de répétitions : départ au bas de la fourchette tant que l'historique est vide, puis à la dernière valeur ; « chaque côté » = un côté. Défaut : oui [Interprétation].
 
 **À faire par José (pas des décisions)**
 

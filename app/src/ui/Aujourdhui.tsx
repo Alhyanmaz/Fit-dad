@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import type { Programme } from '../data/schema';
 import { lettreDuMatin, lettreDuPied } from '../domain/alternances';
 import { jourTenu, soirFait, type BlocCleFait, type MatinFait } from '../domain/ancrage';
@@ -12,6 +12,7 @@ import {
 } from '../domain/matin';
 import { midiDuJour, type MidiFait } from '../domain/midi';
 import { niveauDAncrage } from '../domain/niveau';
+import { compteurDeRepetitions } from '../domain/saisie';
 import { soirDuJour } from '../domain/soir';
 import { weekEndDuJour } from '../domain/weekEnd';
 import { Anneau } from './Anneau';
@@ -22,7 +23,21 @@ import {
   detailMouvement,
   heureCourte,
   nomExercice,
+  parCote,
 } from './libelles';
+
+/** Répétitions saisies, par bloc et par exercice (« matin:rings_row » → une valeur par série). */
+type Saisies = Record<string, number[]>;
+
+interface Saisie {
+  valeur: (cle: string, serie: number, depart: number) => number;
+  changer: (cle: string, serie: number, valeur: number) => void;
+}
+
+const SaisieContexte = createContext<Saisie>({
+  valeur: (_c, _s, depart) => depart,
+  changer: () => {},
+});
 
 /**
  * Écran « Aujourd'hui » pendant l'ancrage (jalon J3, première étape) : le contenu du jour vient du
@@ -45,7 +60,18 @@ export function Aujourdhui({
   const [midi, setMidi] = useState<MidiFait>(null);
   const [blocCle, setBlocCle] = useState<BlocCleFait>(null);
   const [pied, setPied] = useState(false);
+  const [auMieux, setAuMieux] = useState(false);
   const [equilibre, setEquilibre] = useState({ matin: false, soir: false });
+  const [saisies, setSaisies] = useState<Saisies>({});
+  const saisie: Saisie = {
+    valeur: (cle, serie, depart) => saisies[cle]?.[serie] ?? depart,
+    changer: (cle, serie, valeur) =>
+      setSaisies((avant) => {
+        const valeurs = [...(avant[cle] ?? [])];
+        valeurs[serie] = valeur;
+        return { ...avant, [cle]: valeurs };
+      }),
+  };
 
   const avantLeDebut = joursEntre(debut, date) < 0;
   const jour = avantLeDebut ? debut : date;
@@ -85,7 +111,7 @@ export function Aujourdhui({
   const tenu = jourTenu({ matin, soir: soirFait(blocCle, pied) });
 
   return (
-    <>
+    <SaisieContexte.Provider value={saisie}>
       <main className="ecran">
         <header className="entete">
           <h1>{dateLongue(jour)}</h1>
@@ -116,48 +142,79 @@ export function Aujourdhui({
         </section>
 
         {contenuWeekEnd ? (
-          <Carte
-            titre="Week-end"
-            precision="≈ 20 min, plus le soir"
-            choix={matin}
-            surChoix={setMatin}
-            valeurFait="normale"
-            valeurMinimum="minimum"
-            minimum={`Minimum : ${nomExercice(programme, matinMinimum.mobilite[0]?.exercice ?? '')}`}
-          >
-            {contenuWeekEnd.base && (
-              <>
-                <Groupe titre="Échauffement">
-                  <Mouvements programme={programme} mouvements={contenuWeekEnd.base.echauffement} />
-                </Groupe>
-                <Groupe titre="3 séries des 4 exercices">
-                  <Exercices programme={programme} exercices={contenuWeekEnd.base.exercices} />
-                </Groupe>
-                <Groupe titre="Étirement">
-                  <Etirements programme={programme} etirements={contenuWeekEnd.base.etirements} />
-                </Groupe>
-              </>
-            )}
+          <>
+            <Carte
+              titre="Week-end · base"
+              precision="≈ 20 min"
+              choix={matin}
+              surChoix={setMatin}
+              valeurFait="normale"
+              valeurMinimum="minimum"
+              minimum={`Minimum : ${nomExercice(programme, matinMinimum.mobilite[0]?.exercice ?? '')}`}
+            >
+              {contenuWeekEnd.base && (
+                <>
+                  <Groupe titre="Échauffement">
+                    <Mouvements
+                      programme={programme}
+                      bloc="base"
+                      mouvements={contenuWeekEnd.base.echauffement}
+                    />
+                  </Groupe>
+                  <Groupe titre="3 séries des 4 exercices">
+                    <Exercices
+                      programme={programme}
+                      bloc="base"
+                      exercices={contenuWeekEnd.base.exercices}
+                    />
+                  </Groupe>
+                  <Groupe titre="Étirement">
+                    <Etirements programme={programme} etirements={contenuWeekEnd.base.etirements} />
+                  </Groupe>
+                </>
+              )}
+            </Carte>
             {contenuWeekEnd.seance && (
-              <details className="bonus">
-                <summary>Au mieux, en bonus (≈ 45 min)</summary>
-                <Groupe titre="Mobilité">
-                  <Mouvements programme={programme} mouvements={contenuWeekEnd.seance.mobilite} />
-                </Groupe>
-                <Groupe titre="Séance">
-                  <Exercices programme={programme} exercices={contenuWeekEnd.seance.musculation} />
-                </Groupe>
-                <Groupe titre="Étirements de hanche">
-                  <Etirements programme={programme} etirements={contenuWeekEnd.seance.etirements} />
-                </Groupe>
-                {contenuWeekEnd.boxe && (
-                  <p className="discret">
-                    Boxe : rounds {contenuWeekEnd.boxe.rounds.join(', ')} du bloc.
-                  </p>
-                )}
-              </details>
+              <Carte
+                titre="Week-end · au mieux"
+                precision="bonus, ≈ 45 min"
+                choix={auMieux ? 'fait' : null}
+                surChoix={(valeur) => setAuMieux(valeur === 'fait')}
+                valeurFait="fait"
+                valeurMinimum={null}
+                minimum=""
+              >
+                <details className="bonus">
+                  <summary>Voir la séance</summary>
+                  <Groupe titre="Mobilité">
+                    <Mouvements
+                      programme={programme}
+                      bloc="au_mieux"
+                      mouvements={contenuWeekEnd.seance.mobilite}
+                    />
+                  </Groupe>
+                  <Groupe titre="Séance">
+                    <Exercices
+                      programme={programme}
+                      bloc="au_mieux"
+                      exercices={contenuWeekEnd.seance.musculation}
+                    />
+                  </Groupe>
+                  <Groupe titre="Étirements de hanche">
+                    <Etirements
+                      programme={programme}
+                      etirements={contenuWeekEnd.seance.etirements}
+                    />
+                  </Groupe>
+                  {contenuWeekEnd.boxe && (
+                    <p className="discret">
+                      Boxe : rounds {contenuWeekEnd.boxe.rounds.join(', ')} du bloc.
+                    </p>
+                  )}
+                </details>
+              </Carte>
             )}
-          </Carte>
+          </>
         ) : (
           <Carte
             titre={`Matin ${lettre}`}
@@ -174,8 +231,8 @@ export function Aujourdhui({
                 min.
               </p>
             )}
-            <Mouvements programme={programme} mouvements={contenuMatin.mobilite} />
-            <Exercices programme={programme} exercices={contenuMatin.musculation} />
+            <Mouvements programme={programme} bloc="matin" mouvements={contenuMatin.mobilite} />
+            <Exercices programme={programme} bloc="matin" exercices={contenuMatin.musculation} />
             <Etirements programme={programme} etirements={contenuMatin.etirements} />
           </Carte>
         )}
@@ -233,7 +290,16 @@ export function Aujourdhui({
                   ? `${contenuSoir.bloc_cle.suspension_s / 60} min`
                   : `${contenuSoir.bloc_cle.suspension_series} série à ta cible`
               }
-            />
+            >
+              {contenuSoir.bloc_cle.knee_raises && (
+                <Compteurs
+                  programme={programme}
+                  bloc="bloc_cle"
+                  exercice="suspension"
+                  series={contenuSoir.bloc_cle.suspension_series}
+                />
+              )}
+            </Ligne>
             <Ligne
               nom={nomExercice(programme, 'deep_squat')}
               detail={`${contenuSoir.bloc_cle.deep_squat_series} × 2 min`}
@@ -258,7 +324,14 @@ export function Aujourdhui({
                   key={exercice}
                   nom={nomExercice(programme, exercice)}
                   detail={contenuSoir.pied?.series_par_exercice === 1 ? '1 série' : '2 séries'}
-                />
+                >
+                  <Compteurs
+                    programme={programme}
+                    bloc="pied"
+                    exercice={exercice}
+                    series={contenuSoir.pied?.series_par_exercice ?? 1}
+                  />
+                </Ligne>
               ))}
             </ul>
             <Groupe titre="Étirements du pied">
@@ -309,7 +382,7 @@ export function Aujourdhui({
         </p>
       </main>
       <NavBas />
-    </>
+    </SaisieContexte.Provider>
   );
 }
 
@@ -376,16 +449,81 @@ function Groupe({ titre, children }: { titre: string; children: ReactNode }) {
   );
 }
 
-function Ligne({ nom, detail }: { nom: string; detail: string }) {
+function Ligne({ nom, detail, children }: { nom: string; detail: string; children?: ReactNode }) {
   return (
     <li className="ligne">
-      <span>{nom}</span>
-      {detail && <span className="detail">{detail}</span>}
+      <div className="ligne-tete">
+        <span>{nom}</span>
+        {detail && <span className="detail">{detail}</span>}
+      </div>
+      {children}
     </li>
   );
 }
 
-function Mouvements({ programme, mouvements }: { programme: Programme; mouvements: Mouvement[] }) {
+/** Un compteur de répétitions par série, pour l'historique (décision du 18/10/2026). */
+function Compteurs({
+  programme,
+  bloc,
+  exercice,
+  series,
+}: {
+  programme: Programme;
+  bloc: string;
+  exercice: string;
+  series: number;
+}) {
+  const saisie = useContext(SaisieContexte);
+  const compteur = compteurDeRepetitions(programme, exercice, series);
+  if (!compteur) return null;
+  const cle = `${bloc}:${exercice}`;
+  const nom = nomExercice(programme, exercice);
+  const unite =
+    compteur.quoi ?? (compteur.cote ? `répétitions ${parCote(compteur.cote)}` : 'répétitions');
+  return (
+    <div className="compteurs">
+      {Array.from({ length: compteur.series }, (_, serie) => {
+        const valeur = saisie.valeur(cle, serie, compteur.depart);
+        const libelle = compteur.series > 1 ? `Série ${serie + 1}` : unite;
+        return (
+          <div className="compteur" key={serie}>
+            <span className="compteur-nom">
+              {libelle.charAt(0).toUpperCase() + libelle.slice(1)}
+            </span>
+            <div className="compteur-boutons">
+              <button
+                type="button"
+                aria-label={`${nom}, ${libelle} : une de moins`}
+                onClick={() => saisie.changer(cle, serie, Math.max(0, valeur - 1))}
+              >
+                −
+              </button>
+              <output aria-label={`${nom}, ${libelle}`}>{valeur}</output>
+              <button
+                type="button"
+                aria-label={`${nom}, ${libelle} : une de plus`}
+                onClick={() => saisie.changer(cle, serie, valeur + 1)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        );
+      })}
+      {compteur.series > 1 && compteur.cote && <p className="discret petit">En {unite}.</p>}
+    </div>
+  );
+}
+
+function Mouvements({
+  programme,
+  bloc,
+  mouvements,
+}: {
+  programme: Programme;
+  bloc: string;
+  mouvements: Mouvement[];
+}) {
   if (mouvements.length === 0) return null;
   return (
     <ul className="liste">
@@ -394,7 +532,11 @@ function Mouvements({ programme, mouvements }: { programme: Programme; mouvement
           key={m.exercice}
           nom={nomExercice(programme, m.exercice)}
           detail={detailMouvement(m)}
-        />
+        >
+          {m.a_la_cible && (
+            <Compteurs programme={programme} bloc={bloc} exercice={m.exercice} series={1} />
+          )}
+        </Ligne>
       ))}
     </ul>
   );
@@ -402,9 +544,11 @@ function Mouvements({ programme, mouvements }: { programme: Programme; mouvement
 
 function Exercices({
   programme,
+  bloc,
   exercices,
 }: {
   programme: Programme;
+  bloc: string;
   exercices: ExerciceDeSeance[];
 }) {
   if (exercices.length === 0) return null;
@@ -415,7 +559,9 @@ function Exercices({
           key={e.exercice}
           nom={nomExercice(programme, e.exercice)}
           detail={detailExercice(programme, e)}
-        />
+        >
+          <Compteurs programme={programme} bloc={bloc} exercice={e.exercice} series={e.series} />
+        </Ligne>
       ))}
     </ul>
   );

@@ -160,4 +160,9 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
 - **Thème de l'appli** : fond noir, accent orange, d'après un exemple d'infographie d'appli fitness envoyé par José (Shutterstock, avec filigrane). Claude reprend le style (cartes arrondies, jauge circulaire, barre du bas), pas l'image, qui n'entre pas dans le dépôt.
 - **Validations de l'écran Aujourd'hui** (José, 18/10, sur la première capture) : le midi se valide en « Corde » ou « Marche » ; le soir se valide en deux, le bloc clé et la routine pied ; le single leg balance se valide aussi. Claude en déduit, à valider :
   - le single leg balance a deux validations, matin et soir, comme le programme le prévoit ;
-  - le soir compte pour le jour tenu dès que le bloc clé est fait (seul, c'est la version minimum) ; la routine pied seule ne suffit pas.
+  - le soir compte pour le jour tenu dès que le bloc clé est fait (seul, c'est la version minimum) ; la routine pied seule ne suffit pas. **→ confirmé par José le 18/10.**
+- **Répétitions** (José, 18/10) : chaque exercice qui se compte en répétitions se saisit, série par série, et sert à l'historique. Choix de Claude, à valider :
+  - le compteur part du bas de la fourchette tant que l'historique est vide, puis de la dernière valeur ;
+  - pour un exercice « chaque côté » (bras, jambe), il vaut pour un côté ;
+  - les knee raises de la suspension ont leur compteur ; les tenues en secondes viendront avec le minuteur.
+- **Week-end** : la base et le « au mieux » (bonus) se valident chacun de leur côté, comme le soir (choix de Claude, à valider).

@@ -47,3 +47,6 @@ export function dateLongue(date: DateIso): string {
 /** « 6h50 » à partir de « 06:50 ». */
 export const heureCourte = (heure: string): string =>
   `${Number(heure.slice(0, 2))}h${heure.slice(3, 5)}`;
+
+/** « chaque côté » → « par côté », « chaque bras » → « par bras ». */
+export const parCote = (cote: string): string => cote.replace(/^chaque /, 'par ');
