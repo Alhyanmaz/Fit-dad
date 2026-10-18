@@ -307,7 +307,7 @@ const ancrage = z.strictObject({
   compte_dans_les_cycles_interpretation: drapeau,
   jour_tenu: z.strictObject({
     regle: texte,
-    moments: z.array(z.enum(['matin', 'soir'])).min(1),
+    moments: z.array(z.enum(['lever', 'matin', 'soir'])).min(1),
     bonus: z.array(z.enum(['midi', 'week_end_au_mieux'])),
   }),
   jour_recuperation: texte,

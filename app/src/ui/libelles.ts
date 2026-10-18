@@ -82,5 +82,11 @@ export function dateLongue(date: DateIso): string {
 export const heureCourte = (heure: string): string =>
   `${Number(heure.slice(0, 2))}h${heure.slice(3, 5)}`;
 
+/** Dernière heure de lever tenue : « 06:50 » + 5 min → « 6h55 ». */
+export function heureLimite(cible: string, tolerance: number): string {
+  const total = Number(cible.slice(0, 2)) * 60 + Number(cible.slice(3, 5)) + tolerance;
+  return `${Math.floor(total / 60)}h${String(total % 60).padStart(2, '0')}`;
+}
+
 /** « chaque côté » → « par côté », « chaque bras » → « par bras ». */
 export const parCote = (cote: string): string => cote.replace(/^chaque /, 'par ');

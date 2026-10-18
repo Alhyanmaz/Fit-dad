@@ -46,8 +46,9 @@
     "compte_dans_les_cycles": false,
     "compte_dans_les_cycles_interpretation": true,
     "jour_tenu": {
-      "regle": "Matin et soir faits, au moins en version minimum. Le midi et le « au mieux » du week-end sont des bonus, jamais comptés comme ratés.",
+      "regle": "Lever à l'heure (à 5 min près), puis matin et soir faits, au moins en minimum (lever : décision du 18/10/2026). Le midi et le bonus du week-end ne sont jamais comptés comme ratés.",
       "moments": [
+        "lever",
         "matin",
         "soir"
       ],
@@ -364,7 +365,7 @@
     "fenetre_jours": 14,
     "dont_jours_de_week_end": 4,
     "fenetre_et_week_end_interpretation": true,
-    "jour_tenu_aux_paliers": "Comme pendant l'ancrage : matin et soir faits, au moins en minimum.",
+    "jour_tenu_aux_paliers": "Comme pendant l'ancrage : lever à l'heure, matin et soir faits, au moins en minimum.",
     "jour_tenu_aux_paliers_interpretation": true,
     "forcer": "Bouton « Forcer le passage », à tout moment, avec confirmation ; le cycle du nouveau niveau commence ce jour-là.",
     "forcer_cycle_interpretation": true

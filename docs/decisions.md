@@ -176,7 +176,7 @@ Réponses de José à l'explication de l'onglet « Lever tôt » et à la questi
 - **Réveil** : « Premier réveil » ou « Snooze », dans le journal du matin. Noté pour l'historique, sans effet sur le verdict [Interprétation, question 31].
 - **Passage au palier suivant** : 12 matins réussis sur les 14 derniers jours, dont les deux week-ends (les deux samedis et les deux dimanches), au lieu de 5 sur 7 dont le samedi et le dimanche ; toujours un palier par cycle (décision du 17/10). Claude l'applique entre les paliers seulement : les passages de l'ancrage (vers N2, puis vers le palier 1) restent sur les jours tenus, 5 sur 7 [Interprétation, question 29]. (**→ 18/10, plus tard : 12 jours tenus sur 14, pour tous les passages**)
 - **Cossack squat** : pas de compteur de répétitions ; l'appli affiche la cible (« 1 série · cible 8 à 14 rép. par côté »). (**→ 18/10, plus tard : légende « 8-14 rep / side », aucun compteur en mobilité**)
-- **Code couleur des versions, sans rien masquer** : minimum en vert, normale en orange, « au mieux » en rouge. Chaque version garde son étiquette écrite (choix de Claude) : la couleur n'est jamais le seul repère, car environ 1 homme sur 12 voit mal les couleurs, surtout le rouge et le vert ([Colour Blind Awareness](https://www.colourblindawareness.org/colour-blindness/)). (**→ 18/10, plus tard : couches qui s'additionnent**)
+- **Code couleur des versions, sans rien masquer** : minimum en vert, normale en orange, « au mieux » en rouge. Chaque version garde son étiquette écrite (choix de Claude) : la couleur n'est jamais le seul repère, car environ 1 homme sur 12 voit mal les couleurs, surtout le rouge et le vert ([Colour Blind Awareness](https://www.colourblindawareness.org/colour-blindness/)). (**→ 18/10, plus tard : couches qui s'additionnent ; puis pastilles retirées, couleur sur le nom de chaque exercice et légende**)
 - **Saisie du matin dans l'onglet « Lever tôt »** (question 27) : coucher, lever, réveil, nuit, lumière, note. Claude a lu « Ok pour la saisie des horaires de lever dans l'onglet lever tôt » comme le refus de son défaut, qui mettait cette saisie dans la carte du matin [Interprétation].
 
 ## 18/10/2026 — décisions de José (couches, deep squat, passages)
@@ -192,8 +192,17 @@ Réponses de José aux captures du soir et à la question 29 de `docs/reprise.md
 - **Passages** (question 29, « Non, tous les passages après 12 jours tenus ») : vers N2, vers le palier 1, puis d'un palier au suivant, la même règle, 12 jours tenus sur les 14 derniers. Elle remplace les 5 jours tenus sur 7 de l'ancrage et les 12 matins réussis sur 14 des paliers. Lecture de Claude [Interprétation] :
   - « sur 14 » et « dont les deux week-ends » sont repris de la règle du matin donnée le même jour ;
   - aux paliers, le jour tenu garde la définition de l'ancrage ;
-  - le verdict de « Lever tôt » n'entre plus dans les passages (question 33) ;
+  - le verdict de « Lever tôt » n'entre plus dans les passages (question 33) (**→ 18/10, plus tard : le lever à l'heure entre dans le jour tenu**) ;
   - le moment ne change pas : un niveau par cycle, N2 au plus tôt le lundi 23/11.
 - **Forcer le passage** : un bouton, à tout moment, avec confirmation. Le cycle du nouveau niveau commence le jour du passage [Interprétation].
 - **Aucun compteur dans les échauffements du matin** : aucun mouvement de mobilité n'a de compteur. Conséquence, signalée par Claude avant de coder : l'appli ne propose plus +2 répétitions au reverse table top ni au cossack squat ; José les règle avec « Ajuster ».
 - **Légende du cossack squat et des mouvements du même type** : « 8-14 rep / side » ; pour le reverse table top, « 5-10 rep + tenue 10-30 s ». José a écrit « 8-10 rep / side » ; Claude garde la fourchette du programme, 8 à 14 [Interprétation, question 32].
+
+## 18/10/2026 — décisions de José (lever dans le jour tenu, présentation par type)
+
+- **Question 33, « Oui »** : le lever à l'heure, à 5 min près, entre dans le jour tenu, donc dans tous les passages. Un jour est tenu quand José s'est levé à l'heure et que le matin et le soir sont faits, au moins en minimum. Sans heure de lever saisie, le jour n'est pas tenu (lecture de Claude) ; le résumé du jour le dit, avec un lien vers « Lever tôt ».
+- **Présentation** (« Je n'aime pas encore la mise en page ») : chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…), puis viennent les couches. Les grosses pastilles disparaissent ; la couleur du nom de chaque exercice donne sa couche, avec une légende. Choix de Claude :
+  - les groupes : respiration et café, mobilité, musculation, étirements, boxe, cardio (midi), renforcement du pied, équilibre ; le bloc clé est classé en mobilité, comme dans le programme (« des positions de mobilité ») [Interprétation] ;
+  - dans chaque groupe, le minimum d'abord, puis la principale, puis le bonus, avec un peu d'espace entre deux couches ;
+  - la légende en tête d'écran, et un point de couleur sur chaque bouton de validation ;
+  - le rouge passe de #DC2626 à #F43F5E pour rester lisible en texte (5,0:1 sur la carte au lieu de 3,8:1). L'écart rouge-orange reste sous le seuil de l'outil de contrôle des palettes en vision normale (14 pour 15) : l'ordre des couches et l'espace entre elles servent de second repère.

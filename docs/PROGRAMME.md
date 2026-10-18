@@ -99,7 +99,7 @@ Les couchers sont fixés 8 h avant le lever \[Interprétation\].
 **Règles**
 
 - Passage à N2 au plus tôt en semaine 6, puis au palier 1 au plus tôt en semaine 11. L'appli ne propose le passage que si 12 jours sont tenus sur les 14 derniers, dont les deux week-ends, comme pour tous les passages (décision du 18/10/2026) ; sinon, elle le propose de nouveau la semaine suivante. Tu valides. Tu peux aussi forcer le passage à tout moment, avec un bouton.
-- Jour tenu : matin et soir faits, au moins en version minimum. Le midi et le « au mieux » du week-end sont des bonus, jamais comptés comme ratés.
+- Jour tenu : lever à l'heure (à 5 min près), puis matin et soir faits, au moins en version minimum (lever : décision du 18/10/2026). Le midi et le « au mieux » du week-end sont des bonus, jamais comptés comme ratés.
 - « Lever tôt » : heures du niveau en cours. Le plancher est le matin du niveau, au moins le minimum. À N1, le lever seul valide le matin de « Lever tôt », comme l'ancien palier 1 ; le jour tenu demande, lui, la séance du matin.
 - Pas de semaine de décharge : tout est déjà à 1 série \[Interprétation\]. Les tests viennent au passage au palier 1.
 - Progression dans chaque exercice : règles habituelles (+2 répétitions ou +5 s, « Ajuster », une seule hausse par semaine sur le bas de jambe).
@@ -174,7 +174,7 @@ Après l'ancrage, le matin s'installe en 4 paliers, un par cycle (décision du 1
 
 **Règles**
 
-- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 12 jours sont tenus sur les 14 derniers, dont les deux week-ends, comme pour tous les passages (décision du 18/10/2026) ; sinon, de nouveau la semaine suivante ; tu valides, ou tu forces le passage. Le jour tenu garde la définition de l'ancrage : matin et soir faits, au moins le minimum \[Interprétation\]. En semaine, le travail impose déjà le lever : ce sont les week-ends qui montrent que l'habitude est prise.
+- Passage d'un palier au suivant : un palier par cycle, comme pendant l'ancrage (décision du 17/10/2026). L'appli le propose au plus tôt au début du cycle suivant, et seulement si 12 jours sont tenus sur les 14 derniers, dont les deux week-ends, comme pour tous les passages (décision du 18/10/2026) ; sinon, de nouveau la semaine suivante ; tu valides, ou tu forces le passage. Le jour tenu garde la définition de l'ancrage : lever à l'heure, matin et soir faits, au moins le minimum \[Interprétation\]. En semaine, le travail impose déjà le lever : ce sont les week-ends qui montrent que l'habitude est prise.
 - Chaque palier avance aussi le coucher de 10 min, de 22h30 à 22h00 : c'est lui le levier.
 - Ordre fixe : respiration → café → mobilité → musculation → étirements → douche.
 - Le café sert de marge : en cas de retard, il raccourcit d'abord. Au-delà, version courte : 1 série par exercice, swing en EMOM de 3 min, et 1 série de chaque étirement (décision du 17/10/2026).
@@ -583,8 +583,8 @@ L'appli v2 intégrera « Lever tôt » et gardera le réglage du cycle par tes t
 - **Semaines de tests** : tu saisis tes résultats, puis tu fixes toi-même les cibles du cycle suivant, comme dans l'appli actuelle.
 - **« Ajuster »** : sur chaque exercice, tu règles toi-même répétitions et charge, à tout moment.
 - **Export des données** : sauvegarde complète dans un fichier, puis réimport sur le même téléphone ou un autre.
-- **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 12 jours sur 14 ont tenu, dont les deux week-ends, à valider par toi, avec un bouton pour forcer le passage ; ni jour de récupération ni version courte.
-- **Couches** : minimum (vert), principale (orange), bonus (rouge), qui s'additionnent ; chaque exercice une fois ; aucun compteur dans les échauffements (décisions du 18/10/2026).
+- **Cycles d'ancrage** : niveaux N1 et N2, jour tenu (lever à l'heure, matin et soir, au moins en version minimum), passages proposés au plus tôt en semaines 6 et 11 si 12 jours sur 14 ont tenu, dont les deux week-ends, à valider par toi, avec un bouton pour forcer le passage ; ni jour de récupération ni version courte.
+- **Couches** : minimum (vert), principale (orange), bonus (rouge), qui s'additionnent ; chaque exercice une fois ; aucun compteur dans les échauffements. Chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…), puis la couleur du nom de chaque exercice donne sa couche, avec une légende (décisions du 18/10/2026).
 
 ## Sources
 

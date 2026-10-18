@@ -3,7 +3,7 @@
 ## État
 
 - **J0, J1 et J2 terminés et fusionnés dans `main`** : PR #1 le 08/10 ; PR #2 (programme validé au chargement) et PR #3 (moteur de règles) le 17/10, à la demande de José. La v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/` ; la v1 est intacte à la racine.
-- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, « Lever tôt » (verdict du matin), couches (minimum, principale, bonus), passages (critère, moment, niveau suivant), en fonctions pures ; scénarios 1 à 7, 12, 15, 16 et 18 verts ; scénarios 8 et 17 en partie (la proposition de chaque semaine viendra avec l'enregistrement) ; 87 tests au total.
+- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, « Lever tôt » (verdict du matin), couches (minimum, principale, bonus), passages (critère, moment, niveau suivant), en fonctions pures ; scénarios 1 à 7, 12, 15, 16 et 18 verts ; scénarios 8 et 17 en partie (la proposition de chaque semaine viendra avec l'enregistrement) ; 88 tests au total.
 - **Programme** (`docs/PROGRAMME.md`, `data/programme.json`, version du 18/10/2026) :
   - ancrage en deux niveaux, un par cycle de 5 semaines : N1 (lever 6h50), puis N2 (6h40) ; ni jour de récupération ni version courte ; « Alléger » n'y propose rien (décision du 18/10) ;
   - puis 4 paliers, de 6h30 à 6h00, **un par cycle** (décision du 17/10) ;
@@ -14,8 +14,8 @@
 - **Les 22 questions du 17/10 sont tranchées** (`docs/decisions.md`).
 - **Ancrage commencé le lundi 19/10/2026** (décision du 18/10), sans attendre l'appli.
 - **J3 en cours** sur la branche `j3-aujourdhui` (PR #4 en brouillon), thème noir et orange :
-  - écran Aujourd'hui de l'ancrage branché sur le moteur : matin, midi (corde ou marche), soir en deux (bloc clé, routine pied), week-end en une carte, boxe ce soir, single leg balance matin et soir, jauge des jours tenus sur 14 ;
-  - couches qui s'additionnent, sans rien masquer : minimum vert, principale orange, bonus rouge ; chaque exercice une fois ; chaque bloc se valide par la couche atteinte ;
+  - écran Aujourd'hui de l'ancrage branché sur le moteur : matin, midi (corde ou marche), soir en deux (bloc clé, routine pied), week-end en une carte, boxe ce soir, single leg balance matin et soir, jauge des jours tenus sur 14 (lever à l'heure, matin et soir), lien « Saisir le lever » ;
+  - chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…) ; la couche de chaque exercice se lit à la couleur de son nom (minimum vert, principale orange, bonus rouge), avec une légende ; chaque exercice une fois ; chaque bloc se valide par la couche atteinte ;
   - un compteur de répétitions par série, sauf en mobilité, où la cible s'affiche (« 8-14 rep / side ») ;
   - carte « Passage » : date au plus tôt, critère, « Forcer le passage » avec confirmation (le niveau choisi n'est pas encore gardé ; arrêt à N2 avant l'écran des paliers) ;
   - onglet « Lever tôt » : cibles du niveau, saisie du matin (coucher, lever avec « Maintenant », premier réveil ou snooze, nuit, lumière, note), verdict, règles ; barre du bas pour changer d'écran ;
@@ -47,7 +47,7 @@ Numérotation à la suite de celle du 17/10 (questions 1 à 22, tranchées).
 30. « Alléger » aux paliers : après 2 nuits difficiles de suite, l'appli propose la version courte du matin ; José accepte ou non. Défaut : oui [Interprétation]. À trancher avant le palier 1 (28/12 au plus tôt).
 31. Snooze : noté pour l'historique, sans effet sur le verdict du matin. Défaut : oui [Interprétation].
 32. Cossack squat : José a écrit « 8-10 rep / side » ; le programme dit 8 à 14. Défaut : 8-14, la fourchette du programme [Interprétation].
-33. Le lever à l'heure (à 5 min près) entre-t-il dans le jour tenu, donc dans les passages ? Proposition de Claude : oui. Sinon, plus rien ne vérifie le lever avant de l'avancer, alors que c'est le but des paliers ; et les week-ends, où le travail n'impose pas le lever, ne le vérifient plus non plus. D'ici la réponse de José, rien ne change : le jour tenu reste le matin et le soir faits. À trancher avant le 23/11.
+33. Le lever à l'heure (à 5 min près) entre-t-il dans le jour tenu, donc dans les passages ? Proposition de Claude : oui. Sinon, plus rien ne vérifie le lever avant de l'avancer, alors que c'est le but des paliers ; et les week-ends, où le travail n'impose pas le lever, ne le vérifient plus non plus. D'ici la réponse de José, rien ne change : le jour tenu reste le matin et le soir faits. À trancher avant le 23/11. **Tranchée (José, 18/10) : oui.**
 34. Week-end complet = base + bonus : le samedi, 6 exercices de musculation au lieu des 4 du « au mieux » seul, car le swing et le goblet squat de la base restent. Défaut : oui.
 
 **À faire par José (pas des décisions)**

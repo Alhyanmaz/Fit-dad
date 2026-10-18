@@ -474,15 +474,19 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
 });
 
 describe('scénario 16 : ancrage, jour tenu', () => {
-  it('matin et soir faits, au moins en minimum ; midi et bonus sans effet', () => {
-    expect(jourTenu({ matin: 'minimum', soir: 'minimum' })).toBe(true);
-    expect(jourTenu({ matin: 'principale', soir: null })).toBe(false);
-    expect(jourTenu({ matin: null, soir: 'boxe' })).toBe(false);
-    expect(jourTenu({ matin: 'principale', soir: 'principale', midi: false })).toBe(true);
-    expect(jourTenu({ matin: null, soir: 'principale', midi: true })).toBe(false);
+  it('lever à l’heure, puis matin et soir faits, au moins en minimum ; midi et bonus sans effet', () => {
+    // Le lever compte depuis le 18/10/2026 : sans lever à l'heure, pas de jour tenu.
+    expect(jourTenu({ lever: false, matin: 'principale', soir: 'principale' })).toBe(false);
+    expect(jourTenu({ lever: true, matin: 'minimum', soir: 'minimum' })).toBe(true);
+    expect(jourTenu({ lever: true, matin: 'principale', soir: null })).toBe(false);
+    expect(jourTenu({ lever: true, matin: null, soir: 'boxe' })).toBe(false);
+    expect(jourTenu({ lever: true, matin: 'principale', soir: 'principale', midi: false })).toBe(
+      true,
+    );
+    expect(jourTenu({ lever: true, matin: null, soir: 'principale', midi: true })).toBe(false);
     // Samedi : la principale (la base) et le soir faits, sans le bonus ; puis avec.
-    expect(jourTenu({ matin: 'principale', soir: 'principale' })).toBe(true);
-    expect(jourTenu({ matin: 'bonus', soir: 'minimum' })).toBe(true);
+    expect(jourTenu({ lever: true, matin: 'principale', soir: 'principale' })).toBe(true);
+    expect(jourTenu({ lever: true, matin: 'bonus', soir: 'minimum' })).toBe(true);
   });
 
   it('soir validé en deux parts : le bloc clé compte, la routine pied seule ne suffit pas', () => {
@@ -491,8 +495,10 @@ describe('scénario 16 : ancrage, jour tenu', () => {
     expect(soirFait('minimum', true)).toBe('minimum');
     expect(soirFait('boxe', false)).toBe('boxe');
     expect(soirFait(null, true)).toBeNull();
-    expect(jourTenu({ matin: 'principale', soir: soirFait(null, true) })).toBe(false);
-    expect(jourTenu({ matin: 'minimum', soir: soirFait('principale', false) })).toBe(true);
+    expect(jourTenu({ lever: true, matin: 'principale', soir: soirFait(null, true) })).toBe(false);
+    expect(jourTenu({ lever: true, matin: 'minimum', soir: soirFait('principale', false) })).toBe(
+      true,
+    );
   });
 
   it('versions minimum : un mouvement de mobilité et 2 min de deep squat le matin ; suspension seule et deep squat le soir', () => {

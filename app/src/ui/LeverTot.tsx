@@ -5,18 +5,12 @@ import type { JournalDuJour } from '../domain/journal';
 import { ciblesDuNiveau, verdictDuMatin } from '../domain/leverTot';
 import type { Niveau } from '../domain/niveau';
 import { Carte, Choix, Groupe } from './composants';
-import { dateLongue, heureCourte } from './libelles';
+import { dateLongue, heureCourte, heureLimite } from './libelles';
 
 /** Heure du téléphone, « HH:MM ». */
 function maintenant(): string {
   const d = new Date();
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-}
-
-/** « 06:50 » + 5 min → « 6h55 ». */
-function heureLimite(cible: string, tolerance: number): string {
-  const total = Number(cible.slice(0, 2)) * 60 + Number(cible.slice(3, 5)) + tolerance;
-  return `${Math.floor(total / 60)}h${String(total % 60).padStart(2, '0')}`;
 }
 
 /**

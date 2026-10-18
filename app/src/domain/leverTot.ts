@@ -41,6 +41,16 @@ export interface MatinDeLeverTot {
 }
 
 /**
+ * Lever tenu : au plus tard à la cible plus la tolérance (5 min, décision du 18/10/2026). Faux tant
+ * que l'heure n'est pas saisie. C'est la première condition du jour tenu (décision du 18/10/2026).
+ */
+export function leverTenu(programme: Programme, niveau: Niveau, leve: string | null): boolean {
+  if (!leve) return false;
+  const cible = ciblesDuNiveau(programme, niveau).lever;
+  return enMinutes(leve) - enMinutes(cible) <= programme.lever_tot.tolerance_lever_min;
+}
+
+/**
  * Manqué si le lever dépasse la cible de plus de la tolérance (5 min, décision du 18/10/2026) ;
  * réussi si le lever est tenu et que le plancher est fait, ou que la nuit est difficile, ou que le
  * niveau ne l'exige pas ; partiel sinon. Le snooze est noté sans changer le verdict [Interprétation].
@@ -51,9 +61,8 @@ export function verdictDuMatin(
   matin: MatinDeLeverTot,
 ): Verdict | null {
   if (!matin.leve) return null;
+  if (!leverTenu(programme, niveau, matin.leve)) return 'manque';
   const cibles = ciblesDuNiveau(programme, niveau);
-  if (enMinutes(matin.leve) - enMinutes(cibles.lever) > programme.lever_tot.tolerance_lever_min)
-    return 'manque';
   const nuitDifficile =
     programme.lever_tot.qualites_nuit.find((q) => q.id === matin.nuit)?.difficile ?? false;
   return matin.plancherFait || nuitDifficile || !cibles.plancherObligatoire ? 'reussi' : 'partiel';

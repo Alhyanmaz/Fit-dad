@@ -1,9 +1,11 @@
 /* Thème de la v2 : fond noir, accent orange (décision du 18/10/2026). Contrastes vérifiés :
    orange sur noir 8,0:1, orange sur carte 7,1:1, gris discret sur carte 7,3:1.
-   Couches (décisions du 18/10/2026) : minimum vert, principale orange, bonus rouge ; texte noir
-   sur vert 12:1 et sur orange 8:1, texte blanc sur rouge 4,8:1 ; le rouge ne sert jamais de couleur
-   de texte (3,8:1 sur carte). Les trois couleurs restent distinctes pour un daltonisme rouge-vert
-   (écart ΔE ≥ 9,7, outil de contrôle des palettes) ; chaque couleur porte aussi son libellé. */
+   Couches (décisions du 18/10/2026) : minimum vert, principale orange, bonus rouge, en couleur du
+   nom de chaque exercice ; texte noir sur vert 12:1, sur orange 8:1, sur rouge 5,7:1 ; noms sur
+   carte : vert 10,6:1, orange 7,1:1, rouge 5,0:1. Écarts mesurés avec l'outil de contrôle des
+   palettes : ΔE ≥ 9,7 pour un daltonisme rouge-vert ; rouge-orange 14 en vision normale, sous le
+   seuil de 15 : l'ordre des couches (minimum, principale, bonus), l'espace entre elles et la légende
+   servent de second repère. */
 :root {
   color-scheme: dark;
   --fond: #000000;
@@ -17,8 +19,8 @@
   --sur-orange: #000000;
   --vert: #4ade80;
   --sur-vert: #000000;
-  --rouge: #dc2626;
-  --sur-rouge: #ffffff;
+  --rouge: #f43f5e;
+  --sur-rouge: #000000;
   --erreur: #ff8a80;
   --rayon: 16px;
   --hauteur-nav: 64px;
@@ -258,6 +260,8 @@ button {
 
 .choix button,
 .interrupteur {
+  display: inline-flex;
+  align-items: center;
   min-height: 44px;
   padding: 0 1.125rem;
   border-radius: 999px;
@@ -290,45 +294,77 @@ button {
   color: var(--sur-rouge);
 }
 
-/* Couches : étiquette et bordure de la couleur de la couche */
-.etiquette {
+/* Couches : couleur du nom de l'exercice, légende, point de couleur sur les boutons */
+.couche-minimum .nom,
+.couche-minimum.legende-item,
+.couche-minimum.en-plus {
+  color: var(--vert);
+}
+
+.couche-principale .nom,
+.couche-principale.legende-item,
+.couche-principale.en-plus {
+  color: var(--orange);
+}
+
+.couche-bonus .nom,
+.couche-bonus.legende-item,
+.couche-bonus.en-plus {
+  color: var(--rouge);
+}
+
+.ligne .nom {
+  font-weight: 600;
+}
+
+/* Un peu d'air quand la couche change, dans un même type */
+.ligne.changement {
+  padding-top: 0.875rem;
+}
+
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.legende-item::before,
+.choix button[data-couche]::before {
+  content: '';
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 0.125rem 0.5rem;
-  border-radius: 999px;
-  margin: 0.25rem 0 0.375rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  background: currentColor;
 }
 
-.etiquette.principale {
-  background: var(--orange);
-  color: var(--sur-orange);
-}
-
-.etiquette.minimum {
+.choix button[data-couche='minimum']::before {
   background: var(--vert);
-  color: var(--sur-vert);
 }
 
-.etiquette.bonus {
+.choix button[data-couche='principale']::before {
+  background: var(--orange);
+}
+
+.choix button[data-couche='bonus']::before {
   background: var(--rouge);
-  color: var(--sur-rouge);
 }
 
-.bloc-couche {
-  border-left: 3px solid var(--orange);
-  padding-left: 0.75rem;
-  margin: 0.5rem 0 0.75rem;
+.choix button[aria-pressed='true']::before {
+  background: currentColor;
 }
 
-.bloc-couche.minimum {
-  border-left-color: var(--vert);
-}
-
-.bloc-couche.bonus {
-  border-left-color: var(--rouge);
+/* Lien vers « Lever tôt » depuis le résumé du jour */
+.lien {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--orange);
+  text-decoration: underline;
 }
 
 /* Passage : confirmation avant de changer de niveau */

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { lireProgramme, programmeBrut } from '../data/programme';
-import { ciblesDuNiveau, verdictDuMatin } from './leverTot';
+import { ciblesDuNiveau, leverTenu, verdictDuMatin } from './leverTot';
 
 const lecture = lireProgramme(programmeBrut);
 if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
@@ -16,6 +16,14 @@ describe('scénario 8 : « Lever tôt », verdict du matin', () => {
     });
     expect(ciblesDuNiveau(programme, n2).lever).toBe('06:40');
     expect(ciblesDuNiveau(programme, { palier: 1 }).lever).toBe('06:30');
+  });
+
+  it('lever tenu, pour le jour tenu : cible + 5 → oui, cible + 6 → non, heure absente → non', () => {
+    expect(leverTenu(programme, n2, '06:45')).toBe(true);
+    expect(leverTenu(programme, n2, '06:46')).toBe(false);
+    expect(leverTenu(programme, { ancrage: 'N1' }, '06:55')).toBe(true);
+    expect(leverTenu(programme, { ancrage: 'N1' }, '07:00')).toBe(false);
+    expect(leverTenu(programme, n2, null)).toBe(false);
   });
 
   it('tolérance de 5 min : cible + 5 → tenu, cible + 6 → manqué', () => {

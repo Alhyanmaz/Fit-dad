@@ -80,6 +80,7 @@ export function App() {
           journal={journal}
           setJournal={setJournal}
           surPassage={surPassage}
+          surLeverTot={() => setEcran('lever')}
         />
       ) : (
         <main className="ecran">
