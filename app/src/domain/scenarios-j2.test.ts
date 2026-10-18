@@ -420,16 +420,19 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
     expect(soir.etirements_apres_boxe?.facultatif).toBe(true);
   });
 
-  it('week-end : la base, et le « au mieux » en bonus', () => {
+  it('week-end : la base en paires échauffement-exercice, et le « au mieux » en bonus', () => {
     const samedi = weekEndDuJour(programme, {
       niveau: { ancrage: 'N1' },
       date: SAMEDI,
       lettre: 'A',
       joursDeBoxe: [],
     });
+    // Un échauffement par exercice, pour le muscle concerné (décisions du 18/10/2026).
     expect(samedi.base?.echauffement.map((m) => m.exercice)).toEqual([
-      'bear_walk',
+      'shoulder_dislocate',
       'hip_hinge_baton',
+      'scapula_pull_up',
+      'cossack_squat',
     ]);
     expect(samedi.base?.exercices).toEqual([
       { exercice: 'kt_press', series: 3 },
@@ -437,25 +440,22 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
       { exercice: 'rings_row', series: 3 },
       { exercice: 'goblet_squat', series: 3 },
     ]);
+    expect(samedi.base?.minimum?.exercice).toEqual({ exercice: 'swing_emom', series: 1, reps: 10 });
     expect(samedi.bonus).toBe(true);
     expect(samedi.seance?.mobilite.find((m) => m.exercice === 'cossack_squat')).toEqual({
       exercice: 'cossack_squat',
       a_la_cible: true,
     });
     expect(samedi.boxe?.rounds).toEqual([1, 3, 5]);
-    // Dimanche : séance B en 3 séries sans les exercices du palier 2 (Copenhagen, tuck hang L-sit).
+    // Dimanche : la paire du minimum est le goblet squat ; pas de musculation dans le bonus.
     const dimanche = weekEndDuJour(programme, {
       niveau: { ancrage: 'N2' },
       date: DIMANCHE,
       lettre: 'B',
       joursDeBoxe: [],
     });
-    expect(dimanche.seance?.musculation).toEqual([
-      { exercice: 'pompes', series: 3 },
-      { exercice: 'goblet_squat', series: 3 },
-      { exercice: 'traction_assistee', series: 3 },
-      { exercice: 'swing_emom', series: 3, reps: 10 },
-    ]);
+    expect(dimanche.base?.minimum?.exercice).toEqual({ exercice: 'goblet_squat', series: 1 });
+    expect(dimanche.seance?.musculation).toEqual([]);
     // Les 3 étirements de hanche, pigeon compris (décision du 17/10/2026).
     expect(dimanche.seance?.etirements).toEqual(
       ['couch_stretch', 'pigeon', 'pancake'].map((exercice) => ({ exercice, series: 2 })),

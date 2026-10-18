@@ -223,28 +223,38 @@
     },
     "week_end": {
       "base": {
-        "contenu": "2 mouvements d'échauffement (ceux du matin N2 du jour), 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake), avec les 2 min de deep squat du minimum (décision du 18/10/2026) ; puis le soir.",
+        "contenu": "Un échauffement par exercice, pour le muscle concerné, puis 3 séries des 4 exercices (KT press, swing, rings row, goblet squat) et 1 étirement (couch stretch ou pancake). Le minimum est une de ces paires, l'exercice en 1 série, avec les 2 min de deep squat ; la principale ajoute les 3 autres paires (décisions du 18/10/2026). Puis le soir.",
         "duree_min": 22,
-        "exercices": [
-          "kt_press",
-          "swing_emom",
-          "rings_row",
-          "goblet_squat"
+        "paires": [
+          {
+            "exercice": "kt_press",
+            "echauffement": "shoulder_dislocate"
+          },
+          {
+            "exercice": "swing_emom",
+            "echauffement": "hip_hinge_baton"
+          },
+          {
+            "exercice": "rings_row",
+            "echauffement": "scapula_pull_up"
+          },
+          {
+            "exercice": "goblet_squat",
+            "echauffement": "cossack_squat"
+          }
         ],
+        "paires_source": "Le hip hinge prépare le swing ; shoulder dislocate et scapula pull-up préparent la poussée et le tirage (docs/PROGRAMME.md, « Mobilité et échauffement »). Le cossack squat pour le goblet squat, et la répartition entre poussée et tirage, sont des choix de Claude.",
+        "paires_interpretation": true,
         "series": 3,
-        "echauffement_interpretation": true
+        "minimum": {
+          "A": "swing_emom",
+          "B": "goblet_squat"
+        },
+        "minimum_series": 1,
+        "minimum_interpretation": true
       },
       "au_mieux": {
-        "mobilite": "Routine Mob. matin complète (A le samedi, B le dimanche), 30 s par mouvement.",
-        "musculation": {
-          "series": 3,
-          "sans_ajouts": true,
-          "swing": {
-            "series": 3,
-            "reps": 10
-          },
-          "regle": "Séance complète A le samedi, B le dimanche, sans les exercices du palier 2."
-        },
+        "mobilite": "Le reste de la routine Mob. matin (A le samedi, B le dimanche), 30 s par mouvement.",
         "etirements_hanches_series": 2,
         "etirements_hanches": "Les 3 de la zone hanches : couch stretch, pigeon, pancake (décision du 17/10/2026).",
         "boxe_rounds": [
@@ -253,8 +263,9 @@
           5
         ],
         "boxe_interpretation": true,
-        "duree_min": 45,
-        "note": "Bonus : ce que le « au mieux » ajoute à la base, chaque exercice une fois (couches minimum, principale, bonus ; décision du 18/10/2026). Puis le soir, comme chaque jour."
+        "duree_min": 20,
+        "duree_interpretation": true,
+        "note": "Bonus : ce que le « au mieux » ajoute à la principale, sans exercice de musculation en plus (lecture de Claude, 18/10/2026). Puis le soir, comme chaque jour."
       }
     }
   },

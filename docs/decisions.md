@@ -215,3 +215,9 @@ Réponses de José aux captures du soir et à la question 29 de `docs/reprise.md
 - **Durées réglables** pour les mouvements au temps : pas de 5 s, de 15 s à partir de 2 min, de 1 min à partir de 5 min [Interprétation]. Les étirements restent à 30 s au plus (règle n° 2 du programme), signalé par Claude avant de coder.
 - **Single leg balance du soir** : un bonus ; celui du matin reste dans la principale.
 - **En attente** : la structure du week-end (« un mouvement d'échauffement pour un exo de musculation, muscle concerné » ; pourquoi 6 exercices) et la respiration à N1 (questions 35 et 36 de `docs/reprise.md`).
+
+## 18/10/2026 — décision de José (principale du week-end)
+
+- **Question 35, « Non, la principale du week-end doit être + 3 exo musculation + 3 exo mobilité »** : un échauffement par exercice, pour le muscle concerné. Le minimum est une paire, l'exercice en 1 série, avec les 2 min de deep squat ; la principale ajoute les 3 autres paires, la fin des séries de l'exercice du minimum et l'étirement de la base.
+- **Paires** (choix de Claude) : hip hinge au bâton pour le swing, le programme disant que le hip hinge prépare le swing ; shoulder dislocate pour le KT press et scapula pull-up pour le rings row, le programme disant que ces deux mouvements préparent la poussée et le tirage ; cossack squat pour le goblet squat [Interprétation, question 37]. La paire du minimum : le swing le samedi, le goblet squat le dimanche.
+- **Gardé de la proposition de Claude**, sans objection de José [Interprétation] : le minimum en 1 série ; le bonus sans exercice de musculation en plus (le reste de la routine de mobilité, les étirements de hanche, la boxe). Le week-end complet compte donc 4 exercices de musculation, et non plus 6.

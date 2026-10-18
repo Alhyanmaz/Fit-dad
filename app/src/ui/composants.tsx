@@ -171,11 +171,14 @@ export function Compteurs({
   cle,
   exercice,
   series,
+  debut = 0,
 }: {
   programme: Programme;
   cle: string;
   exercice: string;
   series: number;
+  /** Séries déjà faites dans une couche d'avant : la numérotation continue (« Série 2 »). */
+  debut?: number;
 }) {
   const saisie = useContext(SaisieContexte);
   const compteur = compteurDeRepetitions(programme, exercice, series);
@@ -186,8 +189,8 @@ export function Compteurs({
   return (
     <div className="compteurs">
       {Array.from({ length: compteur.series }, (_, serie) => {
-        const valeur = saisie.valeur(cle, serie, compteur.depart);
-        const libelle = compteur.series > 1 ? `Série ${serie + 1}` : unite;
+        const valeur = saisie.valeur(cle, debut + serie, compteur.depart);
+        const libelle = compteur.series > 1 || debut > 0 ? `Série ${debut + serie + 1}` : unite;
         return (
           <div className="compteur" key={serie}>
             <span className="compteur-nom">
@@ -197,7 +200,7 @@ export function Compteurs({
               <button
                 type="button"
                 aria-label={`${nom}, ${libelle} : une de moins`}
-                onClick={() => saisie.changer(cle, serie, Math.max(0, valeur - 1))}
+                onClick={() => saisie.changer(cle, debut + serie, Math.max(0, valeur - 1))}
               >
                 −
               </button>
@@ -205,7 +208,7 @@ export function Compteurs({
               <button
                 type="button"
                 aria-label={`${nom}, ${libelle} : une de plus`}
-                onClick={() => saisie.changer(cle, serie, valeur + 1)}
+                onClick={() => saisie.changer(cle, debut + serie, valeur + 1)}
               >
                 +
               </button>
@@ -228,8 +231,11 @@ export interface LigneDeCouche {
   detail?: string;
   /** Durée réglable, en secondes, par série. */
   duree?: { exercice: string | null; prevu: number };
-  /** Compteurs de répétitions, une ligne par série. */
-  repetitions?: { exercice: string; series: number };
+  /**
+   * Compteurs de répétitions, une ligne par série, gardés sous « bloc:exercice » ; `debut` : séries
+   * déjà comptées dans une couche d'avant.
+   */
+  repetitions?: { exercice: string; series: number; debut?: number };
   /** Tenue réglable sous les répétitions (reverse table top). */
   tenue?: { exercice: string; prevu: number };
   /** Ligne à lire seulement, sans case à cocher (le café, une marge). */
@@ -288,9 +294,10 @@ export function Ligne({
       {ligne.repetitions && (
         <Compteurs
           programme={programme}
-          cle={cle}
+          cle={`${bloc}:${ligne.repetitions.exercice}`}
           exercice={ligne.repetitions.exercice}
           series={ligne.repetitions.series}
+          debut={ligne.repetitions.debut ?? 0}
         />
       )}
       {ligne.tenue && (
@@ -353,6 +360,8 @@ export function lignesParType(
   const etirements: LigneDeCouche[] = [];
   const boxe: LigneDeCouche[] = [];
   const tenueDesEtirements = programme.regles_generales.etirements.tenue_s;
+  // Séries déjà demandées par les couches d'avant, pour numéroter les séries en plus.
+  const seriesVues = new Map<string, number>();
   for (const couche of COUCHES) {
     const c = couches[couche];
     if (c.respiration_min > 0)
@@ -405,7 +414,9 @@ export function lignesParType(
         nom: 'Neck CARs',
         detail: `${c.neck_cars_par_sens} par sens`,
       });
-    for (const e of c.musculation)
+    for (const e of c.musculation) {
+      const debut = seriesVues.get(e.exercice) ?? 0;
+      seriesVues.set(e.exercice, debut + e.series);
       musculation.push({
         cle: e.en_plus ? `${e.exercice}+` : e.exercice,
         couche,
@@ -413,8 +424,9 @@ export function lignesParType(
           ? `${nomExercice(programme, e.exercice)}, en plus`
           : nomExercice(programme, e.exercice),
         detail: detailExercice(programme, e),
-        repetitions: { exercice: e.exercice, series: e.series },
+        repetitions: { exercice: e.exercice, series: e.series, debut },
       });
+    }
     for (const e of c.etirements)
       etirements.push({
         cle: e.en_plus ? `${e.exercice}+` : e.exercice,

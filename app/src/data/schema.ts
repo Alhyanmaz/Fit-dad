@@ -356,26 +356,27 @@ const ancrage = z.strictObject({
   }),
   chaque_jour: z.strictObject({ exercice: idExercice, moment: texte }),
   week_end: z.strictObject({
+    /** Principale du week-end : un échauffement par exercice, pour le muscle concerné (18/10/2026). */
     base: z.strictObject({
       contenu: texte,
       duree_min: entierPositif,
-      exercices: z.array(idExercice).min(1),
+      paires: z.array(z.strictObject({ exercice: idExercice, echauffement: idExercice })).min(1),
+      paires_source: texte,
+      paires_interpretation: drapeau,
       series: entierPositif,
-      echauffement_interpretation: drapeau,
+      /** La paire du minimum, selon la lettre du jour (A le samedi, B le dimanche). */
+      minimum: z.strictObject({ A: idExercice, B: idExercice }),
+      minimum_series: entierPositif,
+      minimum_interpretation: drapeau,
     }),
     au_mieux: z.strictObject({
       mobilite: texte,
-      musculation: z.strictObject({
-        series: entierPositif,
-        sans_ajouts: z.boolean(),
-        swing: z.strictObject({ series: entierPositif, reps: entierPositif }),
-        regle: texte,
-      }),
       etirements_hanches_series: entierPositif,
       etirements_hanches: texte,
       boxe_rounds: z.array(entierPositif).min(1),
       boxe_interpretation: drapeau,
       duree_min: entierPositif,
+      duree_interpretation: drapeau,
       note: texte.optional(),
     }),
   }),
@@ -970,9 +971,26 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     verifier(['ancrage', 'soir', 'version_minimum', 'exercices', j], id, 'bloc_cle'),
   );
   verifier(['ancrage', 'chaque_jour', 'exercice'], an.chaque_jour.exercice, 'equilibre');
-  an.week_end.base.exercices.forEach((id, j) =>
-    verifier(['ancrage', 'week_end', 'base', 'exercices', j], id, 'musculation'),
-  );
+  an.week_end.base.paires.forEach((paire, j) => {
+    verifier(
+      ['ancrage', 'week_end', 'base', 'paires', j, 'exercice'],
+      paire.exercice,
+      'musculation',
+    );
+    verifier(
+      ['ancrage', 'week_end', 'base', 'paires', j, 'echauffement'],
+      paire.echauffement,
+      'mobilite',
+    );
+  });
+  for (const lettre of LETTRES) {
+    const id = an.week_end.base.minimum[lettre];
+    if (!an.week_end.base.paires.some((paire) => paire.exercice === id))
+      signaler(
+        ['ancrage', 'week_end', 'base', 'minimum', lettre],
+        `« ${id} » n'est pas un exercice des paires du week-end`,
+      );
+  }
   verifierRounds(
     ['ancrage', 'week_end', 'au_mieux', 'boxe_rounds'],
     an.week_end.au_mieux.boxe_rounds,

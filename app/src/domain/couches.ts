@@ -151,10 +151,10 @@ export function couchesDuMatin(programme: Programme, ctx: ContexteDuMatin): Couc
 }
 
 /**
- * Week-end : le minimum (le premier mouvement de la séance, puis le deep squat, comme chaque
- * matin), la principale (la base de l'ancrage, ou la séance du palier) et le bonus (le « au mieux »
- * de l'ancrage, réduit à ce qu'il ajoute à la base). Le premier mouvement est un choix de Claude
- * [Interprétation].
+ * Week-end (décisions du 18/10/2026) : le minimum (une paire échauffement et exercice, en 1 série,
+ * puis le deep squat), la principale (les 3 autres paires de la base, la fin des séries et
+ * l'étirement ; aux paliers, la séance du palier) et le bonus (le « au mieux » de l'ancrage, réduit
+ * à ce qu'il ajoute : mobilité, étirements de hanche, boxe).
  */
 export function couchesDuWeekEnd(programme: Programme, niveau: Niveau, we: WeekEnd): Couches {
   const base: Contenu = we.base
@@ -177,10 +177,14 @@ export function couchesDuWeekEnd(programme: Programme, niveau: Niveau, we: WeekE
   const regles = estEnAncrage(niveau)
     ? programme.ancrage.matin.version_minimum
     : programme.matin.version_minimum;
+  // Le minimum : la paire du jour (échauffement et exercice en 1 série) pendant l'ancrage, sinon le
+  // premier mouvement de la séance ; puis le deep squat, comme chaque matin.
+  const paire = we.base?.minimum;
   const premier = principale.mobilite[0];
   const minimum: Contenu = {
     ...contenuVide(),
-    mobilite: premier ? [premier] : [],
+    mobilite: paire ? [paire.echauffement] : premier ? [premier] : [],
+    musculation: paire ? [paire.exercice] : [],
     tenues: [{ ...regles.tenue }],
   };
   return empiler(minimum, principale, we.bonus ? seance : contenuVide());
