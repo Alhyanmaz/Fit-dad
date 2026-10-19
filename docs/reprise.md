@@ -1,4 +1,4 @@
-# Reprise de la session (18/10/2026)
+# Reprise de la session (19/10/2026)
 
 ## État
 
@@ -52,7 +52,14 @@ Numérotation à la suite de celle du 17/10 (questions 1 à 22, tranchées).
 34. Week-end complet = base + bonus : le samedi, 6 exercices de musculation au lieu des 4 du « au mieux » seul, car le swing et le goblet squat de la base restent. Défaut : oui. **José ne comprend pas ces 6 exercices (18/10) : voir la question 35.**
 35. Week-end, proposition de Claude d'après « un mouvement d'échauffement pour un exo de musculation (muscle concerné) » : minimum, un échauffement et l'exercice qu'il prépare, en 1 série, plus le deep squat (samedi : hip hinge au bâton et swing, le programme disant que le hip hinge prépare le swing ; dimanche : cossack squat et goblet squat) ; principale, le reste de la base, 4 exercices en tout ; bonus, le reste de la routine de mobilité, les étirements de hanche et la boxe, sans exercice de musculation en plus. Défaut : oui [Interprétation]. À trancher avant le samedi 24/10. **Tranchée (José, 18/10) : non ; la principale ajoute 3 exercices et 3 mouvements de mobilité, un échauffement par exercice.** Minimum et bonus gardés [Interprétation].
 36. Respiration : 5 min dès N2 et aux paliers (programme) ; à N1, rien, le matin n'a pas de marge. L'ajouter dès N1 ? Défaut : non ; un minuteur de respiration viendra avec celui des tenues.
-37. Paires échauffement-exercice du week-end : shoulder dislocate pour le KT press, hip hinge au bâton pour le swing, scapula pull-up pour le rings row, cossack squat pour le goblet squat ; minimum, le swing le samedi et le goblet squat le dimanche. Défaut : oui [Interprétation ; le programme ne relie que le hip hinge au swing, et les deux mouvements d'épaule à la poussée et au tirage].
+37. Paires échauffement-exercice du week-end : shoulder dislocate pour le KT press, hip hinge au bâton pour le swing, scapula pull-up pour le rings row, cossack squat pour le goblet squat ; minimum, le swing le samedi et le goblet squat le dimanche. Défaut : oui [Interprétation ; le programme ne relie que le hip hinge au swing, et les deux mouvements d'épaule à la poussée et au tirage]. **Remplacée par la question 38 (José, 19/10).**
+38. Week-end en séances A et B. José, 19/10 : « Samedi séance A, Dimanche séance B » ; minimum, 2 échauffements et le deep squat, 2 exercices, 2 étirements ; principale, 4 échauffements et le deep squat, 4 exercices, 4 étirements (les 3 de hanche et le prayer stretch) ; bonus, la boxe et le reste de la mobilité ; la progression prévoit les ajouts. Proposition de Claude, en attente de José :
+    - paires, prises dans la routine Mob. du jour : samedi, séance A, shoulder dislocate → KT press, cossack squat → pistol box-assisté, scapula pull-up → rings row, hip hinge au bâton → KT single leg deadlift ; dimanche, séance B, shoulder dislocate → pompes, duck walk → goblet squat, scapula pull-up → traction assistée, hip hinge au bâton → swing (le programme relie le hip hinge au single leg deadlift et au swing, les deux mouvements d'épaule à la poussée et au tirage ; le reste est une interprétation) ;
+    - minimum : samedi, rings row et KT single leg deadlift, dimanche, pompes et goblet squat, en 1 série, pour que le week-end au minimum couvre les quatre patrons ; couch stretch et pancake, 1 × 30 s ;
+    - principale : les 4 exercices en 3 séries (swing 3 × 10), + pigeon et prayer stretch, les 4 étirements à 2 × 30 s ; bonus : le reste de la routine Mob. du jour, la boxe en 3 rounds ;
+    - le prayer stretch contredit le programme (« Prayer stretch et shoulder extension ne font plus partie du programme », `docs/PROGRAMME.md`, « Étirements ») : à confirmer par José ;
+    - ajouts du palier 2 (horse stance et carry le samedi, Copenhagen et tuck hang L-sit le dimanche, à leurs séries fixes) : déjà au programme du week-end du palier 2 ; dans la principale [Interprétation] ; leurs échauffements avec la question 24.
+    Défaut : oui.
 
 **À faire par José (pas des décisions)**
 
