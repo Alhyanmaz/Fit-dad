@@ -3,6 +3,9 @@ import { jourDeLaSemaine, type DateIso } from './dates';
 import type { TypeDeJour } from './jour';
 
 /** Midi en semaine (docs/SPEC.md §6.4 ; pendant l'ancrage, §6.11). */
+/** Ce que José valide le midi : corde ou marche (décision du 18/10/2026). */
+export type MidiFait = 'corde' | 'marche' | null;
+
 export type Midi =
   | {
       proposition: 'corde' | 'marche';

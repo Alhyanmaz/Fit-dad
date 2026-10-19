@@ -7,7 +7,8 @@ import { aUnBlocBoxe, techniqueDuClubEnPriorite, typeDeJour } from './jour';
 import { matinDuJour, versionsDuMatin } from './matin';
 import { midiDuJour } from './midi';
 import { estEnAncrage, type Niveau } from './niveau';
-import { seriesEtirementsPied, soirDuJour } from './soir';
+import { elementsDuSoir, seriesEtirementsPied, soirDuJour } from './soir';
+import { coucheAtteinte } from './validation';
 import { weekEndDuJour } from './weekEnd';
 
 /** Scénarios de recette du jalon J2 (docs/SPEC.md §9). Semaine du lundi 19/10/2026. */
@@ -181,12 +182,13 @@ describe('scénarios 4 et 5 : matins de l’ancrage', () => {
       dernierEtirement,
     });
 
-  it('4 : N1, matin A (environ 3 min, sans étirement) puis matin B', () => {
+  it('4 : N1, matin A (environ 5 min avec le deep squat, sans étirement) puis matin B', () => {
     const a = matin({ ancrage: 'N1' }, 'A');
     expect(a.mobilite).toEqual([{ exercice: 'reverse_table_top', a_la_cible: true }]);
     expect(a.musculation).toEqual([{ exercice: 'rings_row', series: 1 }]);
     expect(a.etirements).toEqual([]);
-    expect([a.respiration_min, a.cafe_min, a.travail_min]).toEqual([0, 0, 3]);
+    expect(a.tenues).toEqual([{ exercice: 'deep_squat', duree_s: 120 }]);
+    expect([a.respiration_min, a.cafe_min, a.travail_min]).toEqual([0, 0, 5]);
     const b = matin({ ancrage: 'N1' }, 'B');
     expect(b.mobilite).toEqual([{ exercice: 'cossack_squat', a_la_cible: true }]);
     expect(b.musculation).toEqual([{ exercice: 'goblet_squat', series: 1 }]);
@@ -418,16 +420,19 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
     expect(soir.etirements_apres_boxe?.facultatif).toBe(true);
   });
 
-  it('week-end : la base, et le « au mieux » en bonus', () => {
+  it('week-end : la base en paires échauffement-exercice, et le « au mieux » en bonus', () => {
     const samedi = weekEndDuJour(programme, {
       niveau: { ancrage: 'N1' },
       date: SAMEDI,
       lettre: 'A',
       joursDeBoxe: [],
     });
+    // Un échauffement par exercice, pour le muscle concerné (décisions du 18/10/2026).
     expect(samedi.base?.echauffement.map((m) => m.exercice)).toEqual([
-      'bear_walk',
+      'shoulder_dislocate',
       'hip_hinge_baton',
+      'scapula_pull_up',
+      'cossack_squat',
     ]);
     expect(samedi.base?.exercices).toEqual([
       { exercice: 'kt_press', series: 3 },
@@ -435,25 +440,22 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
       { exercice: 'rings_row', series: 3 },
       { exercice: 'goblet_squat', series: 3 },
     ]);
+    expect(samedi.base?.minimum?.exercice).toEqual({ exercice: 'swing_emom', series: 1, reps: 10 });
     expect(samedi.bonus).toBe(true);
     expect(samedi.seance?.mobilite.find((m) => m.exercice === 'cossack_squat')).toEqual({
       exercice: 'cossack_squat',
       a_la_cible: true,
     });
     expect(samedi.boxe?.rounds).toEqual([1, 3, 5]);
-    // Dimanche : séance B en 3 séries sans les exercices du palier 2 (Copenhagen, tuck hang L-sit).
+    // Dimanche : la paire du minimum est le goblet squat ; pas de musculation dans le bonus.
     const dimanche = weekEndDuJour(programme, {
       niveau: { ancrage: 'N2' },
       date: DIMANCHE,
       lettre: 'B',
       joursDeBoxe: [],
     });
-    expect(dimanche.seance?.musculation).toEqual([
-      { exercice: 'pompes', series: 3 },
-      { exercice: 'goblet_squat', series: 3 },
-      { exercice: 'traction_assistee', series: 3 },
-      { exercice: 'swing_emom', series: 3, reps: 10 },
-    ]);
+    expect(dimanche.base?.minimum?.exercice).toEqual({ exercice: 'goblet_squat', series: 1 });
+    expect(dimanche.seance?.musculation).toEqual([]);
     // Les 3 étirements de hanche, pigeon compris (décision du 17/10/2026).
     expect(dimanche.seance?.etirements).toEqual(
       ['couch_stretch', 'pigeon', 'pancake'].map((exercice) => ({ exercice, series: 2 })),
@@ -473,17 +475,50 @@ describe('scénario 15 : ancrage, contenu du jour', () => {
 });
 
 describe('scénario 16 : ancrage, jour tenu', () => {
-  it('matin et soir faits, au moins en version minimum ; midi et « au mieux » sans effet', () => {
-    expect(jourTenu({ matin: 'minimum', soir: 'minimum' })).toBe(true);
-    expect(jourTenu({ matin: 'normale', soir: null })).toBe(false);
-    expect(jourTenu({ matin: null, soir: 'boxe' })).toBe(false);
-    expect(jourTenu({ matin: 'normale', soir: 'normal', midi: false })).toBe(true);
-    expect(jourTenu({ matin: null, soir: 'normal', midi: true })).toBe(false);
-    // Samedi : la base et le soir faits, sans le « au mieux ».
-    expect(jourTenu({ matin: 'normale', soir: 'normal', au_mieux: false })).toBe(true);
+  it('lever à l’heure, puis matin et soir faits, au moins en minimum ; midi et bonus sans effet', () => {
+    // Le lever compte depuis le 18/10/2026 : sans lever à l'heure, pas de jour tenu.
+    expect(jourTenu({ lever: false, matin: 'principale', soir: 'principale' })).toBe(false);
+    expect(jourTenu({ lever: true, matin: 'minimum', soir: 'minimum' })).toBe(true);
+    expect(jourTenu({ lever: true, matin: 'principale', soir: null })).toBe(false);
+    expect(jourTenu({ lever: true, matin: null, soir: 'minimum' })).toBe(false);
+    expect(jourTenu({ lever: true, matin: 'principale', soir: 'principale', midi: false })).toBe(
+      true,
+    );
+    expect(jourTenu({ lever: true, matin: null, soir: 'principale', midi: true })).toBe(false);
+    // Samedi : la principale (la base) et le soir faits, sans le bonus ; puis avec.
+    expect(jourTenu({ lever: true, matin: 'principale', soir: 'principale' })).toBe(true);
+    expect(jourTenu({ lever: true, matin: 'bonus', soir: 'minimum' })).toBe(true);
   });
 
-  it('versions minimum : un mouvement de mobilité le matin ; suspension seule et deep squat le soir', () => {
+  it('soir coché mouvement par mouvement : le minimum du bloc clé compte, la routine pied seule non', () => {
+    const contexte = {
+      niveau: { ancrage: 'N1' as const },
+      lettrePied: 'A' as const,
+      cycle: 1,
+      piedsFaitsDansLeCycle: 0,
+    };
+    const soir = elementsDuSoir(soirDuJour(programme, { ...contexte, type: 'normal' }));
+    const faits = (...cles: string[]) => Object.fromEntries(cles.map((c) => [c, true]));
+    expect(coucheAtteinte(soir, faits('suspension_seule', 'deep_squat'))).toBe('minimum');
+    const pied = soir.filter((e) => e.couche === 'principale' && e.cle !== 'knee_raises');
+    expect(coucheAtteinte(soir, faits(...pied.map((e) => e.cle)))).toBeNull();
+    expect(coucheAtteinte(soir, faits(...soir.map((e) => e.cle)))).toBe('principale');
+    // Soir de boxe : le minimum, puis les étirements du pied en bonus.
+    const boxe = elementsDuSoir(
+      soirDuJour(programme, { ...contexte, type: 'boxe', lettrePied: null }),
+    );
+    expect(coucheAtteinte(boxe, faits('suspension_seule', 'deep_squat'))).toBe('minimum');
+    expect(coucheAtteinte(boxe, faits(...boxe.map((e) => e.cle)))).toBe('bonus');
+    expect(
+      jourTenu({
+        lever: true,
+        matin: 'principale',
+        soir: coucheAtteinte(soir, faits(...pied.map((e) => e.cle))),
+      }),
+    ).toBe(false);
+  });
+
+  it('versions minimum : un mouvement de mobilité et 2 min de deep squat le matin ; suspension seule et deep squat le soir', () => {
     const matin = matinDuJour(programme, {
       niveau: { ancrage: 'N2' },
       type: 'normal',
@@ -492,6 +527,7 @@ describe('scénario 16 : ancrage, jour tenu', () => {
       version: 'minimum',
     });
     expect(matin.mobilite).toEqual([{ exercice: 'bear_walk', duree_s: 30 }]);
+    expect(matin.tenues).toEqual([{ exercice: 'deep_squat', duree_s: 120 }]);
     expect([matin.musculation, matin.etirements, matin.travail_min]).toEqual([[], [], null]);
     const soir = soirDuJour(programme, {
       niveau: { ancrage: 'N1' },
@@ -590,5 +626,8 @@ describe('paliers : matin', () => {
     const minimum = matinDuJour(programme, { ...contexte, version: 'minimum' });
     expect(minimum.mobilite).toHaveLength(1);
     expect(minimum.musculation).toEqual([]);
+    // Le deep squat du minimum vaut pour tous les matins, paliers compris (décision du 18/10/2026).
+    expect(minimum.tenues).toEqual([{ exercice: 'deep_squat', duree_s: 120 }]);
+    expect(normale.tenues).toEqual(minimum.tenues);
   });
 });

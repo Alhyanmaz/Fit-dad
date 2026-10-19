@@ -1,11 +1,29 @@
+/* Thème de la v2 : fond noir, accent orange (décision du 18/10/2026). Contrastes vérifiés :
+   orange sur noir 8,0:1, orange sur carte 7,1:1, gris discret sur carte 7,3:1.
+   Couches (décisions du 18/10/2026) : minimum vert, principale orange, bonus rouge, en couleur du
+   nom de chaque exercice ; texte noir sur vert 12:1, sur orange 8:1, sur rouge 5,7:1 ; noms sur
+   carte : vert 10,6:1, orange 7,1:1, rouge 5,0:1. Écarts mesurés avec l'outil de contrôle des
+   palettes : ΔE ≥ 9,7 pour un daltonisme rouge-vert ; rouge-orange 14 en vision normale, sous le
+   seuil de 15 : l'ordre des couches (minimum, principale, bonus), l'espace entre elles et la légende
+   servent de second repère. */
 :root {
   color-scheme: dark;
-  --fond: #161b19;
-  --carte: #1f2623;
-  --texte: #ede9df;
-  --discret: #a3aca7;
-  --lien: #8fa3e8;
-  --erreur: #e8a08f;
+  --fond: #000000;
+  --carte: #141414;
+  --carte-2: #1f1f1f;
+  --bordure: #2a2a2a;
+  --texte: #f5f5f5;
+  --discret: #a3a3a3;
+  --orange: #ff7a1a;
+  --orange-piste: #4a2508;
+  --sur-orange: #000000;
+  --vert: #4ade80;
+  --sur-vert: #000000;
+  --rouge: #f43f5e;
+  --sur-rouge: #000000;
+  --erreur: #ff8a80;
+  --rayon: 16px;
+  --hauteur-nav: 64px;
   font-family:
     system-ui,
     -apple-system,
@@ -21,41 +39,545 @@ body {
   background: var(--fond);
   color: var(--texte);
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
-main {
+.ecran {
   max-width: 40rem;
   margin: 0 auto;
-  padding: max(1.5rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom));
+  padding: max(1.25rem, env(safe-area-inset-top)) 1rem
+    calc(var(--hauteur-nav) + max(1.5rem, env(safe-area-inset-bottom)));
 }
 
 h1 {
   font-size: 1.75rem;
-  margin: 0 0 1rem;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
 }
 
+h2,
+h3,
 p {
   margin: 0 0 0.75rem;
 }
 
-.carte {
-  background: var(--carte);
-  border-radius: 12px;
-  padding: 1rem 1rem 0.25rem;
+.entete {
   margin-bottom: 1.25rem;
 }
 
-.principal {
+.bandeau {
+  margin-top: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border-left: 3px solid var(--orange);
+  background: var(--carte);
+  border-radius: 0 var(--rayon) var(--rayon) 0;
+}
+
+.carte {
+  background: var(--carte);
+  border-radius: var(--rayon);
+  padding: 1rem 1rem 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.carte-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.titre-carte {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 650;
+}
+
+/* Type de bloc (mobilité, musculation…) : un bandeau sur toute la largeur de la carte, bien visible
+   (José, 18/10/2026). */
+.titre-groupe {
+  font-size: 0.9375rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte);
+  background: var(--carte-2);
+  border-top: 1px solid var(--bordure);
+  border-bottom: 1px solid var(--bordure);
+  margin: 0.75rem -1rem 0.25rem;
+  padding: 0.5rem 1rem;
 }
 
 .discret {
   color: var(--discret);
 }
 
-.erreur .principal {
+.petit {
+  font-size: 0.875rem;
+}
+
+.pastille {
+  font-size: 0.8125rem;
+  padding: 0.125rem 0.625rem;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  color: var(--discret);
+}
+
+/* Résumé : jauge des jours tenus et horaires du niveau */
+.resume {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.resume-texte p:last-child {
+  margin-bottom: 0;
+}
+
+.horaires strong {
+  font-weight: 650;
+}
+
+.anneau {
+  position: relative;
+  flex: none;
+  width: 128px;
+  height: 128px;
+}
+
+.anneau svg {
+  display: block;
+}
+
+.anneau-centre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.anneau-valeur {
+  font-size: 3rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.anneau-total {
+  font-size: 0.875rem;
+  color: var(--discret);
+}
+
+/* Listes d'exercices */
+.liste {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+}
+
+.ligne {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--carte-2);
+}
+
+.ligne-tete {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+
+.ligne-tete .nom {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Case à cocher de chaque mouvement, dans la couleur de sa couche ; zone de toucher de 44 px */
+.case,
+.case-vide {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: 0 -0.5rem 0 -0.625rem;
+}
+
+.case {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.case::before {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--couleur-couche, var(--orange));
+}
+
+.case[aria-pressed='true']::before {
+  background: var(--couleur-couche, var(--orange));
+}
+
+.case[aria-pressed='true']::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 14px;
+  width: 7px;
+  height: 13px;
+  border: solid var(--fond);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.couche-minimum {
+  --couleur-couche: var(--vert);
+}
+
+.couche-principale {
+  --couleur-couche: var(--orange);
+}
+
+.couche-bonus {
+  --couleur-couche: var(--rouge);
+}
+
+/* Durée réglable en ligne : « − 30 s + » */
+.duree {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.duree button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--bordure);
+  background: var(--carte-2);
+  color: var(--orange);
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.duree button:disabled {
+  color: var(--bordure);
+}
+
+.duree output {
+  min-width: 4.25rem;
+  text-align: center;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Compteurs de répétitions, un par série */
+.compteurs {
+  margin-top: 0.25rem;
+}
+
+/* Compteurs et tenue sous le nom, alignés sur lui (après la case à cocher) */
+.compteur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 48px;
+  padding-left: 1.875rem;
+}
+
+.compteur-nom {
+  color: var(--discret);
+  font-size: 0.9375rem;
+}
+
+.compteur-boutons {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.compteur-boutons button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--bordure);
+  background: var(--carte-2);
+  color: var(--orange);
+  font-size: 1.375rem;
+  line-height: 1;
+}
+
+.compteur-boutons button:active {
+  background: var(--orange);
+  color: var(--sur-orange);
+}
+
+.compteur-boutons output {
+  min-width: 2.5rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.ligne:last-child {
+  border-bottom: 0;
+}
+
+.detail {
+  color: var(--discret);
+  text-align: right;
+  flex: none;
+  /* Un détail long (cible du cossack) passe à la ligne au lieu de sortir de la carte. */
+  max-width: 60%;
+}
+
+.groupe {
+  margin-bottom: 0.25rem;
+}
+
+/* Boutons de validation (couche atteinte) et interrupteurs (« Boxe ce soir », passage) */
+.choix {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+button {
+  font: inherit;
+  touch-action: manipulation;
+}
+
+.choix button,
+.interrupteur {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.125rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: var(--carte-2);
+  color: var(--texte);
+}
+
+.choix {
+  flex-wrap: wrap;
+}
+
+.choix button[aria-pressed='true'],
+.interrupteur[aria-pressed='true'] {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--sur-orange);
+  font-weight: 650;
+}
+
+.choix button[data-couche='minimum'][aria-pressed='true'] {
+  background: var(--vert);
+  border-color: var(--vert);
+  color: var(--sur-vert);
+}
+
+.choix button[data-couche='bonus'][aria-pressed='true'] {
+  background: var(--rouge);
+  border-color: var(--rouge);
+  color: var(--sur-rouge);
+}
+
+/* Couches : couleur du nom de l'exercice, légende, point de couleur sur les boutons */
+.couche-minimum .nom,
+.couche-minimum.legende-item,
+.couche-minimum.en-plus {
+  color: var(--vert);
+}
+
+.couche-principale .nom,
+.couche-principale.legende-item,
+.couche-principale.en-plus {
+  color: var(--orange);
+}
+
+.couche-bonus .nom,
+.couche-bonus.legende-item,
+.couche-bonus.en-plus {
+  color: var(--rouge);
+}
+
+.ligne .nom {
+  font-weight: 600;
+}
+
+/* Un peu d'air quand la couche change, dans un même type */
+.ligne.changement {
+  padding-top: 0.875rem;
+}
+
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.legende-item::before,
+.choix button[data-couche]::before {
+  content: '';
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  background: currentColor;
+}
+
+.choix button[data-couche='minimum']::before {
+  background: var(--vert);
+}
+
+.choix button[data-couche='principale']::before {
+  background: var(--orange);
+}
+
+.choix button[data-couche='bonus']::before {
+  background: var(--rouge);
+}
+
+.choix button[aria-pressed='true']::before {
+  background: currentColor;
+}
+
+/* Lien vers « Lever tôt » depuis le résumé du jour */
+.lien {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--orange);
+  text-decoration: underline;
+}
+
+/* Passage : confirmation avant de changer de niveau */
+.confirmation p {
+  margin: 0.5rem 0 0;
+}
+
+.choix button.confirmer {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--sur-orange);
+  font-weight: 650;
+}
+
+/* Lever tôt : champs de saisie et verdict */
+.champ-ligne {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.champ-heure,
+.champ-note {
+  font: inherit;
+  color: var(--texte);
+  background: var(--carte-2);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  color-scheme: dark;
+}
+
+.champ-note {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.verdict {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.regles {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.regles li {
+  margin-bottom: 0.5rem;
+}
+
+.interrupteur {
+  margin: 0.25rem 0 0.5rem;
+}
+
+.note {
+  font-size: 0.875rem;
+}
+
+a {
+  color: var(--orange);
+  touch-action: manipulation;
+}
+
+/* Barre du bas */
+.nav-bas {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  height: var(--hauteur-nav);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--fond);
+  border-top: 1px solid var(--carte-2);
+}
+
+.nav-item {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 72px;
+  font-size: 0.75rem;
+  color: var(--discret);
+}
+
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-item.actif {
+  color: var(--orange);
+}
+
+.nav-item[aria-disabled='true'] {
+  opacity: 0.55;
+}
+
+/* Erreur de programme */
+.erreur .titre-carte {
   color: var(--erreur);
 }
 
@@ -67,16 +589,4 @@ p {
 
 .erreur li {
   margin-bottom: 0.5rem;
-}
-
-a {
-  color: var(--lien);
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
-
-a,
-button {
-  touch-action: manipulation;
 }
