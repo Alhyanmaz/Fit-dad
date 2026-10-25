@@ -36,8 +36,12 @@ import { Passage } from './Passage';
 const parBloc = (elements: readonly Element[], cles: readonly string[]) =>
   elements.filter((e) => cles.includes(e.cle));
 
-/** Un moment de la journée, choisi en haut de l'écran (décision du 25/10/2026). */
-type Moment = 'matin' | 'midi' | 'soir';
+/**
+ * Un moment de la journée, choisi en haut de l'écran (décisions du 25/10/2026) : matin, midi et
+ * soir en semaine ; routine, boxe et soir le week-end (« matin » est alors la routine).
+ */
+type Moment = 'matin' | 'midi' | 'boxe' | 'soir';
+const BOXE = 'Boxe';
 
 /**
  * Le moment ouvert au démarrage : le matin avant 12h, le midi jusqu'à 17h, le soir ensuite
@@ -108,6 +112,9 @@ export function Aujourdhui({
     : couchesDuMatin(programme, { niveau, type, lettre, lettreDeLaVeille: null });
   const blocMatin = contenuWeekEnd ? 'week_end' : 'matin';
   const elementsMatin = elementsDesCouches(couchesMatin);
+  // Le week-end, la boxe a son onglet ; la routine garde le reste.
+  const elementsRoutine = elementsMatin.filter((e) => e.cle !== 'boxe');
+  const aUneBoxe = elementsMatin.length !== elementsRoutine.length;
 
   const contenuMidi = midiDuJour(programme, {
     date: jour,
@@ -288,9 +295,21 @@ export function Aujourdhui({
           options={[
             {
               valeur: 'matin',
-              libelle: contenuWeekEnd ? 'Week-end' : 'Matin',
-              etat: matin ?? 'rien',
+              libelle: contenuWeekEnd ? 'Routine' : 'Matin',
+              etat:
+                coucheAtteinte(elementsRoutine, faitsDuBloc(journal.faits, blocMatin)) ?? 'rien',
             },
+            ...(contenuWeekEnd && aUneBoxe
+              ? [
+                  {
+                    valeur: 'boxe' as const,
+                    libelle: BOXE,
+                    etat: journal.faits[`${blocMatin}:boxe`]
+                      ? ('bonus' as const)
+                      : ('rien' as const),
+                  },
+                ]
+              : []),
             ...(contenuMidi
               ? [
                   {
@@ -307,19 +326,38 @@ export function Aujourdhui({
 
         {moment === 'matin' && (
           <Carte
-            titre={contenuWeekEnd ? 'Week-end' : `Matin ${lettre}`}
+            titre={contenuWeekEnd ? 'Week-end · routine' : `Matin ${lettre}`}
             precision={
               contenuWeekEnd
                 ? `≈ ${programme.ancrage.week_end.base.duree_min} min, plus le bonus`
                 : `${heureCourte(cibles.lever)} · ≈ ${creneau} min`
             }
           >
-            <ParType programme={programme} bloc={blocMatin} couches={couchesMatin} />
+            <ParType
+              programme={programme}
+              bloc={blocMatin}
+              couches={couchesMatin}
+              types={(titre) => titre !== BOXE}
+            />
             <BoutonsDeCouche
               bloc={blocMatin}
-              elements={elementsMatin}
-              libelle={contenuWeekEnd ? 'Week-end' : 'Matin'}
+              elements={elementsRoutine}
+              libelle={contenuWeekEnd ? 'Routine' : 'Matin'}
             />
+          </Carte>
+        )}
+
+        {moment === 'boxe' && contenuWeekEnd && (
+          <Carte titre="Week-end · boxe" precision="bonus">
+            <ParType
+              programme={programme}
+              bloc={blocMatin}
+              couches={couchesMatin}
+              types={(titre) => titre === BOXE}
+            />
+            {contenuWeekEnd.boxe?.technique_du_club_en_priorite && (
+              <p className="discret">Technique du club en priorité.</p>
+            )}
           </Carte>
         )}
 

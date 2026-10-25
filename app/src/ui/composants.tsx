@@ -523,22 +523,27 @@ export function ParType({
   programme,
   bloc,
   couches,
+  types,
 }: {
   programme: Programme;
   bloc: string;
   couches: Couches;
+  /** Les types à montrer (titres des groupes) ; tous par défaut. */
+  types?: (titre: string) => boolean;
 }) {
   return (
     <>
-      {lignesParType(programme, couches).map((g) => (
-        <GroupeDeLignes
-          key={g.titre}
-          programme={programme}
-          bloc={bloc}
-          titre={g.titre}
-          lignes={g.lignes}
-        />
-      ))}
+      {lignesParType(programme, couches)
+        .filter((g) => !types || types(g.titre))
+        .map((g) => (
+          <GroupeDeLignes
+            key={g.titre}
+            programme={programme}
+            bloc={bloc}
+            titre={g.titre}
+            lignes={g.lignes}
+          />
+        ))}
     </>
   );
 }
