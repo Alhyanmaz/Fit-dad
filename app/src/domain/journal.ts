@@ -1,3 +1,4 @@
+import type { Lettre } from './alternances';
 import type { Couche } from './couches';
 import type { MidiFait } from './midi';
 
@@ -17,6 +18,15 @@ export interface JournalDuJour {
   repetitions: Record<string, number[]>;
   /** Durées faites, en secondes, par série (« matin:bear_walk » → [30]). */
   durees: Record<string, number[]>;
+  /**
+   * Ce qui a été fait, pour les alternances des jours suivants (« la suivante ») : la lettre du
+   * matin fait, celle de la routine pied faite, un étirement du matin fait. Null si rien.
+   */
+  lettreFaite: Lettre | null;
+  piedFait: Lettre | null;
+  etirementFait: string | null;
+  /** Jour tenu : lever à l'heure, matin et soir au moins en minimum. */
+  tenu: boolean;
   lever: {
     /** Heure du coucher de la veille, « HH:MM ». */
     couche: string | null;
@@ -37,5 +47,9 @@ export const journalVide = (): JournalDuJour => ({
   faits: {},
   repetitions: {},
   durees: {},
+  lettreFaite: null,
+  piedFait: null,
+  etirementFait: null,
+  tenu: false,
   lever: { couche: null, leve: null, reveil: null, nuit: null, lumiere: null, note: '' },
 });

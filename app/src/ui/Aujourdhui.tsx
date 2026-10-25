@@ -5,6 +5,14 @@ import { jourTenu } from '../domain/ancrage';
 import { couchesDuMatin, couchesDuWeekEnd, elementsDesCouches } from '../domain/couches';
 import { estWeekEnd, joursEntre, type DateIso } from '../domain/dates';
 import { typeDeJour } from '../domain/jour';
+import {
+  cordesDeLaSemaine,
+  derniereLettre,
+  dernierFait,
+  joursTenus,
+  tenusSurLaFenetre,
+  type EntreeDuJournal,
+} from '../domain/historique';
 import type { JournalDuJour } from '../domain/journal';
 import { ciblesDuNiveau, leverTenu } from '../domain/leverTot';
 import { midiDuJour } from '../domain/midi';
@@ -56,8 +64,8 @@ function momentDeLHeure(heure: number, weekEnd: boolean): Moment {
 /**
  * Écran « Aujourd'hui » pendant l'ancrage (jalon J3). Chaque bloc dit d'abord ce qu'il est
  * (mobilité, musculation…), la couleur de chaque mouvement donne sa couche, et chaque mouvement se
- * coche (décisions du 18/10/2026). La couche atteinte de chaque bloc s'en déduit. Pas encore
- * d'enregistrement : les alternances partent de A.
+ * coche (décisions du 18/10/2026). La couche atteinte de chaque bloc s'en déduit. Les alternances
+ * viennent de l'historique enregistré sur le téléphone.
  */
 export function Aujourdhui({
   programme,
@@ -67,6 +75,7 @@ export function Aujourdhui({
   depuis,
   journal,
   setJournal,
+  historique,
   surPassage,
   surLeverTot,
 }: {
@@ -79,6 +88,8 @@ export function Aujourdhui({
   depuis: DateIso;
   journal: JournalDuJour;
   setJournal: Dispatch<SetStateAction<JournalDuJour>>;
+  /** Les jours enregistrés avant aujourd'hui : alternances, cordes, jours tenus. */
+  historique: readonly EntreeDuJournal[];
   surPassage: (suivant: Niveau) => void;
   /** Ouvre l'onglet « Lever tôt », où se saisit le lever. */
   surLeverTot: () => void;
@@ -88,7 +99,8 @@ export function Aujourdhui({
   const jour = avantLeDebut ? debut : date;
   const joursDeBoxe = boxe ? [jour] : [];
   const type = typeDeJour(jour, joursDeBoxe, niveau);
-  const lettre = lettreDuMatin(jour, type, null) ?? 'A';
+  const lettre = lettreDuMatin(jour, type, derniereLettre(historique, jour)) ?? 'A';
+  const dernierEtirement = dernierFait(historique, jour, 'etirementFait');
   const cibles = ciblesDuNiveau(programme, niveau);
   const creneau = niveauDAncrage(programme, niveau.ancrage).matin.creneau_min;
   const semaine = Math.floor(Math.max(0, joursEntre(depuis, jour)) / 7) + 1;
@@ -109,7 +121,13 @@ export function Aujourdhui({
     : null;
   const couchesMatin = contenuWeekEnd
     ? couchesDuWeekEnd(programme, niveau, contenuWeekEnd)
-    : couchesDuMatin(programme, { niveau, type, lettre, lettreDeLaVeille: null });
+    : couchesDuMatin(programme, {
+        niveau,
+        type,
+        lettre,
+        lettreDeLaVeille: null,
+        dernierEtirement,
+      });
   const blocMatin = contenuWeekEnd ? 'week_end' : 'matin';
   const elementsMatin = elementsDesCouches(couchesMatin);
   // Le week-end, la boxe a son onglet ; la routine garde le reste.
@@ -119,13 +137,13 @@ export function Aujourdhui({
   const contenuMidi = midiDuJour(programme, {
     date: jour,
     type,
-    cordesFaitesCetteSemaine: 0,
+    cordesFaitesCetteSemaine: cordesDeLaSemaine(historique, jour),
     enAncrage: true,
   });
   const contexteSoir = {
     niveau,
     type,
-    lettrePied: lettreDuPied(type, null),
+    lettrePied: lettreDuPied(type, dernierFait(historique, jour, 'piedFait')),
     cycle: 1,
     piedsFaitsDansLeCycle: 0,
   };
@@ -139,7 +157,33 @@ export function Aujourdhui({
   const leve = journal.lever.leve;
   const lever = leverTenu(programme, niveau, leve);
   const tenu = jourTenu({ lever, matin, soir });
+  // Jours tenus enregistrés, et aujourd'hui s'il l'est déjà.
+  const tenus = joursTenus(historique);
+  if (tenu) tenus.add(jour);
   const limite = heureLimite(cibles.lever, programme.lever_tot.tolerance_lever_min);
+
+  // Ce qui se déduit des mouvements cochés : couches atteintes (« Lever tôt » lit celle du matin)
+  // et ce qui a été fait, pour les alternances des jours suivants.
+  const etirementsDuMatin = blocMatin === 'matin' ? couchesMatin.principale.etirements : [];
+  const piedDuSoir = contenuSoir.pied;
+  const deduire = (faits: Record<string, boolean>): Partial<JournalDuJour> => {
+    const atteinteMatin = coucheAtteinte(elementsMatin, faitsDuBloc(faits, blocMatin));
+    const piedCoche =
+      piedDuSoir !== null &&
+      [...piedDuSoir.exercices, ...piedDuSoir.etirements.map((e) => e.exercice)].some(
+        (cle) => faits[`soir:${cle}`] === true,
+      );
+    return {
+      faits,
+      matin: atteinteMatin,
+      soir: coucheAtteinte(elementsSoir, faitsDuBloc(faits, 'soir')),
+      lettreFaite: atteinteMatin === null ? null : lettre,
+      piedFait: piedCoche ? piedDuSoir.lettre : null,
+      etirementFait:
+        etirementsDuMatin.find((e) => faits[`${blocMatin}:${e.exercice}`] === true)?.exercice ??
+        null,
+    };
+  };
 
   const saisie: Saisie = {
     valeur: (cle, serie, depart) => journal.repetitions[cle]?.[serie] ?? depart,
@@ -157,26 +201,16 @@ export function Aujourdhui({
         return { ...j, durees: { ...j.durees, [cle]: valeurs } };
       }),
     fait: (cle) => journal.faits[cle] === true,
-    // Les couches atteintes sont gardées dans le journal : « Lever tôt » lit celle du matin.
     marquer: (changements) =>
-      setJournal((j) => {
-        const faits = { ...j.faits, ...changements };
-        return {
-          ...j,
-          faits,
-          matin: coucheAtteinte(elementsMatin, faitsDuBloc(faits, blocMatin)),
-          soir: coucheAtteinte(elementsSoir, faitsDuBloc(faits, 'soir')),
-        };
-      }),
+      setJournal((j) => ({ ...j, ...deduire({ ...j.faits, ...changements }) })),
   };
   const basculerBoxe = () =>
     setJournal((j) => ({
       ...j,
       boxe: !j.boxe,
-      faits: Object.fromEntries(
-        Object.entries(j.faits).filter(([cle]) => !cle.startsWith('soir:')),
+      ...deduire(
+        Object.fromEntries(Object.entries(j.faits).filter(([cle]) => !cle.startsWith('soir:'))),
       ),
-      soir: null,
     }));
 
   const deepSquat = programme.exercices['deep_squat']?.duree_s ?? 120;
@@ -248,7 +282,7 @@ export function Aujourdhui({
 
         <section className="carte resume" aria-label="Résumé du jour">
           <Anneau
-            valeur={tenu ? 1 : 0}
+            valeur={tenusSurLaFenetre(tenus, jour, passages.fenetre_jours)}
             total={passages.fenetre_jours}
             libelle={`Jours tenus sur les ${passages.fenetre_jours} derniers`}
           />
@@ -282,7 +316,7 @@ export function Aujourdhui({
           niveau={niveau}
           depuis={depuis}
           jour={jour}
-          joursTenus={new Set(tenu ? [jour] : [])}
+          joursTenus={tenus}
           surPassage={surPassage}
         />
 
@@ -501,7 +535,7 @@ export function Aujourdhui({
         )}
 
         <p className="discret note">
-          Version d'essai : rien n'est encore enregistré. <a href="../">Ouvrir la v1</a>
+          Enregistré sur ce téléphone, rien ne sort. <a href="../">Ouvrir la v1</a>
         </p>
       </main>
     </SaisieContexte.Provider>

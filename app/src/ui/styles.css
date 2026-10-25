@@ -658,3 +658,39 @@ a {
 .erreur li {
   margin-bottom: 0.5rem;
 }
+
+/* Bandeau de mise à jour, au-dessus de la barre du bas */
+.mise-a-jour {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: calc(var(--hauteur-nav) + 0.75rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--rayon);
+  background: var(--carte-2);
+  border: 1px solid var(--orange);
+  z-index: 2;
+}
+
+.mise-a-jour span {
+  flex: 1;
+}
+
+.mise-a-jour button {
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: var(--carte);
+  color: var(--texte);
+}
+
+.mise-a-jour button:first-of-type {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--sur-orange);
+}

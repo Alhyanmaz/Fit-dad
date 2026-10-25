@@ -163,7 +163,7 @@ export function LeverTot({
         </ul>
       </Carte>
 
-      <p className="discret note">Version d'essai : rien n'est encore enregistré.</p>
+      <p className="discret note">Enregistré sur ce téléphone, rien ne sort.</p>
     </main>
   );
 }

@@ -3,7 +3,7 @@
 ## État
 
 - **J0, J1 et J2 terminés et fusionnés dans `main`** : PR #1 le 08/10 ; PR #2 (programme validé au chargement) et PR #3 (moteur de règles) le 17/10, à la demande de José. La v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/` ; la v1 est intacte à la racine.
-- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, « Lever tôt » (verdict du matin), couches (minimum, principale, bonus), passages (critère, moment, niveau suivant), en fonctions pures ; scénarios 1 à 7, 12, 15, 16 et 18 verts ; scénarios 8 et 17 en partie (la proposition de chaque semaine viendra avec l'enregistrement) ; 97 tests au total.
+- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, « Lever tôt » (verdict du matin), couches (minimum, principale, bonus), passages (critère, moment, niveau suivant), en fonctions pures ; scénarios 1 à 7, 12, 15, 16 et 18 verts ; scénarios 8 et 17 en partie (la proposition de chaque semaine viendra avec l'enregistrement) ; 104 tests au total.
 - **Programme** (`docs/PROGRAMME.md`, `data/programme.json`, version du 25/10/2026) :
   - ancrage en deux niveaux, un par cycle de 5 semaines : N1 (lever 6h45, 10 respirations, 2 mouvements, 1 exercice, 1 étirement), puis N2 (6h40) ; matins et week-end corrigés par José le 25/10 ; ni jour de récupération ni version courte ; « Alléger » n'y propose rien (décision du 18/10) ;
   - puis 4 paliers, de 6h30 à 6h00, **un par cycle** (décision du 17/10) ;
@@ -21,14 +21,15 @@
   - un compteur de répétitions par série pour chaque mouvement à répétitions, échauffements compris ; une durée réglable pour chaque mouvement au temps (étirements : 30 s au plus) ;
   - carte « Passage » : date au plus tôt, critère, « Forcer le passage » avec confirmation (le niveau choisi n'est pas encore gardé ; arrêt à N2 avant l'écran des paliers) ;
   - onglet « Lever tôt » : cibles du niveau, saisie du matin (coucher, lever avec « Maintenant », premier réveil ou snooze, nuit, lumière, note), verdict, règles ; barre du bas pour changer d'écran ;
-  - pas encore d'enregistrement : rien n'est gardé, et les alternances partent de A. Pas encore mis en ligne pour cette raison.
+  - enregistrement sur le téléphone (Dexie) : journal par date et réglages ; alternances, étirements, cordes et jours tenus tirés de l'historique ; hors ligne par un service worker limité à `/Fit-dad/v2/`, bandeau « Recharger » ;
+  - week-end en onglets Routine, Boxe et Soir.
 
 ## Prochaine étape
 
-Suite du J3, sur la branche `j3-aujourdhui` : l'enregistrement sur le téléphone (Dexie : réglages avec la date de début, le niveau en cours et le jour où il a commencé ; journal par date ; puis le retour au niveau précédent), les alternances tirées de l'historique, puis la mise en ligne ; ensuite la saisie des séances, « Ajuster », les propositions de progression, l'export et l'import, et le test de cohabitation hors ligne avec la v1.
+Fin du J3 : la saisie des séances complète (« Ajuster »), le retour au niveau précédent, l'export et l'import (avec la montée de zod avant), puis le test de cohabitation hors ligne avec la v1 sur le Pixel. Ensuite le J4.
 
 ```
-Pars de la branche j3-aujourdhui. Lis CLAUDE.md et docs/reprise.md. On continue le jalon J3 de la tranche 1 (docs/SPEC.md §10) : l'enregistrement d'abord. Propose le plan avant de coder.
+Pars de main. Lis CLAUDE.md et docs/reprise.md. On continue le jalon J3 de la tranche 1 (docs/SPEC.md §10) : « Ajuster », puis l'export et l'import. Propose le plan avant de coder.
 ```
 
 ## À fournir au démarrage

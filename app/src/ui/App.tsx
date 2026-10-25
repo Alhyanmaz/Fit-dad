@@ -1,8 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { lireProgramme, programmeBrut } from '../data/programme';
-import type { DateIso } from '../domain/dates';
+import { jourTenu } from '../domain/ancrage';
+import { ajouterJours, type DateIso } from '../domain/dates';
+import type { EntreeDuJournal } from '../domain/historique';
 import { journalVide, type JournalDuJour } from '../domain/journal';
+import { leverTenu } from '../domain/leverTot';
 import { estEnAncrage, type Niveau } from '../domain/niveau';
+import {
+  Base,
+  demanderLaPersistance,
+  ecrireJour,
+  ecrireReglages,
+  lireHistorique,
+  lireJour,
+  lireReglages,
+} from '../storage/base';
 import { Aujourdhui } from './Aujourdhui';
 import { LeverTot } from './LeverTot';
 import { NavBas, type Ecran } from './NavBas';
@@ -14,13 +26,26 @@ const ERREURS_AFFICHEES = 5;
 interface NiveauEnCours {
   niveau: Niveau;
   depuis: DateIso;
+  historique: { niveau: Niveau; depuis: DateIso }[];
+}
+
+/** Jours d'historique lus au lancement : la fenêtre des passages, avec de la marge. */
+const JOURS_D_HISTORIQUE = 28;
+
+const base = new Base();
+
+/** Ce qui est lu pour une date : le jour, l'historique d'avant, le niveau. */
+interface Charge {
+  date: DateIso;
+  enCours: NiveauEnCours;
+  historique: EntreeDuJournal[];
 }
 
 const lecture = lireProgramme(programmeBrut);
 
 /**
- * Début de l'ancrage : le cycle N0, de familiarisation (décision du 25/10/2026). Il passera dans
- * les réglages enregistrés sur le téléphone, avec le niveau en cours, à l'étape suivante du J3.
+ * Début de l'ancrage : le cycle N0, de familiarisation (décision du 25/10/2026). C'est le niveau
+ * du premier lancement ; ensuite, le niveau en cours est lu dans les réglages enregistrés.
  */
 const DEBUT_ANCRAGE: DateIso = lecture.ok
   ? lecture.programme.ancrage.familiarisation.debut
@@ -35,11 +60,64 @@ function aujourdhui(): DateIso {
 
 export function App() {
   const [ecran, setEcran] = useState<Ecran>('aujourdhui');
+  const [date, setDate] = useState<DateIso>(aujourdhui);
+  const [charge, setCharge] = useState<Charge | null>(null);
   const [journal, setJournal] = useState<JournalDuJour>(journalVide);
-  const [enCours, setEnCours] = useState<NiveauEnCours>({
-    niveau: { ancrage: 'N0' },
-    depuis: DEBUT_ANCRAGE,
-  });
+  const [erreur, setErreur] = useState<string | null>(null);
+
+  // La date change quand l'appli revient au premier plan le lendemain.
+  useEffect(() => {
+    const auRetour = () => {
+      if (document.visibilityState === 'visible') setDate(aujourdhui());
+    };
+    document.addEventListener('visibilitychange', auRetour);
+    return () => document.removeEventListener('visibilitychange', auRetour);
+  }, []);
+
+  // Lecture du jour, de l'historique et du niveau, à chaque nouvelle date.
+  useEffect(() => {
+    let annule = false;
+    void (async () => {
+      try {
+        void demanderLaPersistance();
+        const reglages = await lireReglages(base);
+        const enCours: NiveauEnCours = reglages ?? {
+          niveau: { ancrage: 'N0' },
+          depuis: DEBUT_ANCRAGE,
+          historique: [],
+        };
+        if (!reglages) await ecrireReglages(base, enCours);
+        const [jour, historique] = await Promise.all([
+          lireJour(base, date),
+          lireHistorique(base, ajouterJours(date, -JOURS_D_HISTORIQUE), ajouterJours(date, -1)),
+        ]);
+        if (annule) return;
+        setJournal(jour);
+        setCharge({ date, enCours, historique });
+      } catch (e) {
+        if (!annule) setErreur(e instanceof Error ? e.message : String(e));
+      }
+    })();
+    return () => {
+      annule = true;
+    };
+  }, [date]);
+
+  // Chaque changement du jour est enregistré, avec le jour tenu, une fois le jour lu.
+  const pret = charge?.date === date;
+  const niveauLu = charge?.enCours.niveau;
+  useEffect(() => {
+    if (!pret || !niveauLu || !lecture.ok) return;
+    const tenu = jourTenu({
+      lever: leverTenu(lecture.programme, niveauLu, journal.lever.leve),
+      matin: journal.matin,
+      soir: journal.soir,
+    });
+    ecrireJour(base, date, { ...journal, tenu }).catch((e: unknown) =>
+      setErreur(e instanceof Error ? e.message : String(e)),
+    );
+  }, [journal, pret, niveauLu, date]);
+
   if (!lecture.ok) {
     return (
       <main className="ecran">
@@ -48,10 +126,37 @@ export function App() {
       </main>
     );
   }
-  const date = aujourdhui();
-  const { niveau, depuis } = enCours;
+  if (erreur) {
+    return (
+      <main className="ecran">
+        <h1>Fit-dad</h1>
+        <section className="carte erreur" role="alert">
+          <p className="titre-carte">Enregistrement impossible</p>
+          <p>{erreur}</p>
+        </section>
+      </main>
+    );
+  }
+  if (!charge || !pret) {
+    return (
+      <main className="ecran">
+        <p className="discret">Chargement…</p>
+      </main>
+    );
+  }
+  const { niveau, depuis } = charge.enCours;
   // Passage confirmé par José, proposé ou forcé : le nouveau niveau commence aujourd'hui.
-  const surPassage = (suivant: Niveau) => setEnCours({ niveau: suivant, depuis: date });
+  const surPassage = (suivant: Niveau) => {
+    const enCours: NiveauEnCours = {
+      niveau: suivant,
+      depuis: date,
+      historique: [...charge.enCours.historique, { niveau, depuis }],
+    };
+    setCharge({ ...charge, enCours });
+    ecrireReglages(base, enCours).catch((e: unknown) =>
+      setErreur(e instanceof Error ? e.message : String(e)),
+    );
+  };
   return (
     <>
       {ecran === 'lever' ? (
@@ -71,6 +176,7 @@ export function App() {
           depuis={depuis}
           journal={journal}
           setJournal={setJournal}
+          historique={charge.historique}
           surPassage={surPassage}
           surLeverTot={() => setEcran('lever')}
         />
