@@ -1,4 +1,4 @@
-# Reprise de la session (19/10/2026)
+# Reprise de la session (25/10/2026)
 
 ## État
 
@@ -33,6 +33,20 @@ Pars de la branche j3-aujourdhui. Lis CLAUDE.md et docs/reprise.md. On continue 
 ## À fournir au démarrage
 
 Rien : tout est dans le dépôt.
+
+## Corrections de José du 25/10/2026, à appliquer
+
+Reçues dans le fichier « état de l'ancrage » (hors dépôt). Rien n'est encore codé ; une question attend José (la respiration, ci-dessous).
+
+- Calendrier : démarrage le lundi 09/11/2026 ; N2 semaines 6 à 10 (au plus tôt le 14/12/2026) ; palier 1 semaines 11 à 15 (au plus tôt le 18/01/2027). Lecture de Claude : des dates au plus tôt, les passages restent sur les 12 jours tenus sur 14.
+- Matin : étirement dès N1 ; café hors séance, compté comme marge (José le prend après) ; respiration « 10 » dès N1 (10 respirations ou 10 min : question en cours) ; durée de N1 à réestimer et lever à adapter.
+  - N1 A : downward dog to cobra, shoulder dislocate ; rings row 1 série. N1 B : scapula pull-up, reverse table top ; pompes 1 série. Deep squat 2 min. Étirement 1 × 30 s, couch stretch ou pancake à tour de rôle.
+  - N2 A : downward dog to cobra, shoulder dislocate, hip hinge au bâton ; rings row 1 série, swing en EMOM de 3 min. N2 B : scapula pull-up, reverse table top, cossack squat ; pompes 1 série, goblet squat 1 série. Étirements à tour de rôle : couch stretch + prayer stretch, ou pancake + stick shoulder extension.
+  - Version minimum : deux mouvements de mobilité, puis 2 min de deep squat.
+  - Cossack squat : 8-12 par côté.
+- Week-end (question 38 : oui, modifiée) : samedi séance A, deep squat 2 min, shoulder dislocate → KT press, cossack squat → pistol box-assisté, scapula pull-up → rings row, reverse table top → KT single leg deadlift, étirements pancake, stick shoulder extension, pigeon, couch stretch ; dimanche séance B, deep squat 2 min, shoulder dislocate → pompes, duck walk → goblet squat, scapula pull-up → traction assistée, reverse table top → swing, étirements pancake, prayer stretch, pigeon, couch stretch. Minimum : 2 paires en 3 séries (samedi rings row et pistol box-assisté ; dimanche pompes et swing), deep squat, 2 étirements à 2 × 30 s (« pancake + prayer / pigeon + shoulder stick extension »). Principale : les 2 autres paires, 3 séries, les 4 étirements à 2 × 30 s. Bonus : le reste de la routine, la boxe en 3 rounds.
+- À développer : pas de minuteur (ni tenues ni respiration) ; « Ajuster », propositions de progression, export et import : oui.
+- Réponses : 23 non ; 24 oui ; 26 oui ; 28 oui ; 30 non ; 31 oui ; 32 8-12 ; 36 oui ; 38 oui (modifiée, ci-dessus).
 
 ## Questions ouvertes
 
