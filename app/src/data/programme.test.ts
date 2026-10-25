@@ -13,12 +13,12 @@ function erreursDe(donnees: unknown): string[] {
 }
 
 describe('lecture du programme', () => {
-  it('valide data/programme.json : 41 exercices, version du 17/10/2026', () => {
+  it('valide data/programme.json : 44 exercices, version du 25/10/2026', () => {
     const lecture = lireProgramme(programmeBrut);
     if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
     expect(resumerProgramme(lecture.programme)).toEqual({
-      version: '2026-10-17',
-      nombreExercices: 41,
+      version: '2026-10-25',
+      nombreExercices: 44,
     });
   });
 
@@ -161,15 +161,28 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
     const p = copie();
     p.ancrage.niveaux[1].lever = '06:55';
     expect(erreursDe(p).join('\n')).toMatch(
-      /ancrage › niveaux › 1 › lever : lever de N2 \(06:55\) pas plus tôt que celui de N1 \(06:50\)/,
+      /ancrage › niveaux › 1 › lever : lever de N2 \(06:55\) pas plus tôt que celui de N1 \(06:45\)/,
     );
   });
 
-  it('étirement du matin hors de la zone des hanches', () => {
+  it('étirement du matin qui n’est pas un étirement', () => {
     const p = copie();
-    p.ancrage.matin.etirement.rotation[0] = 'seiza';
+    p.ancrage.niveaux[1].matin.etirements.rotation[0][1] = 'rings_row';
     expect(erreursDe(p).join('\n')).toMatch(
-      /ancrage › matin › etirement › rotation › 0 : « seiza » est de la zone « pied_mollet », attendu : « hanches »/,
+      /ancrage › niveaux › 1 › matin › etirements › rotation › 0 › 1 : « rings_row » est du bloc « musculation », attendu : « etirement »/,
+    );
+  });
+
+  it('week-end : minimum hors des paires du jour, étirement du minimum hors de ceux du jour', () => {
+    const p = copie();
+    p.ancrage.week_end.base.seances.A.minimum[0] = 'pompes';
+    p.ancrage.week_end.base.seances.B.etirements_minimum[0] = 'seiza';
+    const erreurs = erreursDe(p).join('\n');
+    expect(erreurs).toMatch(
+      /ancrage › week_end › base › seances › A › minimum › 0 : « pompes » n'est pas un exercice des paires du jour/,
+    );
+    expect(erreurs).toMatch(
+      /ancrage › week_end › base › seances › B › etirements_minimum › 0 : « seiza » n'est pas un des étirements du jour/,
     );
   });
 
@@ -178,6 +191,30 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
     p.ancrage.week_end.au_mieux.boxe_rounds = [1, 3, 6];
     expect(erreursDe(p).join('\n')).toMatch(
       /ancrage › week_end › au_mieux › boxe_rounds › 2 : round 6 inexistant \(le bloc boxe en compte 5\)/,
+    );
+  });
+
+  it('passages : plus de jours de week-end exigés que la fenêtre n’en compte', () => {
+    const p = copie();
+    p.passages.dont_jours_de_week_end = 5;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /passages › dont_jours_de_week_end : plus de jours de week-end exigés que la fenêtre n'en compte \(4\)/,
+    );
+  });
+
+  it('passages : plus de jours tenus exigés que de jours dans la fenêtre', () => {
+    const p = copie();
+    p.passages.jours_tenus = 15;
+    expect(erreursDe(p).join('\n')).toMatch(
+      /passages › jours_tenus : plus de jours tenus exigés que de jours dans la fenêtre/,
+    );
+  });
+
+  it('tenue du minimum du matin : un exercice du bloc clé', () => {
+    const p = copie();
+    p.ancrage.matin.version_minimum.tenue.exercice = 'bear_walk';
+    expect(erreursDe(p).join('\n')).toMatch(
+      /ancrage › matin › version_minimum › tenue › exercice : « bear_walk » est du bloc « mobilite », attendu : « bloc_cle »/,
     );
   });
 

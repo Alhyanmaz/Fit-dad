@@ -48,7 +48,7 @@ Revue des 10 choix « à valider » du 06/10 et des 10 questions ouvertes de `do
 - **Absence** : pas de règle automatique ; José gère avec « Ajuster ».
 - **Bas de jambe** : corde, mollets, tibialis. La marche ne compte pas ; le sac est hors de la règle. Règle stricte : une hausse demandée quand celle de la semaine est prise est reportée au lundi suivant ; après les tests, les hausses s'étalent, une par semaine, dans l'ordre corde → mollets → tibialis.
 - **Corde du midi** : la durée (+2 min) se règle par José avec un bouton, jamais proposée. Les 3 séances de corde sont un objectif ; la marche est toujours valable ; bouton « Corde ↔ Marche » pour le jour même.
-- **Lever tôt** : au palier 1, le lever seul valide le matin. Passage de palier : 5 matins réussis sur 7, **dont le samedi et le dimanche** (en semaine, le travail impose déjà le lever).
+- **Lever tôt** : au palier 1, le lever seul valide le matin. Passage de palier : 5 matins réussis sur 7, **dont le samedi et le dimanche** (en semaine, le travail impose déjà le lever). (**→ 18/10 : 12 matins sur 14, dont les deux week-ends**)
 - **Boxe le vendredi** : pas de jour de récupération ; musculation complète samedi et dimanche ; bloc boxe le dimanche seulement (exception à la règle « lendemain de boxe = récupération »).
 - **Nom** : Fit-dad.
 
@@ -99,7 +99,7 @@ Retour de José du 13/10 sur les paliers et les phases (document Word, lecture d
   - contenus des paliers 1 à 3 = ceux des anciens paliers 3 à 5 ; palier 4 = ancien palier 5, plus 10 min à définir ; respiration et café des anciens paliers 3 à 5 ;
   - soir à 15 min : bloc clé complet et routine pied à 1 série par exercice ; à 20 min : soir complet (proposition de Claude) ;
   - week-end : base + boxe en 3 rounds au palier 1 (≈ 30 min) ; séance complète en 3 séries, mobilité complète, étirements de hanche et boxe en 3 rounds au palier 2 (≈ 45 min) ; boxe en 5 rounds au palier 3 (≈ 60 min) ; journée type et bloc boxe au palier 4 (≈ 75 min) (proposition de Claude) ;
-  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier (**→ 17/10 : un palier par cycle**) ;
+  - passage entre les paliers 1 à 4 : 5 matins réussis sur 7, samedi et dimanche compris, au moins 7 jours au palier (**→ 17/10 : un palier par cycle ; → 18/10 : 12 matins sur 14, dont les deux week-ends**) ;
   - version courte et décharge : règles actuelles (**→ 17/10 : version courte avec 1 série d'étirements**).
 - **Q1 à Q4 du J1** : toujours ouvertes, avec les nouveaux numéros (ancien palier 3 = palier 1, ancien 4 = palier 2, ancien 5 = palier 3). Le J1 se termine avec ces points provisoires (accord de José du 14/10).
 
@@ -136,7 +136,7 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - **4, palier 2 dans la tranche 1** : oui. Sans objet avec la réponse 16 : le palier 2 arrive au plus tôt en semaine 16, en tranche 2.
   - **6, « au mieux » du week-end** : les 3 étirements de hanche (couch stretch, pigeon, pancake), 2 × 30 s.
   - **7, version minimum du soir de l'ancrage**, qui est aussi son soir de boxe : 1 min de suspension, 2 min de deep squat. Claude l'applique aussi au soir de boxe des paliers, qui avait le même contenu [Interprétation].
-  - **16, passage entre paliers** : un palier par cycle de 5 semaines, comme pendant l'ancrage. Le passage se propose au plus tôt au début du cycle suivant ; le critère des 5 matins réussis sur 7, samedi et dimanche compris, est gardé [Interprétation].
+  - **16, passage entre paliers** : un palier par cycle de 5 semaines, comme pendant l'ancrage. Le passage se propose au plus tôt au début du cycle suivant ; le critère des 5 matins réussis sur 7, samedi et dimanche compris, est gardé [Interprétation] (**→ 18/10 : 12 matins sur 14, dont les deux week-ends**).
   - **17, version courte** : une série d'étirements gardée, soit 1 série de chaque étirement du palier [Interprétation] ; décharge : règles actuelles.
 - **Défauts acceptés** :
   - **1** : l'ancrage commence le lundi qui suit la livraison du jour 1, soit la fin du J4.
@@ -144,7 +144,7 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - **5** : cossack squat et reverse table top, toujours 1 série à la cible, à tous les niveaux, week-end compris.
   - **8** : one arm hang, 1 tenue par bras une fois ajouté, tous les soirs sauf le jour de récupération.
   - **9** : la base du week-end compte pour sa lettre (dimanche fait → lundi A ; seul le samedi fait → lundi B).
-  - **10** : « Alléger » propose la version minimum pendant l'ancrage.
+  - **10** : « Alléger » propose la version minimum pendant l'ancrage (**→ 18/10 : rien n'est proposé pendant l'ancrage**).
   - **11** : « redescendre d'un cran » (−2 répétitions après 2 séances manquées) est gardé.
   - **12, 14, 15** : palier 1 confirmé : matin (ancien palier 3), soir à 15 min, week-end à 30 min.
   - **13** : swing en EMOM de 6 min à partir du palier 1, week-end compris ; 3 min en version courte et en décharge.
@@ -153,3 +153,100 @@ Liste numérotée de `docs/reprise.md` (version du 17/10). José a répondu aux 
   - **20** : week-end des paliers 2 à 4 à 45, 60 et 75 min.
   - **21** : palier 4, contenu du palier 3 avec les 10 min signalées, en attendant José.
   - **22** : le document Claude Docs du programme est abandonné ; `docs/PROGRAMME.md` fait foi.
+
+## 18/10/2026 — décisions de José (début de l'ancrage, thème de l'appli)
+
+- **Début de l'ancrage : lundi 19/10/2026**, sans attendre l'appli (remplace le défaut de la question 1 du 17/10). Passages au plus tôt : N2 le lundi 23/11, palier 1 le lundi 28/12, palier 2 le lundi 01/02/2027 ; ce sont les dates des scénarios 8 et 17. Les premiers jours sans appli ne changent rien aux passages : seuls les 7 derniers jours comptent.
+- **Thème de l'appli** : fond noir, accent orange, d'après un exemple d'infographie d'appli fitness envoyé par José (Shutterstock, avec filigrane). Claude reprend le style (cartes arrondies, jauge circulaire, barre du bas), pas l'image, qui n'entre pas dans le dépôt.
+- **Validations de l'écran Aujourd'hui** (José, 18/10, sur la première capture) : le midi se valide en « Corde » ou « Marche » ; le soir se valide en deux, le bloc clé et la routine pied ; le single leg balance se valide aussi. Claude en déduit, à valider :
+  - le single leg balance a deux validations, matin et soir, comme le programme le prévoit ;
+  - le soir compte pour le jour tenu dès que le bloc clé est fait (seul, c'est la version minimum) ; la routine pied seule ne suffit pas. **→ confirmé par José le 18/10.**
+- **Répétitions** (José, 18/10) : chaque exercice qui se compte en répétitions se saisit, série par série, et sert à l'historique. Choix de Claude, à valider :
+  - le compteur part du bas de la fourchette tant que l'historique est vide, puis de la dernière valeur ;
+  - pour un exercice « chaque côté » (bras, jambe), il vaut pour un côté ;
+  - les knee raises de la suspension ont leur compteur ; les tenues en secondes viendront avec le minuteur.
+- **Week-end** : la base et le « au mieux » (bonus) se valident chacun de leur côté, comme le soir (choix de Claude, à valider).
+
+## 18/10/2026 — décisions de José (« Lever tôt », code couleur, cossack)
+
+Réponses de José à l'explication de l'onglet « Lever tôt » et à la question 27 de `docs/reprise.md`.
+
+- **Tolérance du lever : 5 min** (au lieu de 10). À N2 (6h40), lever à 6h45 : tenu ; à 6h46 : manqué.
+- **Pas de proposition de version minimum** : pendant l'ancrage, « Alléger » ne propose rien ; José choisit lui-même la version minimum, avec le bouton « Minimum ». Aux paliers, Claude garde la version courte proposée après 2 nuits difficiles de suite [Interprétation, question 30].
+- **Réveil** : « Premier réveil » ou « Snooze », dans le journal du matin. Noté pour l'historique, sans effet sur le verdict [Interprétation, question 31].
+- **Passage au palier suivant** : 12 matins réussis sur les 14 derniers jours, dont les deux week-ends (les deux samedis et les deux dimanches), au lieu de 5 sur 7 dont le samedi et le dimanche ; toujours un palier par cycle (décision du 17/10). Claude l'applique entre les paliers seulement : les passages de l'ancrage (vers N2, puis vers le palier 1) restent sur les jours tenus, 5 sur 7 [Interprétation, question 29]. (**→ 18/10, plus tard : 12 jours tenus sur 14, pour tous les passages**)
+- **Cossack squat** : pas de compteur de répétitions ; l'appli affiche la cible (« 1 série · cible 8 à 14 rép. par côté »). (**→ 18/10, plus tard : légende « 8-14 rep / side », aucun compteur en mobilité**)
+- **Code couleur des versions, sans rien masquer** : minimum en vert, normale en orange, « au mieux » en rouge. Chaque version garde son étiquette écrite (choix de Claude) : la couleur n'est jamais le seul repère, car environ 1 homme sur 12 voit mal les couleurs, surtout le rouge et le vert ([Colour Blind Awareness](https://www.colourblindawareness.org/colour-blindness/)). (**→ 18/10, plus tard : couches qui s'additionnent ; puis pastilles retirées, couleur sur le nom de chaque exercice et légende**)
+- **Saisie du matin dans l'onglet « Lever tôt »** (question 27) : coucher, lever, réveil, nuit, lumière, note. Claude a lu « Ok pour la saisie des horaires de lever dans l'onglet lever tôt » comme le refus de son défaut, qui mettait cette saisie dans la carte du matin [Interprétation].
+
+## 18/10/2026 — décisions de José (couches, deep squat, passages)
+
+Réponses de José aux captures du soir et à la question 29 de `docs/reprise.md`.
+
+- **Couches** (« Tu n'as pas compris l'idée des couleurs ») : le minimum (vert) s'ajoute à la principale (orange), qui s'ajoute au bonus (rouge) ; ensemble, ils forment la séance complète. Même gestion dans toute l'appli. Chaque exercice n'apparaît plus qu'une fois, dans la première couche qui le demande ; chaque bloc se valide par la couche atteinte. Lecture de Claude pour chaque bloc (`docs/SPEC.md` §5.1) :
+  - matin : minimum, le premier mouvement de mobilité et le deep squat ; principale, le reste ;
+  - week-end : minimum, le premier mouvement d'échauffement et le deep squat ; principale, la base ; bonus, ce que le « au mieux » ajoute à la base [Interprétation]. Le week-end complet additionne donc la base et le « au mieux » : le samedi, le swing et le goblet squat de la base restent, le pistol et le KT single leg deadlift s'ajoutent ;
+  - midi : bonus ; bloc clé : minimum, 1 min de suspension seule et 2 min de deep squat, principale, les knee raises ; routine pied et single leg balance : principale ; étirements après la boxe : bonus [Interprétation].
+- **« Normal » devient « principale »** : José proposait « principale » ou « courante » et demandait un meilleur nom. Claude garde « Principale », « courante » pouvant se lire « en cours ».
+- **Deep squat dans le minimum de tous les matins** : 2 min, ancrage, paliers et week-end compris ; il fait donc partie de toutes les versions du matin. N1 passe de ≈ 3 à ≈ 5 min, la base du week-end de ≈ 20 à ≈ 22 min.
+- **Passages** (question 29, « Non, tous les passages après 12 jours tenus ») : vers N2, vers le palier 1, puis d'un palier au suivant, la même règle, 12 jours tenus sur les 14 derniers. Elle remplace les 5 jours tenus sur 7 de l'ancrage et les 12 matins réussis sur 14 des paliers. Lecture de Claude [Interprétation] :
+  - « sur 14 » et « dont les deux week-ends » sont repris de la règle du matin donnée le même jour ;
+  - aux paliers, le jour tenu garde la définition de l'ancrage ;
+  - le verdict de « Lever tôt » n'entre plus dans les passages (question 33) (**→ 18/10, plus tard : le lever à l'heure entre dans le jour tenu**) ;
+  - le moment ne change pas : un niveau par cycle, N2 au plus tôt le lundi 23/11.
+- **Forcer le passage** : un bouton, à tout moment, avec confirmation. Le cycle du nouveau niveau commence le jour du passage [Interprétation].
+- **Aucun compteur dans les échauffements du matin** (**→ 18/10, plus tard : compteurs rétablis pour tous les mouvements à répétitions**) : aucun mouvement de mobilité n'a de compteur. Conséquence, signalée par Claude avant de coder : l'appli ne propose plus +2 répétitions au reverse table top ni au cossack squat ; José les règle avec « Ajuster ».
+- **Légende du cossack squat et des mouvements du même type** : « 8-14 rep / side » ; pour le reverse table top, « 5-10 rep + tenue 10-30 s ». José a écrit « 8-10 rep / side » ; Claude garde la fourchette du programme, 8 à 14 [Interprétation, question 32].
+
+## 18/10/2026 — décisions de José (lever dans le jour tenu, présentation par type)
+
+- **Question 33, « Oui »** : le lever à l'heure, à 5 min près, entre dans le jour tenu, donc dans tous les passages. Un jour est tenu quand José s'est levé à l'heure et que le matin et le soir sont faits, au moins en minimum. Sans heure de lever saisie, le jour n'est pas tenu (lecture de Claude) ; le résumé du jour le dit, avec un lien vers « Lever tôt ».
+- **Présentation** (« Je n'aime pas encore la mise en page ») : chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…), puis viennent les couches. Les grosses pastilles disparaissent ; la couleur du nom de chaque exercice donne sa couche, avec une légende. Choix de Claude :
+  - les groupes : respiration et café, mobilité, musculation, étirements, boxe, cardio (midi), renforcement du pied, équilibre ; le bloc clé est classé en mobilité, comme dans le programme (« des positions de mobilité ») [Interprétation] ;
+  - dans chaque groupe, le minimum d'abord, puis la principale, puis le bonus, avec un peu d'espace entre deux couches ;
+  - la légende en tête d'écran, et un point de couleur sur chaque bouton de validation ;
+  - le rouge passe de #DC2626 à #F43F5E pour rester lisible en texte (5,0:1 sur la carte au lieu de 3,8:1). L'écart rouge-orange reste sous le seuil de l'outil de contrôle des palettes en vision normale (14 pour 15) : l'ordre des couches et l'espace entre elles servent de second repère.
+
+## 18/10/2026 — décisions de José (validation par mouvement, durées, types visibles)
+
+- **Types plus visibles** : chaque type (mobilité, musculation…) est un bandeau sur toute la largeur de la carte, en blanc.
+- **Valider chaque mouvement**, au cas où José ne fait pas toute une routine : une case à cocher par mouvement. La couche atteinte du bloc s'en déduit : la plus haute dont tous les mouvements sont cochés, avec ceux des couches d'avant. Les boutons de couche deviennent des raccourcis : un bouton rempli est la couche atteinte (réponse à la question de José) ; un appui coche tout jusqu'à cette couche ; un second appui revient à la couche d'avant (choix de Claude). Le café ne se coche pas [Interprétation].
+- **Compteurs pour tous les mouvements à répétitions** : échauffements compris, ce qui annule la décision prise plus tôt le même jour (Claude l'a signalé avant de coder). Le reverse table top et le cossack squat retrouvent leur compteur, et donc les propositions de +2 répétitions.
+- **Durées réglables** pour les mouvements au temps : pas de 5 s, de 15 s à partir de 2 min, de 1 min à partir de 5 min [Interprétation]. Les étirements restent à 30 s au plus (règle n° 2 du programme), signalé par Claude avant de coder.
+- **Single leg balance du soir** : un bonus ; celui du matin reste dans la principale.
+- **En attente** : la structure du week-end (« un mouvement d'échauffement pour un exo de musculation, muscle concerné » ; pourquoi 6 exercices) et la respiration à N1 (questions 35 et 36 de `docs/reprise.md`).
+
+## 18/10/2026 — décision de José (principale du week-end)
+
+- **Question 35, « Non, la principale du week-end doit être + 3 exo musculation + 3 exo mobilité »** : un échauffement par exercice, pour le muscle concerné. Le minimum est une paire, l'exercice en 1 série, avec les 2 min de deep squat ; la principale ajoute les 3 autres paires, la fin des séries de l'exercice du minimum et l'étirement de la base.
+- **Paires** (choix de Claude) : hip hinge au bâton pour le swing, le programme disant que le hip hinge prépare le swing ; shoulder dislocate pour le KT press et scapula pull-up pour le rings row, le programme disant que ces deux mouvements préparent la poussée et le tirage ; cossack squat pour le goblet squat [Interprétation, question 37]. La paire du minimum : le swing le samedi, le goblet squat le dimanche.
+- **Gardé de la proposition de Claude**, sans objection de José [Interprétation] : le minimum en 1 série ; le bonus sans exercice de musculation en plus (le reste de la routine de mobilité, les étirements de hanche, la boxe). Le week-end complet compte donc 4 exercices de musculation, et non plus 6.
+
+## 25/10/2026 — corrections de José sur l'ancrage (fichier « état de l'ancrage »)
+
+- **Calendrier** : démarrage le lundi 09/11/2026 (au lieu du 19/10) ; N2 semaines 6 à 10, palier 1 semaines 11 à 15. Lecture de Claude, signalée à José : des dates au plus tôt, chaque passage reste soumis aux 12 jours tenus sur 14 (règle n° 1, la performance, jamais la date).
+- **Respiration dès N1** (question 36 : oui) : 10 respirations, à N1 et à N2. Pas de minuteur, ni pour la respiration ni pour les tenues.
+- **Café** : une marge, pris après la séance ; l'appli l'affiche en dernier, à tous les niveaux [Interprétation pour les paliers].
+- **Étirement dès N1** : couch stretch ou pancake, à tour de rôle. À N2, deux par matin, à tour de rôle : couch stretch et prayer stretch, ou pancake et stick shoulder extension. Le prayer stretch et la stick shoulder extension reviennent au programme, qui les avait retirés (« les blocs ciblés sont réservés aux hanches ») ; Claude l'a signalé avant de coder.
+- **Matins** : N1 A, downward dog to cobra et shoulder dislocate, rings row ; N1 B, scapula pull-up et reverse table top, pompes. N2 A, downward dog to cobra, shoulder dislocate, hip hinge au bâton, rings row, swing en EMOM de 3 min ; N2 B, scapula pull-up, reverse table top, cossack squat, pompes, goblet squat. N1 travaille donc le tirage et la poussée ; le KT press quitte la semaine.
+- **Durée et lever de N1** (« temps à réestimer, adapter le lever ») : N1 ≈ 8 min au lieu de 5, lever à 6h45 et coucher à 22h45 (proposition de Claude, sans objection de José). N2 : créneau de 12 min, marge de 8 min, lever inchangé à 6h40 [Interprétation pour les durées].
+- **Version minimum du matin** pendant l'ancrage : les deux premiers mouvements de mobilité du jour, puis 2 min de deep squat. Aux paliers : un mouvement, inchangé.
+- **Downward dog to cobra** dans les deux routines Mob. matin, en tête [Interprétation pour la place].
+- **Cossack squat** (question 32) : 8 à 12 répétitions par côté.
+- **Week-end** (question 38 : oui, modifiée) : séance A le samedi, B le dimanche. Samedi : cossack squat → pistol box-assisté et scapula pull-up → rings row au minimum ; shoulder dislocate → KT press et hip hinge au bâton → KT single leg deadlift à la principale (le hip hinge revient le samedi pour équilibrer les bonus, à la demande de José). Dimanche : shoulder dislocate → pompes et reverse table top → swing au minimum ; duck walk → goblet squat et scapula pull-up → traction assistée à la principale. Tous les exercices en 3 séries, minimum compris ; 2 min de deep squat au minimum. Étirements à 2 × 30 s : samedi pigeon et stick shoulder extension au minimum, pancake et couch stretch à la principale ; dimanche pancake et prayer stretch au minimum, pigeon et couch stretch à la principale. Bonus : le reste de la routine Mob. du jour (4 mouvements chaque jour) et la boxe en 3 rounds. Le minimum passe à environ 15 min ; il compte pour le jour tenu (signalé par Claude).
+- **Autres réponses** : 23 non (une suspension à durée fixe ne compte pas pour la progression) ; 24 oui ; 26 oui ; 28 oui ; 30 non (aux paliers, l'appli ne propose pas d'alléger : José choisit lui-même la version minimum) ; 31 oui.
+- **À développer** : « Ajuster », propositions de progression, export et import ; pas de minuteur.
+
+## 25/10/2026 — décisions de José (cycle N0, moments, compteurs repliés)
+
+- **Cycle N0**, du lundi 26/10 au dimanche 08/11/2026, identique à N1, pour se familiariser avec l'appli et le programme ; José a une entorse récente et ne pense pas tenir tout le programme avant une quinzaine de jours. N1 commence toujours le lundi 09/11. N0 ne compte pas dans les cycles. Lecture de Claude, signalée à José : le passage à N1 est proposé le 09/11 sans critère de jours tenus, José confirme (règle n° 4) ; c'est un passage à la date, assumé pour une période de familiarisation, et non une progression (règle n° 1). L'appli n'ajoute ni critère de douleur ni consigne d'arrêt (règle n° 6).
+- **Moments** : sélecteur Matin, Midi, Soir en haut de l'écran Aujourd'hui (le week-end : Week-end, Soir), avec un point de la couleur de la couche atteinte ; ouverture sur le moment de l'heure (proposition de Claude, acceptée : « Oui »).
+- **Compteurs repliés** : les exercices à plusieurs séries tiennent sur une ligne, dépliée d'un appui (« code aussi les sélecteurs dépliés »). La page du samedi passe d'environ 4 700 à 3 000 pixels CSS.
+
+## 25/10/2026 — enregistrement, hors ligne et mise en ligne (« Ensuite enregistrement et mise en ligne »)
+
+- **Week-end en onglets** Routine, Boxe et Soir (demande de José) ; l'onglet Boxe n'apparaît que les jours de bloc boxe.
+- **Enregistrement** : Dexie 4.4.6, base `fit-dad-v2`, magasins `journal` et `reglages` (docs/SPEC.md §7.2). Les alternances (« la suivante »), la rotation des étirements, les cordes de la semaine et les jours tenus viennent du journal. Persistance demandée au navigateur au lancement.
+- **Hors ligne** : vite-plugin-pwa 2.0.0, service worker limité à `/Fit-dad/v2/`, icône « Fit-dad v2 » (les icônes de la v1, copiées dans `app/public/icons/`) ; bandeau « Recharger » quand une nouvelle version est prête. La v1 et son `sw.js` ne sont pas touchés.
+- **Versions** : choisies parmi celles publiées depuis au moins deux semaines (sauf vite-plugin-pwa 2.0.0, publiée le 03/10/2026, la première qui accepte Vite 8 sans réserve) ; fake-indexeddb 6.2.5 pour les tests. Aucune version déjà figée n'a changé.
+- **À noter** : `npm audit` signale une faille de zod 4.6.5 (mémoire épuisée sur des collections géantes) ; ici, zod ne lit que `data/programme.json`, et plus tard les fichiers importés par José. Montée de version à faire dans une session dédiée, avant l'import (règle du dépôt).

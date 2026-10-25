@@ -1,5 +1,5 @@
 import type { Programme } from '../data/schema';
-import { suivantDansLaRotation, type Lettre } from './alternances';
+import type { Lettre } from './alternances';
 import type { DateIso } from './dates';
 import { aUnBlocBoxe, techniqueDuClubEnPriorite } from './jour';
 import {
@@ -13,17 +13,23 @@ import {
   type Matin,
   type Mouvement,
 } from './matin';
-import { estEnAncrage, niveauDAncrage, type Niveau } from './niveau';
+import { estEnAncrage, type Niveau } from './niveau';
 
 /**
  * Séance du week-end, qui remplace le matin de la semaine (docs/SPEC.md §6.2 et §6.11 ;
  * contenus des paliers provisoires, décision du 14/10/2026). Le soir suit `soirDuJour`.
  */
 
+/**
+ * Base de l'ancrage, la principale du week-end (décisions du 18 et du 25/10/2026) : séance A le
+ * samedi, B le dimanche, un échauffement par exercice pour le muscle concerné ; le minimum en est
+ * une partie (deux paires et deux étirements).
+ */
 export interface BaseDAncrage {
   echauffement: Mouvement[];
   exercices: ExerciceDeSeance[];
   etirements: Etirement[];
+  minimum: { echauffement: Mouvement[]; exercices: ExerciceDeSeance[]; etirements: Etirement[] };
 }
 
 export interface SeanceDuWeekEnd {
@@ -56,28 +62,30 @@ export interface ContexteDuWeekEnd {
   /** A le samedi, B le dimanche (`lettreDuMatin`). */
   lettre: Lettre;
   joursDeBoxe: readonly DateIso[];
-  dernierEtirement?: string | null;
 }
 
 function baseDAncrage(programme: Programme, ctx: ContexteDuWeekEnd): BaseDAncrage {
-  const { minimum, au_mieux } = programme.ancrage.week_end;
+  const { base } = programme.ancrage.week_end;
   const regles = programme.ancrage.matin;
-  const n2 = niveauDAncrage(programme, 'N2');
+  const mouvement = (exercice: string) =>
+    mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s);
+  // Le swing se compte en séries de 10 (une série par minute), pas en EMOM de 6 min.
+  const seance = (exercice: string, series: number): ExerciceDeSeance => {
+    const reps = programme.exercices[exercice]?.reps_par_minute;
+    return exercice === 'swing_emom' && reps ? { exercice, series, reps } : { exercice, series };
+  };
+  const jour = base.seances[ctx.lettre];
+  const paires = jour.paires.filter((p) => jour.minimum.includes(p.exercice));
+  const etirement = (exercice: string): Etirement => ({ exercice, series: base.etirements_series });
   return {
-    echauffement: n2.matin.seances[ctx.lettre].mobilite.map((exercice) =>
-      mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s),
-    ),
-    exercices: minimum.exercices.map((exercice) =>
-      exercice === 'swing_emom'
-        ? { exercice, series: minimum.series, reps: au_mieux.musculation.swing.reps }
-        : { exercice, series: minimum.series },
-    ),
-    etirements: [
-      {
-        exercice: suivantDansLaRotation(regles.etirement.rotation, ctx.dernierEtirement ?? null),
-        series: regles.etirement.series,
-      },
-    ],
+    echauffement: jour.paires.map((p) => mouvement(p.echauffement)),
+    exercices: jour.paires.map((p) => seance(p.exercice, base.series)),
+    etirements: jour.etirements.map(etirement),
+    minimum: {
+      echauffement: paires.map((p) => mouvement(p.echauffement)),
+      exercices: paires.map((p) => seance(p.exercice, base.minimum_series)),
+      etirements: jour.etirements_minimum.map(etirement),
+    },
   };
 }
 
@@ -93,27 +101,13 @@ export function weekEndDuJour(programme: Programme, ctx: ContexteDuWeekEnd): Wee
   if (estEnAncrage(ctx.niveau)) {
     const { au_mieux } = programme.ancrage.week_end;
     const regles = programme.ancrage.matin;
-    const series = au_mieux.musculation.series;
     return {
       base: baseDAncrage(programme, ctx),
       seance: {
         mobilite: mobiliteDeLaRoutine(programme, ctx.lettre, regles.mobilite_duree_mouvement_s),
-        // Sans les exercices du palier 2 : la séance telle qu'au palier 1.
-        musculation: exercicesDeLaSeance(programme, ctx.lettre, 1, 'seance_sans_ajouts').map(
-          (exercice) =>
-            exercice === 'swing_emom'
-              ? {
-                  exercice,
-                  series: au_mieux.musculation.swing.series,
-                  reps: au_mieux.musculation.swing.reps,
-                }
-              : { exercice, series },
-        ),
-        // Les 3 étirements de hanche, pigeon compris (décision du 17/10/2026).
-        etirements: programme.etirements.zones.hanches.map((exercice) => ({
-          exercice,
-          series: au_mieux.etirements_hanches_series,
-        })),
+        // Le bonus : le reste de la mobilité et la boxe, rien d'autre (décision du 25/10/2026).
+        musculation: [],
+        etirements: [],
       },
       matin_du_palier: null,
       boxe: boxeDuJour(au_mieux.boxe_rounds, ctx),

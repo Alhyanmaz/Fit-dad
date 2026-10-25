@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './ui/App';
+import { MiseAJour } from './ui/MiseAJour';
 import './ui/styles.css';
 
 const racine = document.getElementById('root');
@@ -11,5 +12,6 @@ if (!racine) {
 createRoot(racine).render(
   <StrictMode>
     <App />
+    <MiseAJour />
   </StrictMode>,
 );

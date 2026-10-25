@@ -42,7 +42,7 @@ Les mêmes sept règles figurent dans `docs/SPEC.md` §4.
 Détail et raisons dans `docs/decisions.md`.
 
 - `app/` : Vite, React, TypeScript strict, `vite-plugin-pwa`, Dexie (IndexedDB, base `fit-dad-v2`), zod, Vitest, ESLint, Prettier.
-- Versions figées dans `app/package-lock.json`, montées seulement lors d'une session dédiée. TypeScript 6.0 tant que `typescript-eslint` n'accepte pas la 7. Dexie et `vite-plugin-pwa` arrivent au J3.
+- Versions figées dans `app/package-lock.json`, montées seulement lors d'une session dédiée. TypeScript 6.0 tant que `typescript-eslint` n'accepte pas la 7. Dexie et `vite-plugin-pwa` ajoutés au J3 (25/10/2026).
 - Règles métier en fonctions pures dans `app/src/domain`, couvertes par les scénarios de `docs/SPEC.md` §9. Écrire le test avant ou avec la règle.
 - Valeurs du programme lues dans `data/programme.json`, validé au chargement.
 - Aucune requête réseau à l'exécution (pas de police en ligne, pas de statistiques).
@@ -64,7 +64,7 @@ Toutes dans `app/` (`cd app`), avec Node 22.12 ou plus récent.
 
 ```
 /                     v1 en ligne (ne pas modifier avant J6)
-app/                  code de la v2 : src/data (programme et son schéma zod), src/domain (règles métier, fonctions pures), src/ui (écrans) ; src/storage à venir (J3) ; config/ (sécurité du build)
+app/                  code de la v2 : src/data (programme et son schéma zod), src/domain (règles métier, fonctions pures), src/storage (base Dexie), src/ui (écrans) ; config/ (sécurité du build)
 v2/                   build de la v2, servi sous /Fit-dad/v2/ (généré, ne pas éditer à la main)
 data/programme.json   programme structuré
 docs/                 PROGRAMME, SPEC, MIGRATION, decisions, reprise, DEMARRAGE, relecture-programme (J1)
