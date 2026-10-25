@@ -1,7 +1,13 @@
 import type { Programme } from '../data/schema';
 import { autreLettre, type Lettre } from './alternances';
 import type { TypeDeJour } from './jour';
-import { estEnAncrage, niveauDAncrage, palierDuMatin, type Niveau } from './niveau';
+import {
+  estEnAncrage,
+  niveauDAncrage,
+  palierDuMatin,
+  type IdDAncrage,
+  type Niveau,
+} from './niveau';
 
 /** Contenu du matin (docs/SPEC.md §6.2 pour les paliers, §6.11 pour l'ancrage). */
 
@@ -156,7 +162,7 @@ export function groupeSuivant(
 
 function matinDAncrage(
   programme: Programme,
-  id: 'N1' | 'N2',
+  id: IdDAncrage,
   ctx: ContexteDuMatin,
   version: VersionDuMatin,
 ): Matin {

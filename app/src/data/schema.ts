@@ -59,6 +59,8 @@ const LETTRES = ['A', 'B'] as const;
 const NOMBRE_DE_PALIERS = 4;
 const numeroDePalier = z.number().int().min(1).max(NOMBRE_DE_PALIERS);
 const NIVEAUX_D_ANCRAGE = ['N1', 'N2'] as const;
+/** N0 : cycle de familiarisation, identique à N1 (décision du 25/10/2026). */
+const NIVEAUX_DE_DEPART = ['N0', ...NIVEAUX_D_ANCRAGE] as const;
 
 // ---------- Exercices ----------
 
@@ -159,7 +161,7 @@ const exercice = z
 
 const lever_tot = z.strictObject({
   tolerance_lever_min: entierPositifOuNul,
-  niveau_depart: z.enum(NIVEAUX_D_ANCRAGE),
+  niveau_depart: z.enum(NIVEAUX_DE_DEPART),
   qualites_nuit: z
     .array(z.strictObject({ id: texte, label: texte, difficile: z.boolean() }))
     .min(1),
@@ -324,6 +326,16 @@ const ancrage = z.strictObject({
     regle: texte,
     vers_palier_1_des_semaine: entierPositif,
     puis: texte,
+  }),
+  /** Cycle N0 : le contenu d'un niveau d'ancrage, pour se familiariser (25/10/2026). */
+  familiarisation: z.strictObject({
+    id: z.literal('N0'),
+    decision: dateIso,
+    comme: z.enum(NIVEAUX_D_ANCRAGE),
+    debut: dateIso,
+    passage_le: dateIso,
+    regle: texte,
+    passage_interpretation: drapeau,
   }),
   niveaux: z.array(niveauAncrage).min(1),
   lever_tot: z.strictObject({ regle: texte, plancher: texte, n1: texte }),
@@ -974,6 +986,12 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
       ),
     );
   });
+  const fam = an.familiarisation;
+  if (fam.passage_le <= fam.debut)
+    signaler(
+      ['ancrage', 'familiarisation', 'passage_le'],
+      `passage à ${fam.comme} (${fam.passage_le}) attendu après le début de N0 (${fam.debut})`,
+    );
   const semaineDuPalier1 = 1 + an.cycles_minimum * an.semaines_par_cycle;
   if (an.passage.vers_palier_1_des_semaine !== semaineDuPalier1) {
     signaler(

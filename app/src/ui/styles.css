@@ -291,6 +291,24 @@ p {
   padding-left: 1.875rem;
 }
 
+/* Séries repliées : une ligne, qu'un appui déplie (25/10/2026) */
+.compteur-replie {
+  width: 100%;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.compteur-valeurs {
+  color: var(--orange);
+  font-size: 1.125rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  text-decoration: underline dotted;
+  text-underline-offset: 0.25em;
+}
+
 .compteur-nom {
   color: var(--discret);
   font-size: 0.9375rem;
@@ -451,6 +469,56 @@ button {
 
 .choix button[aria-pressed='true']::before {
   background: currentColor;
+}
+
+/* Onglets du moment (matin, midi, soir) : le point donne la couche atteinte, même ouvert */
+.choix.onglets {
+  flex-wrap: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -1rem 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--fond);
+}
+
+.choix.onglets button {
+  flex: 1;
+  justify-content: center;
+  padding: 0 0.5rem;
+}
+
+.choix.onglets button[aria-pressed='true'] {
+  background: var(--carte-2);
+  border-color: var(--texte);
+  color: var(--texte);
+}
+
+.choix button[data-etat]::before {
+  content: '';
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  flex: none;
+  background: var(--fond);
+  border: 2px solid var(--discret);
+}
+
+.choix button[data-etat='minimum']::before {
+  background: var(--vert);
+  border-color: var(--vert);
+}
+
+.choix button[data-etat='principale']::before {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.choix button[data-etat='bonus']::before {
+  background: var(--rouge);
+  border-color: var(--rouge);
 }
 
 /* Lien vers « Lever tôt » depuis le résumé du jour */

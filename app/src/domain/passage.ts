@@ -1,6 +1,6 @@
 import type { Programme } from '../data/schema';
 import { ajouterJours, estWeekEnd, type DateIso } from './dates';
-import { estEnAncrage, type Niveau } from './niveau';
+import { estEnAncrage, estEnFamiliarisation, type Niveau } from './niveau';
 
 /**
  * Passages (décision de José du 18/10/2026) : vers N2, vers le palier 1, puis d'un palier au
@@ -8,11 +8,12 @@ import { estEnAncrage, type Niveau } from './niveau';
  * forcer le passage à tout moment.
  */
 
-/** Le niveau qui suit : N1, N2, puis les paliers 1 à 4 ; null après le dernier palier. */
+/** Le niveau qui suit : N1 après N0, N2, puis les paliers 1 à 4 ; null après le dernier palier. */
 export function niveauSuivant(programme: Programme, niveau: Niveau): Niveau | null {
+  if (estEnFamiliarisation(niveau)) return { ancrage: programme.ancrage.familiarisation.comme };
   if (estEnAncrage(niveau)) {
     const ids = programme.ancrage.niveaux.map((n) => n.id);
-    const suivant = ids[ids.indexOf(niveau.ancrage) + 1];
+    const suivant = ids[ids.findIndex((id) => id === niveau.ancrage) + 1];
     return suivant ? { ancrage: suivant } : { palier: 1 };
   }
   return niveau.palier < programme.matin.paliers.length ? { palier: niveau.palier + 1 } : null;
@@ -24,11 +25,19 @@ export function niveauSuivant(programme: Programme, niveau: Niveau): Niveau | nu
  * passage forcé, le cycle part du jour du passage [Interprétation].
  */
 export function passageAuPlusTot(programme: Programme, niveau: Niveau, depuis: DateIso): DateIso {
+  // N0 : jusqu'à la date choisie par José, quel que soit le jour du début (25/10/2026).
+  if (estEnFamiliarisation(niveau)) return programme.ancrage.familiarisation.passage_le;
   const semaines = estEnAncrage(niveau)
     ? programme.ancrage.semaines_par_cycle
     : programme.cycle.semaines_travail + 1;
   return ajouterJours(depuis, 7 * semaines);
 }
+
+/**
+ * Sortie de N0 : proposée à la date prévue, sans critère de jours tenus ; José confirme
+ * [Interprétation de « un cycle N0 pour me familiariser », 25/10/2026].
+ */
+export const passageSansCritere = (niveau: Niveau): boolean => estEnFamiliarisation(niveau);
 
 export interface CritereDePassage {
   tenus: number;

@@ -3,7 +3,7 @@
 ## État
 
 - **J0, J1 et J2 terminés et fusionnés dans `main`** : PR #1 le 08/10 ; PR #2 (programme validé au chargement) et PR #3 (moteur de règles) le 17/10, à la demande de José. La v2 est en ligne sous `https://alhyanmaz.github.io/Fit-dad/v2/` ; la v1 est intacte à la racine.
-- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, « Lever tôt » (verdict du matin), couches (minimum, principale, bonus), passages (critère, moment, niveau suivant), en fonctions pures ; scénarios 1 à 7, 12, 15, 16 et 18 verts ; scénarios 8 et 17 en partie (la proposition de chaque semaine viendra avec l'enregistrement) ; 95 tests au total.
+- **Moteur** (`app/src/domain`) : type de jour, alternances, matin, midi, soir, week-end, jour tenu, « Lever tôt » (verdict du matin), couches (minimum, principale, bonus), passages (critère, moment, niveau suivant), en fonctions pures ; scénarios 1 à 7, 12, 15, 16 et 18 verts ; scénarios 8 et 17 en partie (la proposition de chaque semaine viendra avec l'enregistrement) ; 97 tests au total.
 - **Programme** (`docs/PROGRAMME.md`, `data/programme.json`, version du 25/10/2026) :
   - ancrage en deux niveaux, un par cycle de 5 semaines : N1 (lever 6h45, 10 respirations, 2 mouvements, 1 exercice, 1 étirement), puis N2 (6h40) ; matins et week-end corrigés par José le 25/10 ; ni jour de récupération ni version courte ; « Alléger » n'y propose rien (décision du 18/10) ;
   - puis 4 paliers, de 6h30 à 6h00, **un par cycle** (décision du 17/10) ;
@@ -12,10 +12,11 @@
   - palier 1 confirmé le 17/10 ; contenus des paliers 2 à 4 provisoires.
 - **Une appli, deux tranches** (décision du 17/10, `docs/SPEC.md` §10) : tranche 1, l'ancrage puis le premier cycle du palier 1 (jalons J3 à J5) ; tranche 2, les paliers 2 à 4 et la bascule de la v1 (J6).
 - **Les 22 questions du 17/10 sont tranchées** (`docs/decisions.md`).
-- **Ancrage : démarrage le lundi 09/11/2026** (décision du 25/10, qui remplace le départ du 19/10).
+- **Cycle N0 du lundi 26/10 au dimanche 08/11/2026**, identique à N1, pour se familiariser (entorse récente) ; **N1 le lundi 09/11/2026** (décisions du 25/10, qui remplacent le départ du 19/10).
 - **J3 en cours** sur la branche `j3-aujourdhui` (PR #4 en brouillon), thème noir et orange :
   - écran Aujourd'hui de l'ancrage branché sur le moteur : matin, midi (corde ou marche), soir en deux (bloc clé, routine pied), week-end en une carte (séance A le samedi, B le dimanche, un échauffement par exercice ; minimum, 2 paires en 3 séries et 2 étirements ; principale, les 2 autres ; bonus, le reste de la mobilité et la boxe), boxe ce soir, single leg balance matin et soir, jauge des jours tenus sur 14 (lever à l'heure, matin et soir), lien « Saisir le lever » ;
   - chaque bloc dit d'abord ce qu'il est (mobilité, musculation, étirements, cardio…) ; la couche de chaque exercice se lit à la couleur de son nom (minimum vert, principale orange, bonus rouge), avec une légende ; chaque exercice une fois ; chaque bloc se valide par la couche atteinte ;
+  - un sélecteur Matin, Midi, Soir (Week-end, Soir le samedi et le dimanche), avec un point de la couleur de la couche atteinte ; les séries repliées sur une ligne, dépliées d'un appui ;
   - chaque mouvement se coche ; la couche atteinte de chaque bloc s'en déduit, et les boutons de couche sont des raccourcis ;
   - un compteur de répétitions par série pour chaque mouvement à répétitions, échauffements compris ; une durée réglable pour chaque mouvement au temps (étirements : 30 s au plus) ;
   - carte « Passage » : date au plus tôt, critère, « Forcer le passage » avec confirmation (le niveau choisi n'est pas encore gardé ; arrêt à N2 avant l'écran des paliers) ;

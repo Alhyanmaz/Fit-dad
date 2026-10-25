@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { lireProgramme, programmeBrut } from '../data/programme';
 import { ajouterJours, jourDeLaSemaine, type DateIso } from './dates';
-import { critereDePassage, niveauSuivant, passageAuPlusTot } from './passage';
+import { ciblesDuNiveau } from './leverTot';
+import { matinDuJour } from './matin';
+import { critereDePassage, niveauSuivant, passageAuPlusTot, passageSansCritere } from './passage';
 
 const lecture = lireProgramme(programmeBrut);
 if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
@@ -74,5 +76,24 @@ describe('scénario 8 : passage au palier 2, même critère', () => {
     const unDimanche = (date: DateIso) => date === '2027-01-31';
     const critere = critereDePassage(programme, quinzaine('2027-02-01', unDimanche), '2027-02-01');
     expect([critere.tenus, critere.weekEndTenus, critere.rempli]).toEqual([13, 3, false]);
+  });
+});
+
+describe('cycle N0 de familiarisation (décision du 25/10/2026)', () => {
+  const n0 = { ancrage: 'N0' as const };
+  it('identique à N1 : mêmes heures, même matin', () => {
+    expect(ciblesDuNiveau(programme, n0)).toEqual(ciblesDuNiveau(programme, { ancrage: 'N1' }));
+    const contexte = { type: 'normal' as const, lettre: 'B' as const, lettreDeLaVeille: null };
+    expect(matinDuJour(programme, { ...contexte, niveau: n0 })).toEqual(
+      matinDuJour(programme, { ...contexte, niveau: { ancrage: 'N1' } }),
+    );
+  });
+
+  it('du lundi 26/10 au dimanche 08/11 ; N1 proposé le lundi 09/11, sans critère', () => {
+    expect(programme.ancrage.familiarisation.debut).toBe('2026-10-26');
+    expect(niveauSuivant(programme, n0)).toEqual({ ancrage: 'N1' });
+    expect(passageAuPlusTot(programme, n0, '2026-10-26')).toBe('2026-11-09');
+    expect(passageSansCritere(n0)).toBe(true);
+    expect(passageSansCritere({ ancrage: 'N1' })).toBe(false);
   });
 });

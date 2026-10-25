@@ -91,10 +91,11 @@ Pendant l'ancrage, cette section remplace le contenu des sections « Le matin pa
 
 | Niveau | Semaines, au plus tôt | Lever / coucher | Matin |
 | --- | --- | --- | --- |
+| N0 | du 26/10 au 08/11/2026 | 6h45 / 22h45 | Comme N1 : cycle de familiarisation avec l'appli et le programme (décision du 25/10/2026) |
 | N1 | 1 à 5 | 6h45 / 22h45 | 10 respirations, 2 mouvements de mobilité, 2 min de deep squat, 1 série d'un exercice, 1 étirement (≈ 8 min) |
 | N2 | 6 à 10 | 6h40 / 22h40 | Un créneau de 12 min (10 respirations, 3 mouvements de mobilité, 2 min de deep squat, 2 exercices, 2 étirements), puis 8 min de marge, le café |
 
-Démarrage le lundi 09/11/2026 : N2 au plus tôt le 14/12/2026, palier 1 au plus tôt le 18/01/2027 (décision du 25/10/2026). Lever de N1 avancé de 6h50 à 6h45 pour le matin plus long (décision du 25/10/2026, sur proposition de Claude).
+N0, du lundi 26/10 au dimanche 08/11/2026 : comme N1, il ne compte pas dans les cycles ; le passage à N1 est proposé le lundi 09/11, sans critère de jours tenus, et tu le confirmes, ou tu le forces plus tôt \[Interprétation pour l'absence de critère\]. Démarrage de N1 le lundi 09/11/2026 : N2 au plus tôt le 14/12/2026, palier 1 au plus tôt le 18/01/2027 (décision du 25/10/2026). Lever de N1 avancé de 6h50 à 6h45 pour le matin plus long (décision du 25/10/2026, sur proposition de Claude).
 
 Les couchers sont fixés 8 h avant le lever \[Interprétation\].
 

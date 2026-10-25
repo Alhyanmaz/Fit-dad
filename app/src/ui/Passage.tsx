@@ -3,7 +3,12 @@ import type { Programme } from '../data/schema';
 import { joursEntre, type DateIso } from '../domain/dates';
 import { ciblesDuNiveau } from '../domain/leverTot';
 import { estEnAncrage, type Niveau } from '../domain/niveau';
-import { critereDePassage, niveauSuivant, passageAuPlusTot } from '../domain/passage';
+import {
+  critereDePassage,
+  niveauSuivant,
+  passageAuPlusTot,
+  passageSansCritere,
+} from '../domain/passage';
 import { Carte } from './composants';
 import { dateLongue, heureCourte } from './libelles';
 
@@ -36,16 +41,24 @@ export function Passage({
   const nom = nomDuNiveau(suivant);
   const auPlusTot = passageAuPlusTot(programme, niveau, depuis);
   const { requis, rempli } = critereDePassage(programme, joursTenus, jour);
-  const propose = rempli && joursEntre(auPlusTot, jour) >= 0;
+  const sansCritere = passageSansCritere(niveau);
+  const propose = (sansCritere || rempli) && joursEntre(auPlusTot, jour) >= 0;
   const cibles = ciblesDuNiveau(programme, suivant);
   // L'écran des paliers arrive avec le jalon J5 : pas de passage au palier 1 d'ici là.
   const ecranPret = estEnAncrage(suivant);
   return (
     <Carte titre={`Passage à ${nom}`}>
-      <p className="discret">
-        Au plus tôt {dateLongue(auPlusTot).toLowerCase()}, si {requis} jours sont tenus sur les{' '}
-        {programme.passages.fenetre_jours} derniers, dont les deux week-ends.
-      </p>
+      {sansCritere ? (
+        <p className="discret">
+          {dateLongue(auPlusTot)}, sans critère de jours tenus : N0 sert à te familiariser avec
+          l'appli et le programme.
+        </p>
+      ) : (
+        <p className="discret">
+          Au plus tôt {dateLongue(auPlusTot).toLowerCase()}, si {requis} jours sont tenus sur les{' '}
+          {programme.passages.fenetre_jours} derniers, dont les deux week-ends.
+        </p>
+      )}
       {!ecranPret ? (
         <p className="discret">L'écran du {nom} arrive avec le jalon J5.</p>
       ) : confirmer ? (

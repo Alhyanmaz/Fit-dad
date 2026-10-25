@@ -10,12 +10,6 @@ import { NavBas, type Ecran } from './NavBas';
 /** Nombre d'erreurs affichées au plus ; le reste est résumé. */
 const ERREURS_AFFICHEES = 5;
 
-/**
- * Début de l'ancrage, choisi par José (décision du 18/10/2026). Il passera dans les réglages
- * enregistrés sur le téléphone, avec le niveau en cours, à l'étape suivante du J3.
- */
-const DEBUT_ANCRAGE: DateIso = '2026-11-09';
-
 /** Niveau en cours et jour où il a commencé : son cycle part de là (passages, 18/10/2026). */
 interface NiveauEnCours {
   niveau: Niveau;
@@ -23,6 +17,14 @@ interface NiveauEnCours {
 }
 
 const lecture = lireProgramme(programmeBrut);
+
+/**
+ * Début de l'ancrage : le cycle N0, de familiarisation (décision du 25/10/2026). Il passera dans
+ * les réglages enregistrés sur le téléphone, avec le niveau en cours, à l'étape suivante du J3.
+ */
+const DEBUT_ANCRAGE: DateIso = lecture.ok
+  ? lecture.programme.ancrage.familiarisation.debut
+  : '2026-10-26';
 
 /** Date du téléphone, au format du domaine (« AAAA-MM-JJ »). */
 function aujourdhui(): DateIso {
@@ -35,7 +37,7 @@ export function App() {
   const [ecran, setEcran] = useState<Ecran>('aujourdhui');
   const [journal, setJournal] = useState<JournalDuJour>(journalVide);
   const [enCours, setEnCours] = useState<NiveauEnCours>({
-    niveau: { ancrage: 'N1' },
+    niveau: { ancrage: 'N0' },
     depuis: DEBUT_ANCRAGE,
   });
   if (!lecture.ok) {

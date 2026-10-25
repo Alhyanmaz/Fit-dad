@@ -63,6 +63,15 @@
       "vers_palier_1_des_semaine": 11,
       "puis": "Au passage au palier 1 : tests de la semaine 1 du programme, puis José règle la suite."
     },
+    "familiarisation": {
+      "id": "N0",
+      "decision": "2026-10-25",
+      "comme": "N1",
+      "debut": "2026-10-26",
+      "passage_le": "2026-11-09",
+      "regle": "Cycle N0, identique à N1, pour te familiariser avec l'appli et le programme. Il ne compte pas dans les cycles. Passage à N1 proposé le lundi 09/11/2026, sans critère de jours tenus ; tu confirmes, ou tu forces plus tôt.",
+      "passage_interpretation": true
+    },
     "niveaux": [
       {
         "id": "N1",
@@ -343,7 +352,7 @@
   },
   "lever_tot": {
     "tolerance_lever_min": 5,
-    "niveau_depart": "N1",
+    "niveau_depart": "N0",
     "qualites_nuit": [
       {
         "id": "calme",

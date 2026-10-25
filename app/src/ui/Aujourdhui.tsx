@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import type { Programme } from '../data/schema';
 import { lettreDuMatin, lettreDuPied } from '../domain/alternances';
 import { jourTenu } from '../domain/ancrage';
@@ -8,7 +8,12 @@ import { typeDeJour } from '../domain/jour';
 import type { JournalDuJour } from '../domain/journal';
 import { ciblesDuNiveau, leverTenu } from '../domain/leverTot';
 import { midiDuJour } from '../domain/midi';
-import { niveauDAncrage, type Niveau } from '../domain/niveau';
+import {
+  estEnFamiliarisation,
+  niveauDAncrage,
+  type IdDAncrage,
+  type Niveau,
+} from '../domain/niveau';
 import { elementsDuSoir, soirDuJour } from '../domain/soir';
 import { coucheAtteinte, type Element } from '../domain/validation';
 import { weekEndDuJour } from '../domain/weekEnd';
@@ -31,6 +36,19 @@ import { Passage } from './Passage';
 const parBloc = (elements: readonly Element[], cles: readonly string[]) =>
   elements.filter((e) => cles.includes(e.cle));
 
+/** Un moment de la journée, choisi en haut de l'écran (décision du 25/10/2026). */
+type Moment = 'matin' | 'midi' | 'soir';
+
+/**
+ * Le moment ouvert au démarrage : le matin avant 12h, le midi jusqu'à 17h, le soir ensuite
+ * [Interprétation]. Le week-end, la séance se fait dans la journée : pas de midi.
+ */
+function momentDeLHeure(heure: number, weekEnd: boolean): Moment {
+  if (heure < 12) return 'matin';
+  if (heure < 17) return weekEnd ? 'matin' : 'midi';
+  return 'soir';
+}
+
 /**
  * Écran « Aujourd'hui » pendant l'ancrage (jalon J3). Chaque bloc dit d'abord ce qu'il est
  * (mobilité, musculation…), la couleur de chaque mouvement donne sa couche, et chaque mouvement se
@@ -52,7 +70,7 @@ export function Aujourdhui({
   date: DateIso;
   /** Début de l'ancrage. */
   debut: DateIso;
-  niveau: { ancrage: 'N1' | 'N2' };
+  niveau: { ancrage: IdDAncrage };
   /** Début du niveau en cours. */
   depuis: DateIso;
   journal: JournalDuJour;
@@ -70,6 +88,15 @@ export function Aujourdhui({
   const cibles = ciblesDuNiveau(programme, niveau);
   const creneau = niveauDAncrage(programme, niveau.ancrage).matin.creneau_min;
   const semaine = Math.floor(Math.max(0, joursEntre(depuis, jour)) / 7) + 1;
+  const familiarisation = estEnFamiliarisation(niveau);
+  const { familiarisation: n0 } = programme.ancrage;
+  const semainesDuNiveau = familiarisation
+    ? Math.ceil(joursEntre(n0.debut, n0.passage_le) / 7)
+    : programme.ancrage.semaines_par_cycle;
+  const weekEnd = estWeekEnd(jour);
+  const [moment, setMoment] = useState<Moment>(() =>
+    avantLeDebut ? 'matin' : momentDeLHeure(new Date().getHours(), weekEnd),
+  );
   const { passages } = programme;
 
   // Le matin, ou la séance du week-end, en couches.
@@ -200,8 +227,8 @@ export function Aujourdhui({
         <header className="entete">
           <h1>{dateLongue(jour)}</h1>
           <p className="discret">
-            Ancrage · {niveau.ancrage} · semaine {semaine} sur{' '}
-            {programme.ancrage.semaines_par_cycle}
+            {familiarisation ? 'Familiarisation' : 'Ancrage'} · {niveau.ancrage} · semaine {semaine}{' '}
+            sur {semainesDuNiveau}
           </p>
           {avantLeDebut && (
             <p className="bandeau">
@@ -254,23 +281,68 @@ export function Aujourdhui({
 
         <Legende />
 
-        <Carte
-          titre={contenuWeekEnd ? 'Week-end' : `Matin ${lettre}`}
-          precision={
-            contenuWeekEnd
-              ? `≈ ${programme.ancrage.week_end.base.duree_min} min, plus le bonus`
-              : `${heureCourte(cibles.lever)} · ≈ ${creneau} min`
-          }
-        >
-          <ParType programme={programme} bloc={blocMatin} couches={couchesMatin} />
-          <BoutonsDeCouche
-            bloc={blocMatin}
-            elements={elementsMatin}
-            libelle={contenuWeekEnd ? 'Week-end' : 'Matin'}
-          />
-        </Carte>
+        <Choix
+          libelle="Moment de la journée"
+          valeur={moment}
+          surChoix={(m) => m && setMoment(m)}
+          options={[
+            {
+              valeur: 'matin',
+              libelle: contenuWeekEnd ? 'Week-end' : 'Matin',
+              etat: matin ?? 'rien',
+            },
+            ...(contenuMidi
+              ? [
+                  {
+                    valeur: 'midi' as const,
+                    libelle: 'Midi',
+                    etat: journal.midi ? ('bonus' as const) : ('rien' as const),
+                  },
+                ]
+              : []),
+            { valeur: 'soir', libelle: 'Soir', etat: soir ?? 'rien' },
+          ]}
+          onglets
+        />
 
-        {contenuMidi && (
+        {moment === 'matin' && (
+          <Carte
+            titre={contenuWeekEnd ? 'Week-end' : `Matin ${lettre}`}
+            precision={
+              contenuWeekEnd
+                ? `≈ ${programme.ancrage.week_end.base.duree_min} min, plus le bonus`
+                : `${heureCourte(cibles.lever)} · ≈ ${creneau} min`
+            }
+          >
+            <ParType programme={programme} bloc={blocMatin} couches={couchesMatin} />
+            <BoutonsDeCouche
+              bloc={blocMatin}
+              elements={elementsMatin}
+              libelle={contenuWeekEnd ? 'Week-end' : 'Matin'}
+            />
+          </Carte>
+        )}
+
+        {moment === 'matin' && (
+          <Carte titre="Chaque matin">
+            <GroupeDeLignes
+              programme={programme}
+              bloc="equilibre"
+              titre="Équilibre"
+              lignes={[
+                {
+                  cle: 'matin',
+                  couche: 'principale',
+                  nom: nomExercice(programme, 'single_leg_balance'),
+                  duree: { exercice: 'single_leg_balance', prevu: equilibre },
+                },
+              ]}
+            />
+            <p className="discret">Par jambe, pendant le brossage des dents.</p>
+          </Carte>
+        )}
+
+        {moment === 'midi' && contenuMidi && (
           <Carte titre="Midi">
             <GroupeDeLignes
               programme={programme}
@@ -298,94 +370,97 @@ export function Aujourdhui({
           </Carte>
         )}
 
-        <Carte titre="Soir · bloc clé" precision={`≈ ${soirMinimum.duree_min} min`}>
-          <button type="button" className="interrupteur" aria-pressed={boxe} onClick={basculerBoxe}>
-            Boxe ce soir
-          </button>
-          <GroupeDeLignes
-            programme={programme}
-            bloc="soir"
-            titre="Mobilité"
-            lignes={lignesBlocCle}
-          />
-          {boxe && <p className="discret">Soir de boxe : le minimum.</p>}
-          <BoutonsDeCouche
-            bloc="soir"
-            elements={parBloc(elementsSoir, ['suspension_seule', 'deep_squat', 'knee_raises'])}
-            libelle="Bloc clé"
-          />
-        </Carte>
+        {moment === 'soir' && (
+          <>
+            <Carte titre="Soir · bloc clé" precision={`≈ ${soirMinimum.duree_min} min`}>
+              <button
+                type="button"
+                className="interrupteur"
+                aria-pressed={boxe}
+                onClick={basculerBoxe}
+              >
+                Boxe ce soir
+              </button>
+              <GroupeDeLignes
+                programme={programme}
+                bloc="soir"
+                titre="Mobilité"
+                lignes={lignesBlocCle}
+              />
+              {boxe && <p className="discret">Soir de boxe : le minimum.</p>}
+              <BoutonsDeCouche
+                bloc="soir"
+                elements={parBloc(elementsSoir, ['suspension_seule', 'deep_squat', 'knee_raises'])}
+                libelle="Bloc clé"
+              />
+            </Carte>
 
-        {pied && (
-          <Carte
-            titre={`Soir · routine pied ${pied.lettre}`}
-            precision={`≈ ${contenuSoir.duree_min - soirMinimum.duree_min} min`}
-          >
-            <p className="discret">{programme.pied.routines[pied.lettre].nom}</p>
-            <GroupeDeLignes
-              programme={programme}
-              bloc="soir"
-              titre="Renforcement du pied"
-              lignes={lignesPied}
-            />
-            <GroupeDeLignes
-              programme={programme}
-              bloc="soir"
-              titre="Étirements du pied"
-              lignes={lignesEtirements(pied.etirements, 'principale')}
-            />
-            <BoutonsDeCouche
-              bloc="soir"
-              elements={parBloc(elementsSoir, [
-                ...pied.exercices,
-                ...pied.etirements.map((e) => e.exercice),
-              ])}
-              libelle="Routine pied"
-            />
-          </Carte>
+            {pied && (
+              <Carte
+                titre={`Soir · routine pied ${pied.lettre}`}
+                precision={`≈ ${contenuSoir.duree_min - soirMinimum.duree_min} min`}
+              >
+                <p className="discret">{programme.pied.routines[pied.lettre].nom}</p>
+                <GroupeDeLignes
+                  programme={programme}
+                  bloc="soir"
+                  titre="Renforcement du pied"
+                  lignes={lignesPied}
+                />
+                <GroupeDeLignes
+                  programme={programme}
+                  bloc="soir"
+                  titre="Étirements du pied"
+                  lignes={lignesEtirements(pied.etirements, 'principale')}
+                />
+                <BoutonsDeCouche
+                  bloc="soir"
+                  elements={parBloc(elementsSoir, [
+                    ...pied.exercices,
+                    ...pied.etirements.map((e) => e.exercice),
+                  ])}
+                  libelle="Routine pied"
+                />
+              </Carte>
+            )}
+
+            {apresBoxe && (
+              <Carte titre="Après la boxe" precision="si possible">
+                <GroupeDeLignes
+                  programme={programme}
+                  bloc="soir"
+                  titre="Étirements du pied"
+                  lignes={lignesEtirements(apresBoxe.etirements, 'bonus')}
+                />
+                <BoutonsDeCouche
+                  bloc="soir"
+                  elements={parBloc(
+                    elementsSoir,
+                    apresBoxe.etirements.map((e) => e.exercice),
+                  )}
+                  libelle="Après la boxe"
+                />
+              </Carte>
+            )}
+
+            <Carte titre="Chaque soir">
+              <GroupeDeLignes
+                programme={programme}
+                bloc="equilibre"
+                titre="Équilibre"
+                lignes={[
+                  {
+                    cle: 'soir',
+                    couche: 'bonus',
+                    nom: nomExercice(programme, 'single_leg_balance'),
+                    duree: { exercice: 'single_leg_balance', prevu: equilibre },
+                  },
+                ]}
+              />
+              <p className="discret">Par jambe, pendant le brossage des dents.</p>
+            </Carte>
+          </>
         )}
-
-        {apresBoxe && (
-          <Carte titre="Après la boxe" precision="si possible">
-            <GroupeDeLignes
-              programme={programme}
-              bloc="soir"
-              titre="Étirements du pied"
-              lignes={lignesEtirements(apresBoxe.etirements, 'bonus')}
-            />
-            <BoutonsDeCouche
-              bloc="soir"
-              elements={parBloc(
-                elementsSoir,
-                apresBoxe.etirements.map((e) => e.exercice),
-              )}
-              libelle="Après la boxe"
-            />
-          </Carte>
-        )}
-
-        <Carte titre="Chaque jour">
-          <GroupeDeLignes
-            programme={programme}
-            bloc="equilibre"
-            titre="Équilibre"
-            lignes={[
-              {
-                cle: 'matin',
-                couche: 'principale',
-                nom: `${nomExercice(programme, 'single_leg_balance')}, le matin`,
-                duree: { exercice: 'single_leg_balance', prevu: equilibre },
-              },
-              {
-                cle: 'soir',
-                couche: 'bonus',
-                nom: `${nomExercice(programme, 'single_leg_balance')}, le soir`,
-                duree: { exercice: 'single_leg_balance', prevu: equilibre },
-              },
-            ]}
-          />
-          <p className="discret">Par jambe, pendant le brossage des dents.</p>
-        </Carte>
 
         <p className="discret note">
           Version d'essai : rien n'est encore enregistré. <a href="../">Ouvrir la v1</a>

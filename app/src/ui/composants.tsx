@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import type { Programme } from '../data/schema';
 import { COUCHES, type Couche, type Couches } from '../domain/couches';
 import { compteurDeRepetitions, reglageDeDuree, regler } from '../domain/saisie';
@@ -40,7 +40,16 @@ export interface Option<T extends string> {
   valeur: T;
   libelle: string;
   couche?: Couche;
+  /** Onglets : la couche atteinte du moment, ou « rien » (point gris). */
+  etat?: Couche | 'rien';
 }
+
+const ETATS: Record<Couche | 'rien', string> = {
+  minimum: 'minimum atteint',
+  principale: 'principale atteinte',
+  bonus: 'bonus atteint',
+  rien: 'rien de fait',
+};
 
 /**
  * Boutons à choix unique ; un second appui annule. Le point de couleur rappelle la couche, s'il y
@@ -51,21 +60,31 @@ export function Choix<T extends string>({
   valeur,
   surChoix,
   libelle,
+  onglets = false,
 }: {
   options: readonly Option<T>[];
   valeur: T | null;
   surChoix: (valeur: T | null) => void;
   libelle?: string;
+  /** Onglets (matin, midi, soir) : un appui ouvre, sans jamais rien annuler (25/10/2026). */
+  onglets?: boolean;
 }) {
   return (
-    <div className="choix" role="group" {...(libelle ? { 'aria-label': libelle } : {})}>
+    <div
+      className={onglets ? 'choix onglets' : 'choix'}
+      role="group"
+      {...(libelle ? { 'aria-label': libelle } : {})}
+    >
       {options.map((option) => (
         <button
           key={option.valeur}
           type="button"
           {...(option.couche ? { 'data-couche': option.couche } : {})}
+          {...(option.etat
+            ? { 'data-etat': option.etat, 'aria-label': `${option.libelle}, ${ETATS[option.etat]}` }
+            : {})}
           aria-pressed={valeur === option.valeur}
-          onClick={() => surChoix(valeur === option.valeur ? null : option.valeur)}
+          onClick={() => surChoix(!onglets && valeur === option.valeur ? null : option.valeur)}
         >
           {option.libelle}
         </button>
@@ -181,13 +200,48 @@ export function Compteurs({
   debut?: number;
 }) {
   const saisie = useContext(SaisieContexte);
+  const [ouvert, setOuvert] = useState(false);
   const compteur = compteurDeRepetitions(programme, exercice, series);
   if (!compteur) return null;
   const nom = nomExercice(programme, exercice);
   const unite =
     compteur.quoi ?? (compteur.cote ? `répétitions ${parCote(compteur.cote)}` : 'répétitions');
+  // Plusieurs séries : repliées sur une ligne, dépliées d'un appui (décision du 25/10/2026).
+  const repliable = compteur.series > 1;
+  const valeurs = Array.from({ length: compteur.series }, (_, serie) =>
+    saisie.valeur(cle, debut + serie, compteur.depart),
+  );
+  if (repliable && !ouvert)
+    return (
+      <div className="compteurs">
+        <button
+          type="button"
+          className="compteur compteur-replie"
+          aria-expanded={false}
+          aria-label={`${nom} : ${valeurs.join(', ')} ${unite}, régler série par série`}
+          onClick={() => setOuvert(true)}
+        >
+          <span className="compteur-nom">{unite.charAt(0).toUpperCase() + unite.slice(1)}</span>
+          <span className="compteur-valeurs">{valeurs.join(' · ')}</span>
+        </button>
+      </div>
+    );
   return (
     <div className="compteurs">
+      {repliable && (
+        <button
+          type="button"
+          className="compteur compteur-replie"
+          aria-expanded={true}
+          aria-label={`${nom} : replier les séries`}
+          onClick={() => setOuvert(false)}
+        >
+          <span className="compteur-nom">Replier</span>
+          <span className="compteur-valeurs" aria-hidden="true">
+            ▴
+          </span>
+        </button>
+      )}
       {Array.from({ length: compteur.series }, (_, serie) => {
         const valeur = saisie.valeur(cle, debut + serie, compteur.depart);
         const libelle = compteur.series > 1 || debut > 0 ? `Série ${debut + serie + 1}` : unite;
