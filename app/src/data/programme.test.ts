@@ -13,12 +13,12 @@ function erreursDe(donnees: unknown): string[] {
 }
 
 describe('lecture du programme', () => {
-  it('valide data/programme.json : 41 exercices, version du 18/10/2026', () => {
+  it('valide data/programme.json : 44 exercices, version du 25/10/2026', () => {
     const lecture = lireProgramme(programmeBrut);
     if (!lecture.ok) throw new Error(lecture.erreurs.join('\n'));
     expect(resumerProgramme(lecture.programme)).toEqual({
-      version: '2026-10-18',
-      nombreExercices: 41,
+      version: '2026-10-25',
+      nombreExercices: 44,
     });
   });
 
@@ -161,15 +161,28 @@ describe('le schéma vérifie les cycles d’ancrage', () => {
     const p = copie();
     p.ancrage.niveaux[1].lever = '06:55';
     expect(erreursDe(p).join('\n')).toMatch(
-      /ancrage › niveaux › 1 › lever : lever de N2 \(06:55\) pas plus tôt que celui de N1 \(06:50\)/,
+      /ancrage › niveaux › 1 › lever : lever de N2 \(06:55\) pas plus tôt que celui de N1 \(06:45\)/,
     );
   });
 
-  it('étirement du matin hors de la zone des hanches', () => {
+  it('étirement du matin qui n’est pas un étirement', () => {
     const p = copie();
-    p.ancrage.matin.etirement.rotation[0] = 'seiza';
+    p.ancrage.niveaux[1].matin.etirements.rotation[0][1] = 'rings_row';
     expect(erreursDe(p).join('\n')).toMatch(
-      /ancrage › matin › etirement › rotation › 0 : « seiza » est de la zone « pied_mollet », attendu : « hanches »/,
+      /ancrage › niveaux › 1 › matin › etirements › rotation › 0 › 1 : « rings_row » est du bloc « musculation », attendu : « etirement »/,
+    );
+  });
+
+  it('week-end : minimum hors des paires du jour, étirement du minimum hors de ceux du jour', () => {
+    const p = copie();
+    p.ancrage.week_end.base.seances.A.minimum[0] = 'pompes';
+    p.ancrage.week_end.base.seances.B.etirements_minimum[0] = 'seiza';
+    const erreurs = erreursDe(p).join('\n');
+    expect(erreurs).toMatch(
+      /ancrage › week_end › base › seances › A › minimum › 0 : « pompes » n'est pas un exercice des paires du jour/,
+    );
+    expect(erreurs).toMatch(
+      /ancrage › week_end › base › seances › B › etirements_minimum › 0 : « seiza » n'est pas un des étirements du jour/,
     );
   });
 

@@ -68,7 +68,7 @@ const exercice = z
     bloc: z.enum(BLOCS),
     patron: z.enum(['push', 'pull', 'squat', 'hinge']).optional(),
     cote: z.enum(['chaque bras', 'chaque jambe', 'chaque côté', 'chaque pied']).optional(),
-    zone: z.enum(['hanches', 'pied_mollet']).optional(),
+    zone: z.enum(['hanches', 'pied_mollet', 'haut_du_corps']).optional(),
     mesure: z.enum(MESURES).optional(),
     fourchette: fourchette.optional(),
     fourchette_s: fourchette.optional(),
@@ -203,9 +203,13 @@ const passages = z.strictObject({
 
 // ---------- Matin ----------
 
-/** Version minimum du matin : un mouvement de mobilité, puis une tenue (2 min de deep squat, 18/10/2026). */
+/**
+ * Version minimum du matin : un ou deux mouvements de mobilité (deux pendant l'ancrage, 25/10/2026),
+ * puis une tenue (2 min de deep squat, 18/10/2026).
+ */
 const versionMinimumDuMatin = z.strictObject({
   declencheur: texte,
+  mobilite_mouvements: entierPositif,
   contenu: texte,
   tenue: z.strictObject({ exercice: idExercice, duree_s: entierPositif }),
 });
@@ -287,12 +291,17 @@ const niveauAncrage = z.strictObject({
   coucher_interpretation: drapeau,
   plancher_obligatoire: z.boolean(),
   matin: z.strictObject({
+    /** Le café, pris après la séance (25/10/2026). */
     marge_min: entierPositifOuNul,
-    respiration_min: entierPositifOuNul,
+    respirations: entierPositifOuNul,
     creneau_min: entierPositif,
     creneau_interpretation: drapeau,
     seances: parLettre(seanceAncrage),
-    etirement: z.boolean(),
+    /** À tour de rôle d'un matin à l'autre : un groupe d'étirements par matin. */
+    etirements: z.strictObject({
+      rotation: z.array(z.array(idExercice).min(1)).min(1),
+      series: entierPositif,
+    }),
   }),
 });
 
@@ -323,11 +332,9 @@ const ancrage = z.strictObject({
     ordre: z.array(z.enum(BLOCS_DU_MATIN)).length(BLOCS_DU_MATIN.length),
     mobilite_duree_mouvement_s: entierPositif,
     mobilite_regle: texte,
-    etirement: z.strictObject({
-      rotation: z.array(idExercice).min(1),
-      series: entierPositif,
-      regle: texte,
-    }),
+    cafe: texte,
+    respiration: texte,
+    etirement: z.strictObject({ regle: texte }),
     version_minimum: versionMinimumDuMatin,
     version_courte: texte,
     note: texte.optional(),
@@ -356,23 +363,33 @@ const ancrage = z.strictObject({
   }),
   chaque_jour: z.strictObject({ exercice: idExercice, moment: texte }),
   week_end: z.strictObject({
-    /** Principale du week-end : un échauffement par exercice, pour le muscle concerné (18/10/2026). */
+    /**
+     * Principale du week-end : séance A le samedi, B le dimanche, un échauffement par exercice pour
+     * le muscle concerné ; le minimum en est une partie (décisions du 18 et du 25/10/2026).
+     */
     base: z.strictObject({
       contenu: texte,
       duree_min: entierPositif,
-      paires: z.array(z.strictObject({ exercice: idExercice, echauffement: idExercice })).min(1),
-      paires_source: texte,
-      paires_interpretation: drapeau,
+      duree_interpretation: drapeau,
       series: entierPositif,
-      /** La paire du minimum, selon la lettre du jour (A le samedi, B le dimanche). */
-      minimum: z.strictObject({ A: idExercice, B: idExercice }),
+      seances: parLettre(
+        z.strictObject({
+          paires: z
+            .array(z.strictObject({ exercice: idExercice, echauffement: idExercice }))
+            .min(1),
+          /** Exercices du minimum, avec leur échauffement. */
+          minimum: z.array(idExercice).min(1),
+          etirements: z.array(idExercice).min(1),
+          etirements_minimum: z.array(idExercice).min(1),
+        }),
+      ),
+      etirements_series: entierPositif,
+      paires_source: texte,
       minimum_series: entierPositif,
       minimum_interpretation: drapeau,
     }),
     au_mieux: z.strictObject({
       mobilite: texte,
-      etirements_hanches_series: entierPositif,
-      etirements_hanches: texte,
       boxe_rounds: z.array(entierPositif).min(1),
       boxe_interpretation: drapeau,
       duree_min: entierPositif,
@@ -951,6 +968,11 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
         ),
       );
     }
+    niv.matin.etirements.rotation.forEach((groupe, j) =>
+      groupe.forEach((id, k) =>
+        verifier([...ici, 'matin', 'etirements', 'rotation', j, k], id, 'etirement'),
+      ),
+    );
   });
   const semaineDuPalier1 = 1 + an.cycles_minimum * an.semaines_par_cycle;
   if (an.passage.vers_palier_1_des_semaine !== semaineDuPalier1) {
@@ -964,32 +986,29 @@ function controlesCroises(p: ProgrammeBrut, ctx: z.RefinementCtx): void {
     an.matin.version_minimum.tenue.exercice,
     'bloc_cle',
   );
-  an.matin.etirement.rotation.forEach((id, j) =>
-    verifier(['ancrage', 'matin', 'etirement', 'rotation', j], id, 'etirement', 'hanches'),
-  );
   an.soir.version_minimum.exercices.forEach((id, j) =>
     verifier(['ancrage', 'soir', 'version_minimum', 'exercices', j], id, 'bloc_cle'),
   );
   verifier(['ancrage', 'chaque_jour', 'exercice'], an.chaque_jour.exercice, 'equilibre');
-  an.week_end.base.paires.forEach((paire, j) => {
-    verifier(
-      ['ancrage', 'week_end', 'base', 'paires', j, 'exercice'],
-      paire.exercice,
-      'musculation',
-    );
-    verifier(
-      ['ancrage', 'week_end', 'base', 'paires', j, 'echauffement'],
-      paire.echauffement,
-      'mobilite',
-    );
-  });
   for (const lettre of LETTRES) {
-    const id = an.week_end.base.minimum[lettre];
-    if (!an.week_end.base.paires.some((paire) => paire.exercice === id))
-      signaler(
-        ['ancrage', 'week_end', 'base', 'minimum', lettre],
-        `« ${id} » n'est pas un exercice des paires du week-end`,
-      );
+    const s = an.week_end.base.seances[lettre];
+    const ici = ['ancrage', 'week_end', 'base', 'seances', lettre];
+    s.paires.forEach((paire, j) => {
+      verifier([...ici, 'paires', j, 'exercice'], paire.exercice, 'musculation');
+      verifier([...ici, 'paires', j, 'echauffement'], paire.echauffement, 'mobilite');
+    });
+    s.minimum.forEach((id, j) => {
+      if (!s.paires.some((paire) => paire.exercice === id))
+        signaler([...ici, 'minimum', j], `« ${id} » n'est pas un exercice des paires du jour`);
+    });
+    s.etirements.forEach((id, j) => verifier([...ici, 'etirements', j], id, 'etirement'));
+    s.etirements_minimum.forEach((id, j) => {
+      if (!s.etirements.includes(id))
+        signaler(
+          [...ici, 'etirements_minimum', j],
+          `« ${id} » n'est pas un des étirements du jour`,
+        );
+    });
   }
   verifierRounds(
     ['ancrage', 'week_end', 'au_mieux', 'boxe_rounds'],

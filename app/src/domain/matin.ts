@@ -1,5 +1,5 @@
 import type { Programme } from '../data/schema';
-import { autreLettre, suivantDansLaRotation, type Lettre } from './alternances';
+import { autreLettre, type Lettre } from './alternances';
 import type { TypeDeJour } from './jour';
 import { estEnAncrage, niveauDAncrage, palierDuMatin, type Niveau } from './niveau';
 
@@ -41,6 +41,9 @@ export interface Matin {
   /** Séance du jour ; null le jour de récupération. */
   lettre: Lettre | null;
   respiration_min: number;
+  /** Respiration comptée en respirations pendant l'ancrage : 10, dès N1 (décision du 25/10/2026). */
+  respirations: number;
+  /** Le café, une marge, pris après la séance (décision du 25/10/2026). */
   cafe_min: number;
   mobilite: Mouvement[];
   mobilite_au_ralenti: boolean;
@@ -67,7 +70,7 @@ export interface ContexteDuMatin {
   /** Séance de la veille : le jour de récupération prend l'autre routine. */
   lettreDeLaVeille: Lettre | null;
   version?: VersionDuMatin;
-  /** Dernier étirement fait, pour la rotation de l'ancrage. */
+  /** Un des étirements du dernier matin, pour la rotation de l'ancrage. */
   dernierEtirement?: string | null;
 }
 
@@ -118,16 +121,16 @@ function neckCars(programme: Programme): number {
   return programme.exercices[programme.mobilite.jour_recuperation.puis]?.par_sens ?? 3;
 }
 
-/** Version minimum, après une nuit très hachée : un mouvement de mobilité, puis la tenue (deep squat). */
-const matinMinimum = (
-  lettre: Lettre | null,
-  mouvement: Mouvement | undefined,
-  tenues: Tenue[],
-): Matin => ({
+/**
+ * Version minimum, après une nuit très hachée : les premiers mouvements de mobilité (un aux paliers,
+ * deux pendant l'ancrage), puis la tenue (deep squat).
+ */
+const matinMinimum = (lettre: Lettre | null, mouvements: Mouvement[], tenues: Tenue[]): Matin => ({
   lettre,
   respiration_min: 0,
+  respirations: 0,
   cafe_min: 0,
-  mobilite: mouvement ? [mouvement] : [],
+  mobilite: mouvements,
   mobilite_au_ralenti: false,
   neck_cars_par_sens: null,
   musculation: [],
@@ -139,6 +142,17 @@ const matinMinimum = (
 
 /** Les 2 min de deep squat ajoutées au minimum de tous les matins (décision du 18/10/2026). */
 const tenuesDuMinimum = (minimum: { tenue: Tenue }): Tenue[] => [{ ...minimum.tenue }];
+
+/** « À tour de rôle » par groupes : le groupe qui suit celui du dernier étirement fait. */
+export function groupeSuivant(
+  rotation: readonly (readonly string[])[],
+  dernierFait: string | null,
+): readonly string[] {
+  const i = dernierFait === null ? -1 : rotation.findIndex((g) => g.includes(dernierFait));
+  const groupe = rotation[(i + 1) % rotation.length] ?? rotation[0];
+  if (!groupe) throw new Error('rotation vide');
+  return groupe;
+}
 
 function matinDAncrage(
   programme: Programme,
@@ -157,20 +171,21 @@ function matinDAncrage(
     mouvementDeMobilite(programme, exercice, regles.mobilite_duree_mouvement_s),
   );
   const tenues = tenuesDuMinimum(regles.version_minimum);
-  if (version === 'minimum') return matinMinimum(lettre, mobilite[0], tenues);
-  const etirements: Etirement[] = niveau.matin.etirement
-    ? [
-        {
-          exercice: suivantDansLaRotation(regles.etirement.rotation, ctx.dernierEtirement ?? null),
-          series: regles.etirement.series,
-        },
-      ]
-    : [];
-  const respiration = niveau.matin.respiration_min;
+  if (version === 'minimum')
+    return matinMinimum(
+      lettre,
+      mobilite.slice(0, regles.version_minimum.mobilite_mouvements),
+      tenues,
+    );
+  const { rotation, series } = niveau.matin.etirements;
+  const etirements: Etirement[] = groupeSuivant(rotation, ctx.dernierEtirement ?? null).map(
+    (exercice) => ({ exercice, series }),
+  );
   return {
     lettre,
-    respiration_min: respiration,
-    cafe_min: Math.max(0, niveau.matin.marge_min - respiration),
+    respiration_min: 0,
+    respirations: niveau.matin.respirations,
+    cafe_min: niveau.matin.marge_min,
     mobilite,
     mobilite_au_ralenti: false,
     neck_cars_par_sens: null,
@@ -223,7 +238,12 @@ function matinDuPalier(
   );
   const lettre = recuperation ? null : ctx.lettre;
   const tenues = tenuesDuMinimum(programme.matin.version_minimum);
-  if (version === 'minimum') return matinMinimum(lettre, mobilite[0], tenues);
+  if (version === 'minimum')
+    return matinMinimum(
+      lettre,
+      mobilite.slice(0, programme.matin.version_minimum.mobilite_mouvements),
+      tenues,
+    );
   // Version courte : 1 série par exercice, swing réduit, étirements à 1 série (décision du 17/10/2026).
   const courte = version === 'courte' ? programme.matin.version_courte : null;
   const series = courte ? courte.musculation_series : (palier.musculation.series ?? 1);
@@ -255,6 +275,7 @@ function matinDuPalier(
   return {
     lettre,
     respiration_min: palier.minutes.respiration,
+    respirations: 0,
     cafe_min: palier.minutes.cafe,
     mobilite,
     mobilite_au_ralenti: recuperation,

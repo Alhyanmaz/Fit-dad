@@ -2,9 +2,9 @@
   "version_schema": 1,
   "meta": {
     "titre": "Programme d'entraînement — refonte 2026",
-    "version": "2026-10-18",
-    "source": "docs/PROGRAMME.md (fait foi ; issu du document Claude Docs, révision 44, abandonné le 17/10/2026 ; mis à jour le 07/10, les 13 et 14/10, le 17/10, puis le 18/10/2026)",
-    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; cycles d'ancrage ajoutés le 13/10/2026, en deux niveaux le 14/10/2026, avec quatre paliers ensuite ; réponses de José du 17/10/2026 intégrées (palier 1 confirmé, contenus des paliers 2 à 4 provisoires) ; validé au chargement par app/src/data/schema.ts. En cas d'écart, PROGRAMME.md fait foi.",
+    "version": "2026-10-25",
+    "source": "docs/PROGRAMME.md (fait foi ; issu du document Claude Docs, révision 44, abandonné le 17/10/2026 ; mis à jour le 07/10, les 13 et 14/10, le 17/10, le 18/10, puis le 25/10/2026)",
+    "statut": "Relu ligne à ligne contre docs/PROGRAMME.md le 08/10/2026 (jalon J1) ; cycles d'ancrage ajoutés le 13/10/2026, en deux niveaux le 14/10/2026, avec quatre paliers ensuite ; réponses de José du 17/10/2026 intégrées (palier 1 confirmé, contenus des paliers 2 à 4 provisoires) ; corrections de José du 25/10/2026 (ancrage : matins, week-end en séances A et B, respiration dès N1) ; validé au chargement par app/src/data/schema.ts. En cas d'écart, PROGRAMME.md fait foi.",
     "conventions": {
       "durees": "secondes dans les clés en _s ; minutes dans les clés « minutes », « duree_min… », « pas_min » et « swing_minutes » ; « cycle_minimum » est un numéro de cycle",
       "charges": "kg",
@@ -67,18 +67,20 @@
       {
         "id": "N1",
         "des_semaine": 1,
-        "lever": "06:50",
-        "coucher": "22:50",
+        "lever": "06:45",
+        "coucher": "22:45",
         "coucher_interpretation": true,
         "plancher_obligatoire": false,
         "matin": {
           "marge_min": 0,
-          "respiration_min": 0,
-          "creneau_min": 5,
+          "respirations": 10,
+          "creneau_min": 8,
+          "creneau_interpretation": true,
           "seances": {
             "A": {
               "mobilite": [
-                "reverse_table_top"
+                "downward_dog_cobra",
+                "shoulder_dislocate"
               ],
               "musculation": [
                 {
@@ -89,17 +91,28 @@
             },
             "B": {
               "mobilite": [
-                "cossack_squat"
+                "scapula_pull_up",
+                "reverse_table_top"
               ],
               "musculation": [
                 {
-                  "exercice": "goblet_squat",
+                  "exercice": "pompes",
                   "series": 1
                 }
               ]
             }
           },
-          "etirement": false
+          "etirements": {
+            "rotation": [
+              [
+                "couch_stretch"
+              ],
+              [
+                "pancake"
+              ]
+            ],
+            "series": 1
+          }
         }
       },
       {
@@ -110,37 +123,39 @@
         "coucher_interpretation": true,
         "plancher_obligatoire": true,
         "matin": {
-          "marge_min": 10,
-          "respiration_min": 5,
-          "creneau_min": 10,
+          "marge_min": 8,
+          "respirations": 10,
+          "creneau_min": 12,
           "creneau_interpretation": true,
           "seances": {
             "A": {
               "mobilite": [
-                "bear_walk",
+                "downward_dog_cobra",
+                "shoulder_dislocate",
                 "hip_hinge_baton"
               ],
               "musculation": [
                 {
-                  "exercice": "kt_press",
+                  "exercice": "rings_row",
                   "series": 1
                 },
                 {
                   "exercice": "swing_emom",
-                  "series": 1,
+                  "series": 3,
                   "reps": 10,
-                  "note": "1 série de 10, pas en EMOM"
+                  "note": "EMOM de 3 min : 10 par minute"
                 }
               ]
             },
             "B": {
               "mobilite": [
+                "scapula_pull_up",
                 "reverse_table_top",
                 "cossack_squat"
               ],
               "musculation": [
                 {
-                  "exercice": "rings_row",
+                  "exercice": "pompes",
                   "series": 1
                 },
                 {
@@ -150,7 +165,19 @@
               ]
             }
           },
-          "etirement": true
+          "etirements": {
+            "rotation": [
+              [
+                "couch_stretch",
+                "prayer_stretch"
+              ],
+              [
+                "pancake",
+                "stick_shoulder_extension"
+              ]
+            ],
+            "series": 1
+          }
         }
       }
     ],
@@ -163,31 +190,29 @@
     "matin": {
       "ordre": [
         "respiration",
-        "cafe",
         "mobilite",
         "musculation",
-        "etirements"
+        "etirements",
+        "cafe"
       ],
       "mobilite_duree_mouvement_s": 30,
-      "mobilite_regle": "Cossack squat et reverse table top : 1 série à la cible du moment ; les autres mouvements : 30 s.",
+      "mobilite_regle": "Cossack squat (8-12 par côté) et reverse table top : 1 série à la cible du moment ; les autres mouvements : 30 s.",
       "etirement": {
-        "rotation": [
-          "couch_stretch",
-          "pancake"
-        ],
-        "series": 1,
-        "regle": "Un par matin, à tour de rôle ; couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il est dans le « au mieux » du week-end (décision du 17/10/2026)."
+        "regle": "Dès N1 (décision du 25/10/2026), à tour de rôle d'un matin à l'autre : à N1, couch stretch ou pancake ; à N2, couch stretch et prayer stretch, ou pancake et stick shoulder extension. 1 × 30 s ; couch stretch de chaque côté."
       },
       "version_minimum": {
         "declencheur": "nuit très hachée",
-        "contenu": "un seul mouvement de mobilité, puis 2 min de deep squat (deep squat : décision du 18/10/2026)",
+        "mobilite_mouvements": 2,
+        "contenu": "deux mouvements de mobilité, puis 2 min de deep squat (décision du 25/10/2026 ; deep squat : décision du 18/10/2026)",
         "tenue": {
           "exercice": "deep_squat",
           "duree_s": 120
         }
       },
       "version_courte": "Aucune : version normale ou version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : José choisit lui-même la version minimum (décision du 18/10/2026).",
-      "note": "N1 travaille le tirage et le squat ; N2, les quatre patrons. Le swing reste à 1 série pendant l'ancrage."
+      "note": "N1 travaille le tirage et la poussée ; N2, les quatre patrons (décision du 25/10/2026). À N2, le swing se fait en EMOM de 3 min.",
+      "cafe": "Le café est une marge : José le prend après la séance (décision du 25/10/2026).",
+      "respiration": "10 respirations, dès N1 (décision du 25/10/2026). Pas de minuteur."
     },
     "midi": {
       "contenu": "Bouger, ce que José peut : marche ou corde, sans durée imposée.",
@@ -223,49 +248,96 @@
     },
     "week_end": {
       "base": {
-        "contenu": "Un échauffement par exercice, pour le muscle concerné, puis 3 séries des 4 exercices (KT press, swing, rings row, goblet squat) et 1 étirement (couch stretch ou pancake). Le minimum est une de ces paires, l'exercice en 1 série, avec les 2 min de deep squat ; la principale ajoute les 3 autres paires (décisions du 18/10/2026). Puis le soir.",
-        "duree_min": 22,
-        "paires": [
-          {
-            "exercice": "kt_press",
-            "echauffement": "shoulder_dislocate"
-          },
-          {
-            "exercice": "swing_emom",
-            "echauffement": "hip_hinge_baton"
-          },
-          {
-            "exercice": "rings_row",
-            "echauffement": "scapula_pull_up"
-          },
-          {
-            "exercice": "goblet_squat",
-            "echauffement": "cossack_squat"
-          }
-        ],
-        "paires_source": "Le hip hinge prépare le swing ; shoulder dislocate et scapula pull-up préparent la poussée et le tirage (docs/PROGRAMME.md, « Mobilité et échauffement »). Le cossack squat pour le goblet squat, et la répartition entre poussée et tirage, sont des choix de Claude.",
-        "paires_interpretation": true,
+        "contenu": "Samedi, séance A ; dimanche, séance B (décision du 25/10/2026). Deep squat 2 min, un échauffement par exercice pour le muscle concerné, les 4 exercices en 3 séries, 4 étirements à 2 × 30 s. Minimum : 2 paires en 3 séries, le deep squat, 2 étirements. Puis le soir.",
+        "duree_min": 35,
+        "duree_interpretation": true,
         "series": 3,
-        "minimum": {
-          "A": "swing_emom",
-          "B": "goblet_squat"
+        "seances": {
+          "A": {
+            "paires": [
+              {
+                "exercice": "kt_press",
+                "echauffement": "shoulder_dislocate"
+              },
+              {
+                "exercice": "pistol_box",
+                "echauffement": "cossack_squat"
+              },
+              {
+                "exercice": "rings_row",
+                "echauffement": "scapula_pull_up"
+              },
+              {
+                "exercice": "kt_sldl",
+                "echauffement": "hip_hinge_baton"
+              }
+            ],
+            "minimum": [
+              "rings_row",
+              "pistol_box"
+            ],
+            "etirements": [
+              "pigeon",
+              "stick_shoulder_extension",
+              "pancake",
+              "couch_stretch"
+            ],
+            "etirements_minimum": [
+              "pigeon",
+              "stick_shoulder_extension"
+            ]
+          },
+          "B": {
+            "paires": [
+              {
+                "exercice": "pompes",
+                "echauffement": "shoulder_dislocate"
+              },
+              {
+                "exercice": "goblet_squat",
+                "echauffement": "duck_walk"
+              },
+              {
+                "exercice": "traction_assistee",
+                "echauffement": "scapula_pull_up"
+              },
+              {
+                "exercice": "swing_emom",
+                "echauffement": "reverse_table_top"
+              }
+            ],
+            "minimum": [
+              "pompes",
+              "swing_emom"
+            ],
+            "etirements": [
+              "pancake",
+              "prayer_stretch",
+              "pigeon",
+              "couch_stretch"
+            ],
+            "etirements_minimum": [
+              "pancake",
+              "prayer_stretch"
+            ]
+          }
         },
-        "minimum_series": 1,
+        "etirements_series": 2,
+        "paires_source": "Choix de José (décision du 25/10/2026), sur proposition de Claude. Le programme relie le hip hinge au single leg deadlift, et les mouvements d'épaule à la poussée et au tirage (docs/PROGRAMME.md, « Mobilité et échauffement »).",
+        "minimum_series": 3,
         "minimum_interpretation": true
       },
       "au_mieux": {
-        "mobilite": "Le reste de la routine Mob. matin (A le samedi, B le dimanche), 30 s par mouvement.",
-        "etirements_hanches_series": 2,
-        "etirements_hanches": "Les 3 de la zone hanches : couch stretch, pigeon, pancake (décision du 17/10/2026).",
+        "mobilite": "Le reste de la routine Mob. du jour (A le samedi, B le dimanche), 30 s par mouvement.",
         "boxe_rounds": [
           1,
           3,
           5
         ],
         "boxe_interpretation": true,
-        "duree_min": 20,
+        "duree_min": 15,
         "duree_interpretation": true,
-        "note": "Bonus : ce que le « au mieux » ajoute à la principale, sans exercice de musculation en plus (lecture de Claude, 18/10/2026). Puis le soir, comme chaque jour."
+        "note": "Bonus : le reste de la mobilité et la boxe (décision du 25/10/2026). Puis le soir, comme chaque jour."
       }
     }
   },
@@ -384,10 +456,10 @@
   "matin": {
     "ordre": [
       "respiration",
-      "cafe",
       "mobilite",
       "musculation",
-      "etirements"
+      "etirements",
+      "cafe"
     ],
     "fin": "douche",
     "paliers": [
@@ -515,7 +587,8 @@
       "tenue": {
         "exercice": "deep_squat",
         "duree_s": 120
-      }
+      },
+      "mobilite_mouvements": 1
     },
     "jour_recuperation": {
       "regle": "La musculation est remplacée par l'autre routine Mob. matin, au ralenti, puis des neck CARs (3 par sens). Étirements conservés."
@@ -1024,6 +1097,10 @@
       "nom": "Spinal wave",
       "bloc": "mobilite"
     },
+    "downward_dog_cobra": {
+      "nom": "Downward dog to cobra",
+      "bloc": "mobilite"
+    },
     "bear_walk": {
       "nom": "Bear walk",
       "bloc": "mobilite"
@@ -1051,7 +1128,7 @@
       "mesure": "reps",
       "fourchette": [
         8,
-        14
+        12
       ],
       "echelons": [
         {
@@ -1250,11 +1327,22 @@
       "bloc": "cardio",
       "duree_min": 40,
       "format": "allure soutenue"
+    },
+    "prayer_stretch": {
+      "nom": "Prayer stretch",
+      "bloc": "etirement",
+      "zone": "haut_du_corps"
+    },
+    "stick_shoulder_extension": {
+      "nom": "Stick shoulder extension",
+      "bloc": "etirement",
+      "zone": "haut_du_corps"
     }
   },
   "mobilite": {
     "routines": {
       "A": [
+        "downward_dog_cobra",
         "spinal_wave",
         "bear_walk",
         "hanche_90_90",
@@ -1264,6 +1352,7 @@
         "cossack_squat"
       ],
       "B": [
+        "downward_dog_cobra",
         "spinal_rotation",
         "duck_walk",
         "hip_hinge_baton",

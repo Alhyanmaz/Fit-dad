@@ -27,6 +27,8 @@ interface EnPlus {
 
 export interface Contenu {
   respiration_min: number;
+  /** Respiration comptée en respirations (ancrage, décision du 25/10/2026). */
+  respirations: number;
   cafe_min: number;
   mobilite: Mouvement[];
   /** Jour de récupération des paliers : mobilité au ralenti, puis neck CARs (par sens). */
@@ -42,6 +44,7 @@ export type Couches = Record<Couche, Contenu>;
 
 export const contenuVide = (): Contenu => ({
   respiration_min: 0,
+  respirations: 0,
   cafe_min: 0,
   mobilite: [],
   mobilite_au_ralenti: false,
@@ -54,6 +57,7 @@ export const contenuVide = (): Contenu => ({
 
 export const estVide = (c: Contenu): boolean =>
   c.respiration_min === 0 &&
+  c.respirations === 0 &&
   c.cafe_min === 0 &&
   c.mobilite.length === 0 &&
   c.neck_cars_par_sens === null &&
@@ -97,6 +101,7 @@ function unionDesSeries<T extends AvecSeries>(a: readonly T[], b: readonly T[]):
 export function enPlus(deja: Contenu, ajout: Contenu): Contenu {
   return {
     respiration_min: Math.max(0, ajout.respiration_min - deja.respiration_min),
+    respirations: Math.max(0, ajout.respirations - deja.respirations),
     cafe_min: Math.max(0, ajout.cafe_min - deja.cafe_min),
     mobilite: absents(ajout.mobilite, deja.mobilite),
     mobilite_au_ralenti: ajout.mobilite_au_ralenti,
@@ -111,6 +116,7 @@ export function enPlus(deja: Contenu, ajout: Contenu): Contenu {
 function reunir(a: Contenu, b: Contenu): Contenu {
   return {
     respiration_min: Math.max(a.respiration_min, b.respiration_min),
+    respirations: Math.max(a.respirations, b.respirations),
     cafe_min: Math.max(a.cafe_min, b.cafe_min),
     mobilite: [...a.mobilite, ...absents(b.mobilite, a.mobilite)],
     mobilite_au_ralenti: a.mobilite_au_ralenti || b.mobilite_au_ralenti,
@@ -133,6 +139,7 @@ export function empiler(minimum: Contenu, principale: Contenu, bonus: Contenu): 
 
 const depuisMatin = (m: Matin): Contenu => ({
   respiration_min: m.respiration_min,
+  respirations: m.respirations,
   cafe_min: m.cafe_min,
   mobilite: m.mobilite,
   mobilite_au_ralenti: m.mobilite_au_ralenti,
@@ -151,10 +158,10 @@ export function couchesDuMatin(programme: Programme, ctx: ContexteDuMatin): Couc
 }
 
 /**
- * Week-end (décisions du 18/10/2026) : le minimum (une paire échauffement et exercice, en 1 série,
- * puis le deep squat), la principale (les 3 autres paires de la base, la fin des séries et
- * l'étirement ; aux paliers, la séance du palier) et le bonus (le « au mieux » de l'ancrage, réduit
- * à ce qu'il ajoute : mobilité, étirements de hanche, boxe).
+ * Week-end (décisions du 18 et du 25/10/2026) : le minimum (deux paires échauffement et exercice,
+ * le deep squat, deux étirements), la principale (les 2 autres paires et les 2 autres étirements ;
+ * aux paliers, la séance du palier) et le bonus (le « au mieux » de l'ancrage, réduit à ce qu'il
+ * ajoute : le reste de la mobilité et la boxe).
  */
 export function couchesDuWeekEnd(programme: Programme, niveau: Niveau, we: WeekEnd): Couches {
   const base: Contenu = we.base
@@ -177,14 +184,16 @@ export function couchesDuWeekEnd(programme: Programme, niveau: Niveau, we: WeekE
   const regles = estEnAncrage(niveau)
     ? programme.ancrage.matin.version_minimum
     : programme.matin.version_minimum;
-  // Le minimum : la paire du jour (échauffement et exercice en 1 série) pendant l'ancrage, sinon le
-  // premier mouvement de la séance ; puis le deep squat, comme chaque matin.
-  const paire = we.base?.minimum;
-  const premier = principale.mobilite[0];
+  // Le minimum : celui de la base (ancrage et palier 1), sinon les premiers mouvements de la séance ;
+  // puis le deep squat, comme chaque matin.
+  const deBase = we.base?.minimum;
   const minimum: Contenu = {
     ...contenuVide(),
-    mobilite: paire ? [paire.echauffement] : premier ? [premier] : [],
-    musculation: paire ? [paire.exercice] : [],
+    mobilite: deBase
+      ? deBase.echauffement
+      : principale.mobilite.slice(0, regles.mobilite_mouvements),
+    musculation: deBase?.exercices ?? [],
+    etirements: deBase?.etirements ?? [],
     tenues: [{ ...regles.tenue }],
   };
   return empiler(minimum, principale, we.bonus ? seance : contenuVide());
@@ -199,7 +208,7 @@ export function elementsDesCouches(couches: Couches): Element[] {
   const elements: Element[] = [];
   for (const couche of COUCHES) {
     const c = couches[couche];
-    if (c.respiration_min > 0) elements.push({ cle: 'respiration', couche });
+    if (c.respiration_min > 0 || c.respirations > 0) elements.push({ cle: 'respiration', couche });
     for (const m of c.mobilite) elements.push({ cle: m.exercice, couche });
     for (const t of c.tenues) elements.push({ cle: t.exercice, couche });
     if (c.neck_cars_par_sens !== null) elements.push({ cle: 'neck_cars', couche });

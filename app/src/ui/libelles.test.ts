@@ -58,8 +58,8 @@ describe('libellés de l’écran Aujourd’hui', () => {
 });
 
 describe('légende des mouvements à la cible, sans compteur (José, 18/10/2026)', () => {
-  it('« 8-14 rep / side » pour le cossack squat, la tenue en plus pour le reverse table top', () => {
-    expect(legendeALaCible(programme, 'cossack_squat')).toBe('8\u201114\u00a0rep\u00a0/\u00a0side');
+  it('« 8-12 rep / side » pour le cossack squat, la tenue en plus pour le reverse table top', () => {
+    expect(legendeALaCible(programme, 'cossack_squat')).toBe('8\u201112\u00a0rep\u00a0/\u00a0side');
     expect(legendeALaCible(programme, 'reverse_table_top')).toBe(
       '5\u201110\u00a0rep + tenue\u00a010\u201130\u00a0s',
     );

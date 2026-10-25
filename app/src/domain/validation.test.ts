@@ -55,13 +55,20 @@ describe('validation mouvement par mouvement (décision du 18/10/2026)', () => {
     expect(couchePrecedente(bloc, 'minimum')).toBeNull();
   });
 
-  it('N1, matin A : reverse table top et deep squat en minimum, rings row en principale', () => {
+  it('N1, matin A : mobilité et deep squat en minimum ; respiration, rings row, étirement en principale', () => {
     const couches = couchesDuMatin(programme, {
       niveau: { ancrage: 'N1' },
       type: 'normal',
       lettre: 'A',
       lettreDeLaVeille: null,
     });
-    expect(elementsDesCouches(couches)).toEqual(bloc);
+    expect(elementsDesCouches(couches)).toEqual([
+      { cle: 'downward_dog_cobra', couche: 'minimum' },
+      { cle: 'shoulder_dislocate', couche: 'minimum' },
+      { cle: 'deep_squat', couche: 'minimum' },
+      { cle: 'respiration', couche: 'principale' },
+      { cle: 'rings_row', couche: 'principale' },
+      { cle: 'couch_stretch', couche: 'principale' },
+    ]);
   });
 });

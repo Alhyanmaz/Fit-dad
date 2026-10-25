@@ -14,7 +14,7 @@ const ERREURS_AFFICHEES = 5;
  * Début de l'ancrage, choisi par José (décision du 18/10/2026). Il passera dans les réglages
  * enregistrés sur le téléphone, avec le niveau en cours, à l'étape suivante du J3.
  */
-const DEBUT_ANCRAGE: DateIso = '2026-10-19';
+const DEBUT_ANCRAGE: DateIso = '2026-11-09';
 
 /** Niveau en cours et jour où il a commencé : son cycle part de là (passages, 18/10/2026). */
 interface NiveauEnCours {

@@ -347,8 +347,8 @@ export function GroupeDeLignes({
 }
 
 /**
- * Les lignes d'un bloc en couches, par type : respiration et café, mobilité, musculation,
- * étirements, boxe. Les clés sont celles de `elementsDesCouches`.
+ * Les lignes d'un bloc en couches, par type : respiration, mobilité, musculation, étirements,
+ * boxe, puis le café. Les clés sont celles de `elementsDesCouches`.
  */
 export function lignesParType(
   programme: Programme,
@@ -359,12 +359,20 @@ export function lignesParType(
   const musculation: LigneDeCouche[] = [];
   const etirements: LigneDeCouche[] = [];
   const boxe: LigneDeCouche[] = [];
+  const cafe: LigneDeCouche[] = [];
   const tenueDesEtirements = programme.regles_generales.etirements.tenue_s;
   // Séries déjà demandées par les couches d'avant, pour numéroter les séries en plus.
   const seriesVues = new Map<string, number>();
   for (const couche of COUCHES) {
     const c = couches[couche];
-    if (c.respiration_min > 0)
+    if (c.respirations > 0)
+      respiration.push({
+        cle: 'respiration',
+        couche,
+        nom: 'Respiration',
+        detail: `${c.respirations} respirations`,
+      });
+    else if (c.respiration_min > 0)
       respiration.push({
         cle: 'respiration',
         couche,
@@ -372,7 +380,7 @@ export function lignesParType(
         duree: { exercice: null, prevu: c.respiration_min * 60 },
       });
     if (c.cafe_min > 0)
-      respiration.push({
+      cafe.push({
         cle: 'cafe',
         couche,
         nom: 'Café',
@@ -446,11 +454,13 @@ export function lignesParType(
       });
   }
   return [
-    { titre: 'Respiration et café', lignes: respiration },
+    { titre: 'Respiration', lignes: respiration },
     { titre: 'Mobilité', lignes: mobilite },
     { titre: 'Musculation', lignes: musculation },
     { titre: 'Étirements', lignes: etirements },
     { titre: 'Boxe', lignes: boxe },
+    // Le café, une marge, se prend après la séance (décision du 25/10/2026).
+    { titre: 'Café', lignes: cafe },
   ];
 }
 

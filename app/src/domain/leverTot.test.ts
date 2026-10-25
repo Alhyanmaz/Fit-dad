@@ -8,10 +8,10 @@ const programme = lecture.programme;
 
 describe('scénario 8 : « Lever tôt », verdict du matin', () => {
   const n2 = { ancrage: 'N2' as const };
-  it('cibles du niveau : N1 6h50, N2 6h40, palier 1 6h30', () => {
+  it('cibles du niveau : N1 6h45, N2 6h40, palier 1 6h30', () => {
     expect(ciblesDuNiveau(programme, { ancrage: 'N1' })).toEqual({
-      lever: '06:50',
-      coucher: '22:50',
+      lever: '06:45',
+      coucher: '22:45',
       plancherObligatoire: false,
     });
     expect(ciblesDuNiveau(programme, n2).lever).toBe('06:40');
@@ -21,8 +21,8 @@ describe('scénario 8 : « Lever tôt », verdict du matin', () => {
   it('lever tenu, pour le jour tenu : cible + 5 → oui, cible + 6 → non, heure absente → non', () => {
     expect(leverTenu(programme, n2, '06:45')).toBe(true);
     expect(leverTenu(programme, n2, '06:46')).toBe(false);
-    expect(leverTenu(programme, { ancrage: 'N1' }, '06:55')).toBe(true);
-    expect(leverTenu(programme, { ancrage: 'N1' }, '07:00')).toBe(false);
+    expect(leverTenu(programme, { ancrage: 'N1' }, '06:50')).toBe(true);
+    expect(leverTenu(programme, { ancrage: 'N1' }, '06:51')).toBe(false);
     expect(leverTenu(programme, n2, null)).toBe(false);
   });
 
@@ -41,7 +41,7 @@ describe('scénario 8 : « Lever tôt », verdict du matin', () => {
       verdictDuMatin(
         programme,
         { ancrage: 'N1' },
-        { leve: '06:50', nuit: 'calme', plancherFait: false },
+        { leve: '06:45', nuit: 'calme', plancherFait: false },
       ),
     ).toBe('reussi');
     expect(

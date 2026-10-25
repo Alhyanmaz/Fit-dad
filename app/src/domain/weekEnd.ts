@@ -1,5 +1,5 @@
 import type { Programme } from '../data/schema';
-import { suivantDansLaRotation, type Lettre } from './alternances';
+import type { Lettre } from './alternances';
 import type { DateIso } from './dates';
 import { aUnBlocBoxe, techniqueDuClubEnPriorite } from './jour';
 import {
@@ -21,15 +21,15 @@ import { estEnAncrage, type Niveau } from './niveau';
  */
 
 /**
- * Base de l'ancrage, la principale du week-end (décisions du 18/10/2026) : un échauffement par
- * exercice, pour le muscle concerné ; le minimum est l'une de ces paires, en 1 série.
+ * Base de l'ancrage, la principale du week-end (décisions du 18 et du 25/10/2026) : séance A le
+ * samedi, B le dimanche, un échauffement par exercice pour le muscle concerné ; le minimum en est
+ * une partie (deux paires et deux étirements).
  */
 export interface BaseDAncrage {
   echauffement: Mouvement[];
   exercices: ExerciceDeSeance[];
   etirements: Etirement[];
-  /** La paire du minimum, selon la lettre du jour. */
-  minimum: { echauffement: Mouvement; exercice: ExerciceDeSeance } | null;
+  minimum: { echauffement: Mouvement[]; exercices: ExerciceDeSeance[]; etirements: Etirement[] };
 }
 
 export interface SeanceDuWeekEnd {
@@ -62,7 +62,6 @@ export interface ContexteDuWeekEnd {
   /** A le samedi, B le dimanche (`lettreDuMatin`). */
   lettre: Lettre;
   joursDeBoxe: readonly DateIso[];
-  dernierEtirement?: string | null;
 }
 
 function baseDAncrage(programme: Programme, ctx: ContexteDuWeekEnd): BaseDAncrage {
@@ -75,22 +74,18 @@ function baseDAncrage(programme: Programme, ctx: ContexteDuWeekEnd): BaseDAncrag
     const reps = programme.exercices[exercice]?.reps_par_minute;
     return exercice === 'swing_emom' && reps ? { exercice, series, reps } : { exercice, series };
   };
-  const paire = base.paires.find((p) => p.exercice === base.minimum[ctx.lettre]);
+  const jour = base.seances[ctx.lettre];
+  const paires = jour.paires.filter((p) => jour.minimum.includes(p.exercice));
+  const etirement = (exercice: string): Etirement => ({ exercice, series: base.etirements_series });
   return {
-    echauffement: base.paires.map((p) => mouvement(p.echauffement)),
-    exercices: base.paires.map((p) => seance(p.exercice, base.series)),
-    minimum: paire
-      ? {
-          echauffement: mouvement(paire.echauffement),
-          exercice: seance(paire.exercice, base.minimum_series),
-        }
-      : null,
-    etirements: [
-      {
-        exercice: suivantDansLaRotation(regles.etirement.rotation, ctx.dernierEtirement ?? null),
-        series: regles.etirement.series,
-      },
-    ],
+    echauffement: jour.paires.map((p) => mouvement(p.echauffement)),
+    exercices: jour.paires.map((p) => seance(p.exercice, base.series)),
+    etirements: jour.etirements.map(etirement),
+    minimum: {
+      echauffement: paires.map((p) => mouvement(p.echauffement)),
+      exercices: paires.map((p) => seance(p.exercice, base.minimum_series)),
+      etirements: jour.etirements_minimum.map(etirement),
+    },
   };
 }
 
@@ -110,13 +105,9 @@ export function weekEndDuJour(programme: Programme, ctx: ContexteDuWeekEnd): Wee
       base: baseDAncrage(programme, ctx),
       seance: {
         mobilite: mobiliteDeLaRoutine(programme, ctx.lettre, regles.mobilite_duree_mouvement_s),
-        // Pas d'exercice de musculation en plus de la principale (lecture de Claude, 18/10/2026).
+        // Le bonus : le reste de la mobilité et la boxe, rien d'autre (décision du 25/10/2026).
         musculation: [],
-        // Les 3 étirements de hanche, pigeon compris (décision du 17/10/2026).
-        etirements: programme.etirements.zones.hanches.map((exercice) => ({
-          exercice,
-          series: au_mieux.etirements_hanches_series,
-        })),
+        etirements: [],
       },
       matin_du_palier: null,
       boxe: boxeDuJour(au_mieux.boxe_rounds, ctx),

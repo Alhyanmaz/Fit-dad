@@ -1,6 +1,6 @@
 # Programme d'entraînement — refonte 2026
 
-> Copie du document Claude Docs « Programme d'entraînement — refonte 2026 », exportée le 06/10/2026 (révision 44), mise à jour le 07/10/2026, le 13/10/2026 (cycles d'ancrage), le 14/10/2026 (ancrage en deux niveaux, quatre paliers), puis les 17 et 18/10/2026, avec les décisions de José (`docs/decisions.md`).
+> Copie du document Claude Docs « Programme d'entraînement — refonte 2026 », exportée le 06/10/2026 (révision 44), mise à jour le 07/10/2026, le 13/10/2026 (cycles d'ancrage), le 14/10/2026 (ancrage en deux niveaux, quatre paliers), puis les 17, 18 et 25/10/2026, avec les décisions de José (`docs/decisions.md`).
 > Depuis le 07/10/2026, ce fichier contient des décisions absentes du document Claude Docs : en cas d'écart, ce fichier fait foi. Le dépôt étant public, le profil familial en a été retiré.
 > Les deux graphiques du document sont remplacés ici par leurs tableaux de valeurs.
 
@@ -91,8 +91,10 @@ Pendant l'ancrage, cette section remplace le contenu des sections « Le matin pa
 
 | Niveau | Semaines, au plus tôt | Lever / coucher | Matin |
 | --- | --- | --- | --- |
-| N1 | 1 à 5 | 6h50 / 22h50 | 1 mouvement de mobilité et 2 min de deep squat, puis 1 série d'un exercice (≈ 5 min) |
-| N2 | 6 à 10 | 6h40 / 22h40 | 10 min de marge (respiration 5 min, puis café), puis un créneau de 10 min : 2 mouvements de mobilité, 2 exercices à 1 série, 1 étirement |
+| N1 | 1 à 5 | 6h45 / 22h45 | 10 respirations, 2 mouvements de mobilité, 2 min de deep squat, 1 série d'un exercice, 1 étirement (≈ 8 min) |
+| N2 | 6 à 10 | 6h40 / 22h40 | Un créneau de 12 min (10 respirations, 3 mouvements de mobilité, 2 min de deep squat, 2 exercices, 2 étirements), puis 8 min de marge, le café |
+
+Démarrage le lundi 09/11/2026 : N2 au plus tôt le 14/12/2026, palier 1 au plus tôt le 18/01/2027 (décision du 25/10/2026). Lever de N1 avancé de 6h50 à 6h45 pour le matin plus long (décision du 25/10/2026, sur proposition de Claude).
 
 Les couchers sont fixés 8 h avant le lever \[Interprétation\].
 
@@ -107,23 +109,26 @@ Les couchers sont fixés 8 h avant le lever \[Interprétation\].
 
 **Matin**
 
-Ordre fixe : respiration → café (à N2) → mobilité → musculation → étirement (à N2) → douche.
+Ordre fixe : respiration (10 respirations) → mobilité → musculation → étirement → douche ; le café est une marge, pris après (décision du 25/10/2026).
 
-|                          | Matin A                                  | Matin B                          |
-|--------------------------|------------------------------------------|----------------------------------|
-| N1, mobilité             | Reverse table top                        | Cossack squat                    |
-| N1, musculation, 1 série | Rings row                                | Goblet squat (20)                |
-| N2, mobilité             | Bear walk, hip hinge au bâton            | Reverse table top, cossack squat |
-| N2, musculation, 1 série | KT press (chaque bras), swing (10)       | Rings row, goblet squat (20)     |
-| N2, étirement, 1 × 30 s  | Couch stretch ou pancake, à tour de rôle | L'autre                          |
+|                           | Matin A                                                       | Matin B                                          |
+|---------------------------|---------------------------------------------------------------|--------------------------------------------------|
+| N1, mobilité              | Downward dog to cobra, shoulder dislocate                     | Scapula pull-up, reverse table top               |
+| N1, musculation, 1 série  | Rings row                                                     | Pompes                                           |
+| N1, étirement, 1 × 30 s   | Couch stretch ou pancake, à tour de rôle                      | L'autre                                          |
+| N2, mobilité              | Downward dog to cobra, shoulder dislocate, hip hinge au bâton | Scapula pull-up, reverse table top, cossack squat |
+| N2, musculation           | Rings row 1 série, swing en EMOM de 3 min (3 × 10)            | Pompes 1 série, goblet squat (20) 1 série        |
+| N2, étirements, 1 × 30 s  | Couch stretch et prayer stretch, ou pancake et stick shoulder extension, à tour de rôle | L'autre paire |
 
-- Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s. Dans l'appli, chacun a son compteur de répétitions et sa cible écrite (« 8-14 rep / side ») (décisions du 18/10/2026).
-- Le swing reste à 1 série pendant l'ancrage ; il passe à la séance du palier 1 ensuite.
-- Couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il revient au « au mieux » du week-end (décision du 17/10/2026).
-- À N2, les 10 min sont un créneau : le contenu prend 5 à 7 min, le reste sert de marge \[Interprétation\].
-- Version minimum, après une nuit très hachée : un seul mouvement de mobilité, puis 2 min de deep squat, comme chaque matin (décision du 18/10/2026).
+Matins corrigés par José le 25/10/2026.
+
+- Cossack squat et reverse table top : 1 série à ta cible du moment (cossack : répétitions par côté, à ta charge ; reverse table top : répétitions, puis la tenue). Les autres mouvements de mobilité : 30 s. Dans l'appli, chacun a son compteur de répétitions et sa cible écrite (« 8-12 rep / side », décision du 25/10/2026) (décisions du 18/10/2026).
+- Swing : en EMOM de 3 min à N2 (décision du 25/10/2026) ; EMOM de 6 min à partir du palier 1.
+- Couch stretch de chaque côté. Le pigeon ne fait pas partie des matins de l'ancrage ; il est au week-end (décision du 17/10/2026).
+- Durées : estimations de Claude \[Interprétation\] ; N1 ≈ 8 min, N2 ≈ 10 à 11 min de contenu.
+- Version minimum, après une nuit très hachée : les deux premiers mouvements de mobilité du jour, puis 2 min de deep squat (décision du 25/10/2026 ; deep squat : décision du 18/10/2026).
 - Pas de version courte : la version principale, ou la version minimum (décision du 14/10/2026). « Alléger » ne propose rien pendant l'ancrage : tu choisis toi-même la version minimum (décision du 18/10/2026).
-- N1 travaille le tirage et le squat ; N2, les quatre patrons. La base du week-end porte les quatre exercices dès N1.
+- N1 travaille le tirage et la poussée ; N2, les quatre patrons. Le week-end porte les séances A et B dès N1.
 
 **Midi** : bouger, ce que tu peux : marche ou corde, sans durée imposée. C'est un bonus.
 
@@ -139,13 +144,16 @@ Ordre fixe : respiration → café (à N2) → mobilité → musculation → ét
 
 **Week-end**
 
-|          | Contenu                                                                                                                                                                                                                  | Durée                               |
-|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
-| Base     | Un échauffement par exercice, pour le muscle concerné, 3 séries des 4 exercices (KT press, swing, rings row, goblet squat), 1 étirement (couch stretch ou pancake), et les 2 min de deep squat du minimum ; puis le soir | ≈ 22 min, plus le soir              |
-| Au mieux | Le reste de la routine Mob. matin (A le samedi, B le dimanche, 30 s par mouvement) → les 3 étirements de hanche (couch stretch, pigeon, pancake), 2 × 30 s → boxe en 3 rounds ; puis le soir                             | ≈ 20 min de plus \[Interprétation\] |
+| Couche     | Samedi, séance A                                                                                                                                        | Dimanche, séance B                                                                                                                |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Minimum    | Deep squat 2 min ; cossack squat → pistol box-assisté, scapula pull-up → rings row, en 3 séries ; pigeon et stick shoulder extension, 2 × 30 s       | Deep squat 2 min ; shoulder dislocate → pompes, reverse table top → swing (3 × 10), en 3 séries ; pancake et prayer stretch, 2 × 30 s |
+| Principale | + shoulder dislocate → KT press, hip hinge au bâton → KT single leg deadlift, en 3 séries ; + pancake et couch stretch, 2 × 30 s                    | + duck walk → goblet squat, scapula pull-up → traction assistée, en 3 séries ; + pigeon et couch stretch, 2 × 30 s              |
+| Bonus      | Le reste de la routine Mob. A (downward dog to cobra, spinal wave, bear walk, 90/90), 30 s par mouvement ; boxe en 3 rounds                         | Le reste de la routine Mob. B (downward dog to cobra, spinal rotation, hip hinge au bâton, spiderman lunge) ; boxe en 3 rounds     |
 
-- Échauffement de la base : un mouvement par exercice, pour le muscle concerné (décision du 18/10/2026) : shoulder dislocate pour le KT press, hip hinge au bâton pour le swing, scapula pull-up pour le rings row, cossack squat pour le goblet squat \[Interprétation, d'après la section « Mobilité et échauffement »\].
-- Couches (décisions du 18/10/2026) : minimum, une paire échauffement-exercice, l'exercice en 1 série (samedi : hip hinge au bâton et swing ; dimanche : cossack squat et goblet squat), et 2 min de deep squat ; principale, + 3 exercices et + 3 mouvements de mobilité (les 3 autres paires), la fin des séries et l'étirement ; bonus, le « au mieux », sans exercice de musculation en plus \[Interprétation pour le bonus\].
+- Décisions de José du 25/10/2026, sur proposition de Claude : samedi séance A, dimanche séance B ; un échauffement par exercice, pour le muscle concerné (« A → B » : A prépare B). Le programme relie le hip hinge au single leg deadlift, et les mouvements d'épaule à la poussée et au tirage (section « Mobilité et échauffement ») ; les autres paires sont des choix de José.
+- Durées : principale ≈ 35 min, bonus ≈ 15 min de plus \[Interprétation\] ; puis le soir.
+- Pompes, pistol, single leg deadlift et traction sont donc faits le week-end dès N1.
+- Prayer stretch et stick shoulder extension reviennent au programme (décision du 25/10/2026) : à N2 le matin et au week-end.
 - Boxe en 3 rounds : rounds 1 (corde), 3 (technique seule) et 5 (libre) du bloc boxe, 1 min de repos entre deux rounds, ≈ 11 min \[Interprétation\].
 
 **Pourquoi**
@@ -251,29 +259,31 @@ Deux séances, A et B, en alternance un matin sur deux, 6 jours sur 7 à partir 
 
 **Routine A**
 
-1.  Spinal wave
-2.  Bear walk
-3.  90/90
-4.  Hip hinge au bâton
-5.  Shoulder dislocate
-6.  Scapula pull-up
-7.  Cossack squat, chaque côté : 8 à 14 répétitions, 0 → 5 → 10 kg
+1.  Downward dog to cobra (décision du 25/10/2026)
+2.  Spinal wave
+3.  Bear walk
+4.  90/90
+5.  Hip hinge au bâton
+6.  Shoulder dislocate
+7.  Scapula pull-up
+8.  Cossack squat, chaque côté : 8 à 12 répétitions (décision du 25/10/2026), 0 → 5 → 10 kg
 
 **Routine B**
 
-1.  Spinal rotation
-2.  Duck walk
-3.  Hip hinge au bâton
-4.  Shoulder dislocate
-5.  Scapula pull-up
-6.  Spiderman lunge, chaque côté
-7.  Reverse table top : 5 répétitions + 10 s de tenue → 10 répétitions + 30 s
+1.  Downward dog to cobra (décision du 25/10/2026)
+2.  Spinal rotation
+3.  Duck walk
+4.  Hip hinge au bâton
+5.  Shoulder dislocate
+6.  Scapula pull-up
+7.  Spiderman lunge, chaque côté
+8.  Reverse table top : 5 répétitions + 10 s de tenue → 10 répétitions + 30 s
 
 **Durée selon le palier**
 
 | Palier               | Contenu                                                                                   | Durée                   |
 |----------------------|-------------------------------------------------------------------------------------------|-------------------------|
-| Ancrage (N1, N2)     | 1 mouvement par matin à N1, 2 à N2 (section « Cycles d'ancrage »)                         | ≈ 1 min                 |
+| Ancrage (N1, N2)     | 2 mouvements par matin à N1, 3 à N2 (section « Cycles d'ancrage »)                        | ≈ 1 à 2 min             |
 | 1 et 2               | Toute la routine, 30 s par mouvement ; cossack et reverse table top en 1 série à ta cible | ≈ 5 min                 |
 | 3 et 4               | Toute la routine, 60 s par mouvement ; cossack et reverse table top en 1 série à ta cible | ≈ 10 min                |
 | Jour de récupération | L'autre routine, au ralenti, puis neck CARs (3 par sens)                                  | Remplace la musculation |
@@ -314,7 +324,7 @@ Au démarrage, chaque étirement reçoit 2 à 3 min par semaine ; à terme, envi
 - Version courte du matin : 1 série de chaque étirement du palier (décision du 17/10/2026).
 - Le deep squat du bloc clé étire aussi la cheville et les hanches ; il n'est pas compté ici.
 - Les étirements ne préviennent pas les blessures (A, Lauersen 2014) : ils servent ici l'amplitude des hanches et de la cheville. La musculation avec charge améliore l'amplitude autant qu'eux (A, Alizadeh 2023).
-- Prayer stretch et shoulder extension ne font plus partie du programme : les blocs ciblés sont réservés aux hanches.
+- Prayer stretch et stick shoulder extension : retirés au départ (« les blocs ciblés sont réservés aux hanches »), remis par José le 25/10/2026 pour l'ancrage (matins de N2, week-end).
 
 ## Bloc clé du soir
 
